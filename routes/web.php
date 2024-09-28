@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\User;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -12,6 +13,20 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+});
+
+Route::middleware('role:' . User::ROLE_ADMIN)->group(function () {
+    //Route::get('/admin/dashboard', [AdminController::class, 'index']);
+    Route::get('/admin', function(){
+        return Inertia::render('AdminDashboard');
+    });
+});
+
+Route::middleware('role:' . User::ROLE_TECHNICAL)->group(function () {
+    //Route::get('/user/dashboard', [UserController::class, 'index']);
+    Route::get('/user', function(){
+        return Inertia::render('TechnicalDashboard');
+    });
 });
 
 Route::get('/dashboard', function () {
