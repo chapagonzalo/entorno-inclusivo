@@ -6,19 +6,21 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
-class RoleMiddleware
+class AdministradorMiddleware
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || Auth::user()->role !== (int)$role) {
-            return redirect('/unauthorized');
+        if (Auth::user() && (Auth::user()->role == User::ROLE_ADMIN)) {
+            return $next($request);
         }
-        return $next($request);
+        return redirect('/');
+        
     }
 }

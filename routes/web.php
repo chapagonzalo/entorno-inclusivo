@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\AdministradorMiddleware;
+use App\Http\Middleware\RoleMiddleware;
+use App\Http\Middleware\TechnicalMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,17 +18,17 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware('role:' . User::ROLE_ADMIN)->group(function () {
+Route::middleware(AdministradorMiddleware::class)->group(function () {
     //Route::get('/admin/dashboard', [AdminController::class, 'index']);
     Route::get('/admin', function(){
-        return Inertia::render('AdminDashboard');
+        return Inertia::render('Admin/AdminDashboard');
     });
 });
 
-Route::middleware('role:' . User::ROLE_TECHNICAL)->group(function () {
+Route::middleware(TechnicalMiddleware::class)->group(function () {
     //Route::get('/user/dashboard', [UserController::class, 'index']);
     Route::get('/user', function(){
-        return Inertia::render('TechnicalDashboard');
+        return Inertia::render('Technical/TechnicalDashboard');
     });
 });
 
