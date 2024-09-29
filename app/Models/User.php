@@ -11,6 +11,9 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    const ROLE_ADMIN = 0;
+    const ROLE_TECHNICAL= 1;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -43,5 +46,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Método para verificar si es admin
+    public function isAdmin()
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    // Método para verificar si es usuario normal
+    public function isTechnical()
+    {
+        return $this->role === self::ROLE_TECHNICAL;
     }
 }
