@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\AdministradorMiddleware;
 use App\Http\Middleware\TechnicalMiddleware;
@@ -21,6 +22,7 @@ Route::middleware(AdministradorMiddleware::class)->group(function () {
     Route::get("/admin", function () {
         return Inertia::render("Admin/AdminDashboard");
     })->name("admin.dashboard");
+    Route::resource('/evaluaciones', AssessmentController::class)->names('assessments');
 });
 
 Route::middleware(TechnicalMiddleware::class)->group(function () {
