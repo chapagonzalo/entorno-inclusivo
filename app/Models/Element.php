@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Element extends Model
 {
     use HasFactory;
+    protected $fillable = ['name'];
+
+    // Relación: Un tipo de elemento tiene muchas instancias
+    public function elementInstances()
+    {
+        return $this->hasMany(ElementInstance::class);
+    }
 
     public function location()
     {

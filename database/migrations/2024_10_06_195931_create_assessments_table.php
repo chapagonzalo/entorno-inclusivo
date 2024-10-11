@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('assessments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedTinyInteger('type')->default(1);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('location_id')->constrained('locations')->onDelete('cascade');
-            $table->foreignId('element_id')->constrained('elements')->onDelete('cascade');
+            $table->foreignId('element_instance_id')->constrained('element_instances')->onDelete('cascade');
+            $table->enum('status', ['incomplete', 'complete'])->default('incomplete');
             $table->timestamps();
         });
     }
