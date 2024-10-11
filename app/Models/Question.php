@@ -25,8 +25,4 @@ class Question extends Model
         return $this->hasOne(ExpectedAnswer::class);
     }
     
-    public function context()
-    {
-        return $this->hasOne(Context::class);
-    }
 }
