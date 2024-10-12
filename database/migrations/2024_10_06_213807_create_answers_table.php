@@ -14,8 +14,13 @@ return new class extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
             $table->text('content');
-            $table->foreignId('question_id')->constrained('questions')->onDelete('cascade'); 
+            $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
             $table->foreignId('assessment_id')->constrained('assessments')->onDelete('cascade');
+
+            // Columnas para almacenar distintos tipos de respuestas
+            $table->text('answer_text')->nullable(); // Respuesta en formato texto
+            $table->enum('answer_enum', ['Sí', 'No', 'Bueno', 'Regular', 'Malo'])->nullable(); // Respuesta en formato predefinido
+            $table->decimal('answer_numeric', 10, 2)->nullable(); // Respuesta numérica
             $table->timestamps();
         });
     }
