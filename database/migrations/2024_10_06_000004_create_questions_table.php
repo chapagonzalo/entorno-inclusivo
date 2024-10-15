@@ -4,17 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('expected_answers', function (Blueprint $table) {
+        Schema::create("questions", function (Blueprint $table) {
             $table->id();
-            $table->text('expected_answer');
-            $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
+            $table->text("content");
+            $table->text("context");
+            $table
+                ->foreignId("element_id")
+                ->constrained("elements")
+                ->onDelete("cascade");
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('expected_answers');
+        Schema::dropIfExists("questions");
     }
 };
