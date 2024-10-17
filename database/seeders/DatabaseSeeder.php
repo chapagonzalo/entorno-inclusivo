@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             RampQuestionSeeder::class,
             SignageQuestionSeeder::class,
             StairQuestionSeeder::class,
+            AssessmentSeeder::class,
         ]);
     }
 }

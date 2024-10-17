@@ -22,13 +22,32 @@ Route::middleware(AdministradorMiddleware::class)->group(function () {
     Route::get("/admin", function () {
         return Inertia::render("Admin/AdminDashboard");
     })->name("admin.dashboard");
-    Route::resource('/evaluaciones', AssessmentController::class)->names('assessments');
 });
 
 Route::middleware(TechnicalMiddleware::class)->group(function () {
     Route::get("/user", function () {
         return Inertia::render("Technical/TechnicalDashboard");
     })->name("technical.dashboard");
+
+    Route::get("/assessments/index", [
+        AssessmentController::class,
+        "index",
+    ])->name("assessments.index");
+    Route::get("/assessments/create", [
+        AssessmentController::class,
+        "create",
+    ])->name("assessments.create");
+    Route::post("/assessments", [AssessmentController::class, "store"])->name(
+        "assessments.store"
+    );
+    Route::get("/assessments/{id}", [
+        AssessmentController::class,
+        "show",
+    ])->name("assessments.show");
+    Route::post("/assessments/{id}/answers", [
+        AssessmentController::class,
+        "storeAnswers",
+    ])->name("assessments.storeAnswers");
 });
 
 //* termina la sección de prueba

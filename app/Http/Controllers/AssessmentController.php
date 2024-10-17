@@ -2,67 +2,88 @@
 
 namespace App\Http\Controllers;
 
+namespace App\Http\Controllers;
+
 use App\Models\Assessment;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\Location;
 use App\Models\Element;
 use App\Models\ElementInstance;
 use App\Models\Answer;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AssessmentController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Assessments/Index', []);
-    }
+        $assessments = Assessment::with(["user"])
+            ->where("user_id", auth()->id())
+            ->latest()
+            ->get();
 
+        return Inertia::render("Assessments/Index", [
+            "assessments" => $assessments,
+        ]);
+    }
+    // Mostrar el formulario para crear una nueva evaluación (a React)
     public function create()
     {
         $locations = Location::all();
-        $elements = Element::all();
+        $elements = Element::with("questions")->get();
 
-        // Enviar datos al componente React mediante Inertia
-        return Inertia::render('Assessments/Create', [
-            'locations' => $locations,
-            'elements' => $elements,
+        return Inertia::render("Assessments/Create", [
+            "locations" => $locations,
+            "elements" => $elements,
         ]);
     }
 
+    // Guardar una nueva evaluación
     public function store(Request $request)
     {
-        // Validar los datos de la evaluación
-        $data = $request->validate([
-            'date' => 'required|date',
-            'type' => 'required|in:Simple,Compleja',
-            'user_id' => 'required|exists:users,id',
-            'location_id' => 'required|exists:locations,id',
+        $validatedData = $request->validate([
+            "location_id" => "required|exists:locations,id",
+            "element_id" => "required|exists:elements,id",
+            "element_instance_description" => "nullable|string|max:255",
+            "answers" => "required|array",
         ]);
 
-        // Crear la evaluación
-        $assessment = Assessment::create($data);
+        $assessment = Assessment::create([
+            "user_id" => auth()->id(),
+            "location_id" => $validatedData["location_id"],
+            "status" => "incomplete",
+            "date" => now(),
+            "type" => "Simple", // o 'Compleja' según tu lógica
+        ]);
 
-        // Asignar instancias de elementos a la evaluación
-        foreach ($request->elements as $elementId) {
-            $elementInstance = ElementInstance::create([
-                'element_id' => $elementId,
-                'location_id' => $request->location_id,
-                'identifier' => $request->element_identifiers[$elementId] ?? null, // Identificador opcional
+        $elementInstance = ElementInstance::create([
+            "location_id" => $validatedData["location_id"],
+            "element_id" => $validatedData["element_id"],
+            "description" => $validatedData["element_instance_description"],
+        ]);
+
+        foreach ($validatedData["answers"] as $questionId => $answer) {
+            Answer::create([
+                "assessment_id" => $assessment->id,
+                "question_id" => $questionId,
+                "content" => $answer,
             ]);
         }
 
-        // Redirigir a la vista de evaluación creada usando Inertia
-        return redirect()->route('assessments.show', $assessment->id);
+        return redirect()->route("assessments.show", $assessment->id);
     }
 
-    public function show(Assessment $id)
+    // Mostrar una evaluación con sus respuestas (enviando a React)
+    public function show($id)
     {
-        $assessment = Assessment::with('answers', 'location', 'elementInstances')->findOrFail($id);
+        $assessment = Assessment::with(
+            "answers",
+            "location",
+            "elementInstances"
+        )->findOrFail($id);
 
         // Enviar datos al componente React mediante Inertia
-        return Inertia::render('Assessments/Show', [
-            'assessment' => $assessment
+        return Inertia::render("Assessments/Show", [
+            "assessment" => $assessment,
         ]);
     }
 
@@ -76,17 +97,17 @@ class AssessmentController extends Controller
         foreach ($request->answers as $elementInstanceId => $answers) {
             foreach ($answers as $questionId => $answer) {
                 Answer::create([
-                    'question_id' => $questionId,
-                    'evaluation_id' => $assessment->id,
-                    'element_instance_id' => $elementInstanceId,
-                    'answer_text' => $answer['text'] ?? null,
-                    'answer_enum' => $answer['enum'] ?? null,
-                    'answer_numeric' => $answer['numeric'] ?? null,
+                    "question_id" => $questionId,
+                    "evaluation_id" => $assessment->id,
+                    "element_instance_id" => $elementInstanceId,
+                    "answer_text" => $answer["text"] ?? null,
+                    "answer_enum" => $answer["enum"] ?? null,
+                    "answer_numeric" => $answer["numeric"] ?? null,
                 ]);
             }
         }
 
         // Redirigir de nuevo a la evaluación usando Inertia
-        return redirect()->route('assessments.show', $assessment->id);
+        return redirect()->route("assessments.show", $assessment->id);
     }
 }
