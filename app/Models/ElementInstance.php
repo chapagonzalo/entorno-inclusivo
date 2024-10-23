@@ -9,7 +9,7 @@ class ElementInstance extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['location_id', 'element_id', 'description'];
+    protected $fillable = ["location_id", "element_id", "description"];
 
     // Relación: Una instancia de elemento pertenece a una ubicación
     public function location()

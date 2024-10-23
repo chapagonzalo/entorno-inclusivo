@@ -23,8 +23,6 @@ return new class extends Migration {
             $table
                 ->enum("status", ["incomplete", "complete"])
                 ->default("incomplete");
-            $table->date("date"); // Asegúrate de que esta columna esté definida
-            $table->enum("type", ["Simple", "Compleja"]);
             $table->timestamps();
         });
     }

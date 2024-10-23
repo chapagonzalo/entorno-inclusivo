@@ -30,14 +30,10 @@ class AssessmentSeeder extends Seeder
         // Ahora crear las evaluaciones
         $assessments = [
             [
-                "date" => "2024-10-01",
-                "type" => "Simple",
                 "user_id" => 2,
                 "element_instance_id" => $elementInstance1->id,
             ],
             [
-                "date" => "2024-10-05",
-                "type" => "Compleja",
                 "user_id" => 2,
                 "element_instance_id" => $elementInstance2->id,
             ],

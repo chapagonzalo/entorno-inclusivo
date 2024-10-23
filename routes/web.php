@@ -25,10 +25,6 @@ Route::middleware(AdministradorMiddleware::class)->group(function () {
 });
 
 Route::middleware(TechnicalMiddleware::class)->group(function () {
-    Route::get("/user", function () {
-        return Inertia::render("Technical/TechnicalDashboard");
-    })->name("technical.dashboard");
-
     Route::get("/assessments/index", [
         AssessmentController::class,
         "index",
@@ -37,6 +33,18 @@ Route::middleware(TechnicalMiddleware::class)->group(function () {
         AssessmentController::class,
         "create",
     ])->name("assessments.create");
+    Route::post("/assessments/initial", [
+        AssessmentController::class,
+        "storeInitial",
+    ])->name("assessments.storeInitial");
+    Route::get("/assessments/{id}/questions", [
+        AssessmentController::class,
+        "showQuestions",
+    ])->name("assessments.questions");
+    Route::post("/assessments/{id}/answers", [
+        AssessmentController::class,
+        "storeAnswers",
+    ])->name("assessments.storeAnswers");
     Route::post("/assessments", [AssessmentController::class, "store"])->name(
         "assessments.store"
     );

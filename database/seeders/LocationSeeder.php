@@ -14,28 +14,28 @@ class LocationSeeder extends Seeder
     public function run(): void
     {
         $location = new Location();
-        $location->name = 'Bloque 1,2 y 3';
+        $location->name = "1-Rectorado";
         $location->save();
         $location = new Location();
-        $location->name = 'Bloque 4';
+        $location->name = "2-Biblioteca";
         $location->save();
         $location = new Location();
-        $location->name = 'Rectorado';
+        $location->name = "3-Bloque 1,2 y 3";
         $location->save();
         $location = new Location();
-        $location->name = 'Biblioteca';
+        $location->name = "4-Bloque 4";
         $location->save();
         $location = new Location();
-        $location->name = 'IMASL';
+        $location->name = "5-IMASL";
         $location->save();
         $location = new Location();
-        $location->name = 'Aula';
+        $location->name = "6-Aula";
         $location->save();
         $location = new Location();
-        $location->name = 'Quincho';
+        $location->name = "7-Quincho";
         $location->save();
         $location = new Location();
-        $location->name = 'CCT';
+        $location->name = "8-CCT";
         $location->save();
     }
 }

@@ -9,14 +9,13 @@ class Assessment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'element_instance_id', 'status'];
+    protected $fillable = ["user_id", "status", "element_instance_id"];
 
     // Relación: Una evaluación pertenece a una instancia de elemento
     public function elementInstance()
     {
         return $this->belongsTo(ElementInstance::class);
     }
-
 
     public function location()
     {

@@ -10,19 +10,25 @@ class Question extends Model
     use HasFactory;
     //faltan constantes para tipos
 
-    public function element()
-    {
-        return $this->belongsTo(Element::class);
-    }
+    const TYPE_TEXT = "text";
+    const TYPE_ENUM_YESNO = "enum_yesno";
+    const TYPE_ENUM_QUALITY = "enum_quality";
+    const TYPE_NUMERIC = "numeric";
 
-    public function answers()
-    {
-        return $this->hasMany(Answer::class);
-    }
+    protected $fillable = ["content", "context", "element_id", "answer_types"];
 
-    public function expectedAnswer()
+    protected $casts = [
+        "answer_types" => "array",
+    ];
+
+    protected static function boot()
     {
-        return $this->hasOne(ExpectedAnswer::class);
+        parent::boot();
+
+        static::saving(function ($question) {
+            if (empty($question->answer_types)) {
+                $question->answer_types = [self::TYPE_TEXT];
+            }
+        });
     }
-    
 }
