@@ -57,42 +57,38 @@ const Questions = () => {
             />
           </div>
         )}
-        {question.answer_types.includes("enum") && (
-          <>
-            <div key={`${question.id}-enum-yesno`}>
-              <label className="block text-sm font-medium text-gray-700">
-                Sí/No:
-              </label>
-              <select
-                value={answers[question.id] || ""}
-                onChange={(e) =>
-                  handleAnswerChange(question.id, e.target.value)
-                }
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              >
-                <option value="">Selecciona una opción</option>
-                <option value="Sí">Sí</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-            <div key={`${question.id}-enum-quality`}>
-              <label className="block text-sm font-medium text-gray-700">
-                Calidad:
-              </label>
-              <select
-                value={answers[question.id] || ""}
-                onChange={(e) =>
-                  handleAnswerChange(question.id, e.target.value)
-                }
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              >
-                <option value="">Selecciona una opción</option>
-                <option value="Bueno">Bueno</option>
-                <option value="Regular">Regular</option>
-                <option value="Malo">Malo</option>
-              </select>
-            </div>
-          </>
+        {question.answer_types.includes("enum_yesno") && (
+          <div key={`${question.id}-enum-yesno`}>
+            <label className="block text-sm font-medium text-gray-700">
+              Sí/No:
+            </label>
+            <select
+              value={answers[question.id] || ""}
+              onChange={(e) => handleAnswerChange(question.id, e.target.value)}
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="Sí">Sí</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+        )}
+        {question.answer_types.includes("enum_quality") && (
+          <div key={`${question.id}-enum-quality`}>
+            <label className="block text-sm font-medium text-gray-700">
+              Calidad:
+            </label>
+            <select
+              value={answers[question.id] || ""}
+              onChange={(e) => handleAnswerChange(question.id, e.target.value)}
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="Bueno">Bueno</option>
+              <option value="Regular">Regular</option>
+              <option value="Malo">Malo</option>
+            </select>
+          </div>
         )}
         {question.answer_types.includes("numeric") && (
           <div key={`${question.id}-numeric`}>
