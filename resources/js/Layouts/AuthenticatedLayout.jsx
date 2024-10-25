@@ -42,12 +42,20 @@ export default function Authenticated({ header, children }) {
                   </NavLink>
                 )}
                 {isTechnical && (
-                  <NavLink
-                    href={route("technical.dashboard")}
-                    active={route().current("technical.dashboard")}
-                  >
-                    Panel Técnico
-                  </NavLink>
+                  <>
+                    <NavLink
+                      href={route("assessments.index")}
+                      active={route().current("assessments.index")}
+                    >
+                      Evaluaciones
+                    </NavLink>
+                    <NavLink
+                      href={route("assessments.create")}
+                      active={route().current("assessments.create")}
+                    >
+                      Realizar Evaluación
+                    </NavLink>
+                  </>
                 )}
               </div>
             </div>
@@ -155,12 +163,20 @@ export default function Authenticated({ header, children }) {
               </ResponsiveNavLink>
             )}
             {isTechnical && (
-              <ResponsiveNavLink
-                href={route("technical.dashboard")}
-                active={route().current("technical.dashboard")}
-              >
-                Panel Técnico
-              </ResponsiveNavLink>
+              <>
+                <ResponsiveNavLink
+                  href={route("assessments.index")}
+                  active={route().current("assessments.index")}
+                >
+                  Evaluaciones
+                </ResponsiveNavLink>
+                <ResponsiveNavLink
+                  href={route("assessments.create")}
+                  active={route().current("assessments.create")}
+                >
+                  Realizar Evaluación
+                </ResponsiveNavLink>
+              </>
             )}
           </div>
 
