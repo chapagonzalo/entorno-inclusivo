@@ -7,6 +7,7 @@ use App\Http\Middleware\TechnicalMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ReportController;
 
 Route::get("/", function () {
     return Inertia::render("Welcome", [
@@ -19,9 +20,17 @@ Route::get("/", function () {
 //? prueba de roles
 
 Route::middleware(AdministradorMiddleware::class)->group(function () {
-    Route::get("/admin", function () {
-        return Inertia::render("Admin/AdminDashboard");
-    })->name("admin.dashboard");
+    Route::get("/admin/reports", [ReportController::class, "index"])->name(
+        "reports.index"
+    );
+    Route::get("/admin/reports/dashboard", [
+        ReportController::class,
+        "dashboard",
+    ])->name("reports.dashboard");
+    Route::get("/admin/reports/{assessment}", [
+        ReportController::class,
+        "generate",
+    ])->name("reports.generate");
 });
 
 Route::middleware(TechnicalMiddleware::class)->group(function () {

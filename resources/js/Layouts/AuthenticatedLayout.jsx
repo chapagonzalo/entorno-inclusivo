@@ -34,12 +34,14 @@ export default function Authenticated({ header, children }) {
                   Home
                 </NavLink>
                 {isAdmin && (
-                  <NavLink
-                    href={route("admin.dashboard")}
-                    active={route().current("admin.dashboard")}
-                  >
-                    Panel de Administración
-                  </NavLink>
+                  <>
+                    <NavLink
+                      href={route("reports.dashboard")}
+                      active={route().current("reports.dashboard")}
+                    >
+                      Informes
+                    </NavLink>
+                  </>
                 )}
                 {isTechnical && (
                   <>
@@ -156,10 +158,10 @@ export default function Authenticated({ header, children }) {
             </ResponsiveNavLink>
             {isAdmin && (
               <ResponsiveNavLink
-                href={route("admin.dashboard")}
-                active={route().current("admin.dashboard")}
+                href={route("reports.dashboard")}
+                active={route().current("reports.dashboard")}
               >
-                Panel de Administración
+                Informes
               </ResponsiveNavLink>
             )}
             {isTechnical && (

@@ -31,4 +31,27 @@ class Question extends Model
             }
         });
     }
+
+    // Agregar las relaciones faltantes
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    public function expectedAnswer()
+    {
+        return $this->hasOne(ExpectedAnswer::class);
+    }
+
+    public function element()
+    {
+        return $this->belongsTo(Element::class);
+    }
+
+    public function metrics()
+    {
+        return $this->belongsToMany(Metric::class)->withPivot(
+            "question_weight"
+        );
+    }
 }

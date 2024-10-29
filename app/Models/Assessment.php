@@ -10,6 +10,7 @@ class Assessment extends Model
     use HasFactory;
 
     protected $fillable = ["user_id", "status", "element_instance_id"];
+    protected $with = ["elementInstance"];
 
     // Relación: Una evaluación pertenece a una instancia de elemento
     public function elementInstance()
