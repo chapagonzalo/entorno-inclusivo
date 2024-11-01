@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Assessment;
 use App\Models\Metric;
-use App\Models\Location; // Agregar esta importación
+use App\Models\Location;
 use App\Models\Element;
-use App\Models\ElementInstance; // Corregida la importación
+use App\Models\ElementInstance;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;

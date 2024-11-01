@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\Assessment;
 use App\Models\Location;
 use App\Models\Element;
@@ -85,26 +86,90 @@ class AssessmentController extends Controller
             "answers" => "required|array",
         ]);
 
+        // Primera parte: Guardar las respuestas
         foreach ($validatedData["answers"] as $questionId => $answer) {
-            $content = is_array($answer) ? $answer["text"] ?? "" : $answer;
+            $question = Question::find($questionId);
 
-            Answer::updateOrCreate(
-                [
-                    "assessment_id" => $assessment->id,
-                    "question_id" => $questionId,
-                ],
-                [
-                    "content" => $content,
-                    "answer_text" => $content,
-                ]
-            );
+            $answerData = [
+                "assessment_id" => $assessment->id,
+                "question_id" => $questionId,
+                "content" => "", // Valor por defecto
+                "answer_text" => null,
+                "answer_enum" => null,
+                "answer_numeric" => null,
+            ];
+
+            // Procesar respuestas que vienen como array (múltiples tipos)
+            if (is_array($answer)) {
+                if (isset($answer["text"])) {
+                    $answerData["answer_text"] = $answer["text"];
+                    $answerData["content"] = $answer["text"];
+                }
+                if (isset($answer["enum"])) {
+                    $answerData["answer_enum"] = $answer["enum"];
+                    $answerData["content"] = $answer["enum"];
+                }
+                if (isset($answer["quality"])) {
+                    $answerData["answer_enum"] = $answer["quality"];
+                    $answerData["content"] = $answer["quality"];
+                }
+                if (isset($answer["numeric"])) {
+                    $answerData["answer_numeric"] = $answer["numeric"];
+                    $answerData["content"] = (string) $answer["numeric"];
+                }
+            } else {
+                // Procesar respuestas que vienen como string simple
+                $answerData["content"] = $answer;
+
+                if (in_array("enum_quality", $question->answer_types)) {
+                    $answerData["answer_enum"] = $answer;
+                } elseif (in_array("enum_yesno", $question->answer_types)) {
+                    $answerData["answer_enum"] = $answer;
+                } elseif (in_array("numeric", $question->answer_types)) {
+                    $answerData["answer_numeric"] = $answer;
+                } else {
+                    $answerData["answer_text"] = $answer;
+                }
+            }
+
+            // Solo guardar si hay contenido válido
+            if (!empty($answerData["content"])) {
+                Answer::updateOrCreate(
+                    [
+                        "assessment_id" => $assessment->id,
+                        "question_id" => $questionId,
+                    ],
+                    $answerData
+                );
+            }
         }
 
-        // Comprobar si todas las preguntas han sido respondidas
-        $totalQuestions = $assessment->elementInstance->element->questions->count();
-        $answeredQuestions = $assessment->answers->count();
+        // Segunda parte: Verificar si está completa
+        $requiredAnswers = 0;
+        $answeredQuestions = 0;
 
-        if ($answeredQuestions >= $totalQuestions) {
+        // Recargar la evaluación con sus relaciones actualizadas
+        $assessment->load("elementInstance.element.questions", "answers");
+
+        // Contar preguntas requeridas y respondidas
+        foreach (
+            $assessment->elementInstance->element->questions
+            as $question
+        ) {
+            $requiredAnswers++; // Cada pregunta es requerida
+
+            // Buscar si existe una respuesta válida para esta pregunta
+            $answer = $assessment->answers->firstWhere(
+                "question_id",
+                $question->id
+            );
+            if ($this->isValidAnswer($answer)) {
+                $answeredQuestions++;
+            }
+        }
+
+        // Actualizar el estado de la evaluación
+        if ($answeredQuestions >= $requiredAnswers) {
             $assessment->status = "complete";
             $assessment->save();
 
@@ -117,10 +182,29 @@ class AssessmentController extends Controller
 
             return redirect()
                 ->route("assessments.index")
-                ->with("message", "Progreso guardado correctamente.");
+                ->with(
+                    "message",
+                    "Progreso guardado. Faltan " .
+                        ($requiredAnswers - $answeredQuestions) .
+                        " preguntas por responder."
+                );
         }
     }
 
+    /**
+     * Verifica si una respuesta es válida
+     */
+    private function isValidAnswer($answer)
+    {
+        if (!$answer) {
+            return false;
+        }
+
+        return !empty($answer->content) ||
+            !empty($answer->answer_text) ||
+            !empty($answer->answer_enum) ||
+            $answer->answer_numeric !== null;
+    }
     // Mostrar una evaluación con sus respuestas (enviando a React)
     public function show($id)
     {
