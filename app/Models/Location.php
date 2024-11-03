@@ -9,7 +9,7 @@ class Location extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ["name"];
 
     // Relación: Una ubicación tiene muchas instancias de elementos
     public function elementInstances()
