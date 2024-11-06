@@ -11,8 +11,6 @@ use App\Models\Element;
 use App\Models\ElementInstance;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Redirect;
 
 class ReportController extends Controller
 {
@@ -22,7 +20,7 @@ class ReportController extends Controller
         $locationId = $request->input("location_id");
         $elementId = $request->input("element_id");
 
-        // Query base con las relaciones necesarias
+        // Query base para evaluaciones completas
         $reportsQuery = Assessment::with([
             "elementInstance.element",
             "elementInstance.location",
@@ -55,7 +53,7 @@ class ReportController extends Controller
         $locations = Location::orderBy("name")->get();
         $elements = Element::orderBy("name")->get();
 
-        // Estadísticas filtradas
+        // Estadísticas generales
         $stats = [
             "total_assessments" => $reportsQuery->count(),
             "locations_assessed" => ElementInstance::distinct()
@@ -83,7 +81,6 @@ class ReportController extends Controller
 
     private function getCriticalAreas($locationId = null, $elementId = null)
     {
-        // Implementar lógica para obtener áreas críticas con filtros
         $query = Metric::with(["element"])->whereHas(
             "questions.answers",
             function ($query) {
@@ -110,7 +107,7 @@ class ReportController extends Controller
         return $query
             ->get()
             ->map(function ($metric) {
-                $avgScore = $this->calculateMetricAverageScore($metric);
+                $avgScore = $this->calculateMetricScore($metric);
                 return [
                     "name" => $metric->name,
                     "element" => $metric->element->name,
@@ -118,136 +115,199 @@ class ReportController extends Controller
                 ];
             })
             ->filter(function ($area) {
-                return $area["score"] < 50;
+                return $area["score"] < 50; // Áreas con puntuación menor al 50%
             })
             ->values();
     }
 
     public function generate(Assessment $assessment)
     {
-        // Verificar si la evaluación está completa
         if ($assessment->status !== "complete") {
-            return Redirect::back()->with(
+            return back()->with(
                 "error",
-                "No se puede generar un informe de una evaluación incompleta."
+                "La evaluación debe estar completa para generar un informe."
             );
         }
 
-        // Obtener todas las respuestas y métricas asociadas
-        $responses = $this->calculateMetrics($assessment);
+        $element = $assessment->elementInstance->element;
+        $metrics = $element->metrics;
 
-        // Generar resumen general
-        $summary = $this->generateSummary($responses);
+        $metricScores = [];
+        $totalWeight = 0;
+        $weightedTotal = 0;
 
-        // Generar recomendaciones
-        $recommendations = $this->generateRecommendations($responses);
+        foreach ($metrics as $metric) {
+            $score = $this->calculateMetricScore($metric, $assessment);
+            $weightedScore = $score * ($metric->weight / 100);
+
+            $metricScores[] = [
+                "name" => $metric->name,
+                "description" => $metric->description,
+                "score" => $score,
+                "weight" => $metric->weight,
+                "weighted_score" => $weightedScore,
+                "details" => $this->getMetricDetails($metric, $assessment),
+            ];
+
+            $totalWeight += $metric->weight;
+            $weightedTotal += $weightedScore;
+        }
+
+        $finalScore =
+            $totalWeight > 0 ? ($weightedTotal / $totalWeight) * 100 : 0;
+
+        $recommendations = $this->generateRecommendations($metricScores);
 
         return Inertia::render("Reports/Show", [
-            "assessment" => $assessment,
-            "metrics" => $responses,
-            "summary" => $summary,
+            "assessment" => $assessment->load(
+                "elementInstance.location",
+                "elementInstance.element",
+                "user"
+            ),
+            "metrics" => $metricScores,
+            "finalScore" => $finalScore,
             "recommendations" => $recommendations,
+            "summary" => [
+                "score" => $finalScore,
+                "level" => $this->determineAccessibilityLevel($finalScore),
+                "mainFindings" => $this->analyzeMainFindings($metricScores),
+            ],
         ]);
     }
 
-    private function calculateMetrics(Assessment $assessment)
-    {
-        $element = $assessment->elementInstance->element;
-        $metrics = $element->metrics;
-        $results = [];
+    private function calculateMetricScore(
+        Metric $metric,
+        Assessment $assessment = null
+    ) {
+        $totalScore = 0;
+        $totalWeight = 0;
 
-        foreach ($metrics as $metric) {
-            $score = 0;
-            $maxScore = 0;
+        \Log::info("Calculando puntuación para métrica: " . $metric->name);
 
-            foreach ($metric->questions as $question) {
+        foreach ($metric->questions as $question) {
+            $questionWeight = $question->pivot->question_weight;
+
+            if ($assessment) {
                 $answer = $assessment
                     ->answers()
                     ->where("question_id", $question->id)
                     ->first();
-
-                $expectedAnswer = $question->expectedAnswer;
-                $questionWeight = $question->pivot->question_weight;
-
-                // Calcular puntuación basada en el tipo de respuesta
-                $questionScore = $this->calculateQuestionScore(
-                    $answer,
-                    $expectedAnswer,
-                    $questionWeight
-                );
-
-                $score += $questionScore;
-                $maxScore += $questionWeight;
+            } else {
+                $answer = $question
+                    ->answers()
+                    ->whereHas("assessment", function ($query) {
+                        $query->where("status", "complete");
+                    })
+                    ->first();
             }
 
-            // Normalizar score a porcentaje
-            $normalizedScore = ($score / $maxScore) * 100;
+            $expectedAnswer = $question->expectedAnswer;
 
-            $results[$metric->name] = [
-                "score" => $normalizedScore,
-                "weight" => $metric->weight,
-                "description" => $metric->description,
-            ];
+            \Log::info("Pregunta ID: " . $question->id);
+            \Log::info(
+                "Respuesta: " .
+                    ($answer ? json_encode($answer) : "No hay respuesta")
+            );
+            \Log::info(
+                "Respuesta esperada: " .
+                    ($expectedAnswer
+                        ? json_encode($expectedAnswer)
+                        : "No hay respuesta esperada")
+            );
+
+            if ($answer && $expectedAnswer) {
+                $score = $this->evaluateAnswer($answer, $expectedAnswer);
+                $totalScore += $score * $questionWeight;
+                $totalWeight += $questionWeight;
+
+                \Log::info("Puntuación para esta pregunta: " . $score);
+                \Log::info("Peso de la pregunta: " . $questionWeight);
+            }
         }
 
-        return $results;
+        $finalScore = $totalWeight > 0 ? ($totalScore / $totalWeight) * 100 : 0;
+        \Log::info("Puntuación final de la métrica: " . $finalScore);
+
+        return $finalScore;
     }
 
-    private function calculateQuestionScore($answer, $expectedAnswer, $weight)
+    private function evaluateAnswer($answer, $expectedAnswer)
     {
-        if (!$answer) {
+        if (!$answer || !$expectedAnswer) {
             return 0;
         }
 
-        // Diferentes lógicas según el tipo de respuesta
-        switch ($answer->question->answer_types[0]) {
-            case "enum_yesno":
-                return $answer->content ===
-                    $expectedAnswer->expected_answer_enum
-                    ? $weight
-                    : 0;
-
-            case "enum_quality":
-                $qualityScores = [
-                    "Bueno" => 1,
-                    "Regular" => 0.5,
-                    "Malo" => 0,
-                ];
-                return $qualityScores[$answer->content] * $weight;
-
-            case "numeric":
-                // Podría implementar rangos aceptables
-                $difference = abs(
-                    $answer->content - $expectedAnswer->expected_answer_numeric
-                );
-                $tolerance = 0.1; // 10% de tolerancia
-                return $difference <= $tolerance
-                    ? $weight
-                    : $weight * (1 - $difference);
-
-            default:
-                // Para respuestas de texto, podrías implementar análisis más sofisticado
-                return $weight;
+        // Para respuestas tipo Sí/No
+        if (
+            $answer->answer_enum &&
+            in_array($answer->answer_enum, ["Sí", "No"])
+        ) {
+            return $answer->answer_enum ===
+                $expectedAnswer->expected_answer_enum
+                ? 1
+                : 0;
         }
+
+        // Para respuestas de calidad (Bueno, Regular, Malo)
+        if (
+            $answer->answer_enum &&
+            in_array($answer->answer_enum, ["Bueno", "Regular", "Malo"])
+        ) {
+            $qualityScores = [
+                "Bueno" => 1,
+                "Regular" => 0.5,
+                "Malo" => 0,
+            ];
+            return $qualityScores[$answer->answer_enum] ?? 0;
+        }
+
+        // Para respuestas numéricas
+        if (
+            $answer->answer_numeric !== null &&
+            $expectedAnswer->expected_answer_numeric !== null
+        ) {
+            $difference = abs(
+                $answer->answer_numeric -
+                    $expectedAnswer->expected_answer_numeric
+            );
+            $tolerance = $expectedAnswer->expected_answer_numeric * 0.1; // 10% de tolerancia
+            return $difference <= $tolerance
+                ? 1
+                : max(
+                    0,
+                    1 - $difference / $expectedAnswer->expected_answer_numeric
+                );
+        }
+
+        // Para respuestas de texto
+        if ($answer->answer_text) {
+            return 1; // Por ahora, consideramos cualquier respuesta de texto como válida
+        }
+
+        return 0;
     }
 
-    private function generateSummary($metrics)
+    private function getMetricDetails(Metric $metric, Assessment $assessment)
     {
-        $totalScore = 0;
-        $totalWeight = 0;
-
-        foreach ($metrics as $metric) {
-            $totalScore += $metric["score"] * $metric["weight"];
-            $totalWeight += $metric["weight"];
+        $details = [];
+        foreach ($metric->questions as $question) {
+            $answer = $assessment
+                ->answers()
+                ->where("question_id", $question->id)
+                ->first();
+            if ($answer) {
+                $details[] = [
+                    "question" => $question->content,
+                    "answer" => $answer->content,
+                    "weight" => $question->pivot->question_weight,
+                    "score" => $this->evaluateAnswer(
+                        $answer,
+                        $question->expectedAnswer
+                    ),
+                ];
+            }
         }
-
-        $finalScore = $totalScore / $totalWeight;
-
-        return [
-            "score" => $finalScore,
-            "level" => $this->determineAccessibilityLevel($finalScore),
-            "mainFindings" => $this->analyzeMainFindings($metrics),
-        ];
+        return $details;
     }
 
     private function determineAccessibilityLevel($score)
@@ -267,93 +327,45 @@ class ReportController extends Controller
         return "Crítico";
     }
 
-    private function generateRecommendations($metrics)
-    {
-        $recommendations = [];
-
-        foreach ($metrics as $name => $metric) {
-            if ($metric["score"] < 70) {
-                $recommendations[] = [
-                    "area" => $name,
-                    "score" => $metric["score"],
-                    "suggestion" => $this->getRecommendation(
-                        $name,
-                        $metric["score"]
-                    ),
-                ];
-            }
-        }
-
-        return $recommendations;
-    }
-
-    // Método faltante para analizar hallazgos principales
-    private function analyzeMainFindings($metrics)
+    private function analyzeMainFindings($metricScores)
     {
         $findings = [];
-        foreach ($metrics as $name => $metric) {
+        foreach ($metricScores as $metric) {
             if ($metric["score"] < 50) {
-                $findings[] = "Área crítica: $name con {$metric["score"]}%";
+                $findings[] = "Área crítica: {$metric["name"]} con {$metric["score"]}%";
             } elseif ($metric["score"] >= 90) {
-                $findings[] = "Área destacada: $name con {$metric["score"]}%";
+                $findings[] = "Área destacada: {$metric["name"]} con {$metric["score"]}%";
             }
         }
         return $findings;
     }
 
-    // Método faltante para generar recomendaciones
-    private function getRecommendation($area, $score)
+    private function generateRecommendations($metricScores)
     {
-        $recommendations = [
-            "Rampas" => [
-                "bajo" =>
-                    "Es necesario instalar rampas que cumplan con la normativa",
-                "medio" =>
-                    "Mejorar el estado y señalización de las rampas existentes",
-                "alto" => "Mantener el buen estado de las rampas",
-            ],
-            "Señalización" => [
-                "bajo" => "Implementar un sistema completo de señalización",
-                "medio" => "Mejorar la visibilidad y ubicación de las señales",
-                "alto" => "Mantener actualizada la señalización",
-            ],
-            // Agregar más áreas y recomendaciones según necesites
-        ];
-
-        $level = $score < 40 ? "bajo" : ($score < 70 ? "medio" : "alto");
-
-        return $recommendations[$area][$level] ??
-            "Revisar y mejorar los aspectos deficientes en el área de $area";
-    }
-
-    private function calculateMetricAverageScore(Metric $metric)
-    {
-        $scores = [];
-        $answers = $metric
-            ->questions()
-            ->with([
-                "answers" => function ($query) {
-                    $query->whereHas("assessment", function ($q) {
-                        $q->where("status", "complete");
-                    });
-                },
-            ])
-            ->get();
-
-        foreach ($answers as $question) {
-            foreach ($question->answers as $answer) {
-                $expectedAnswer = $question->expectedAnswer;
-                if ($expectedAnswer) {
-                    $score = $this->calculateQuestionScore(
-                        $answer,
-                        $expectedAnswer,
-                        $question->pivot->question_weight
-                    );
-                    $scores[] = $score;
-                }
+        $recommendations = [];
+        foreach ($metricScores as $metric) {
+            if ($metric["score"] < 70) {
+                $recommendations[] = [
+                    "area" => $metric["name"],
+                    "score" => $metric["score"],
+                    "suggestion" => $this->getRecommendationText(
+                        $metric["name"],
+                        $metric["score"]
+                    ),
+                ];
             }
         }
+        return $recommendations;
+    }
 
-        return !empty($scores) ? array_sum($scores) / count($scores) : 0;
+    private function getRecommendationText($metricName, $score)
+    {
+        // Aquí podrías tener una base de recomendaciones más detallada
+        if ($score < 40) {
+            return "Necesita atención urgente en {$metricName}. Se recomienda una revisión completa.";
+        } elseif ($score < 70) {
+            return "Se sugieren mejoras en {$metricName} para alcanzar los estándares óptimos.";
+        }
+        return "Mantener el buen estado de {$metricName} y realizar revisiones periódicas.";
     }
 }

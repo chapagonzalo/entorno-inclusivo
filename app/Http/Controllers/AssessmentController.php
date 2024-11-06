@@ -70,6 +70,7 @@ class AssessmentController extends Controller
     {
         $assessment = Assessment::with([
             "elementInstance.element.questions",
+            "elementInstance.location",
             "answers",
         ])->findOrFail($id);
 
@@ -145,31 +146,19 @@ class AssessmentController extends Controller
         }
 
         // Segunda parte: Verificar si está completa
-        $requiredAnswers = 0;
-        $answeredQuestions = 0;
-
         // Recargar la evaluación con sus relaciones actualizadas
         $assessment->load("elementInstance.element.questions", "answers");
 
-        // Contar preguntas requeridas y respondidas
-        foreach (
-            $assessment->elementInstance->element->questions
-            as $question
-        ) {
-            $requiredAnswers++; // Cada pregunta es requerida
+        // Obtener todas las preguntas para este elemento
+        $totalQuestions = $assessment->elementInstance->element->questions->count();
 
-            // Buscar si existe una respuesta válida para esta pregunta
-            $answer = $assessment->answers->firstWhere(
-                "question_id",
-                $question->id
-            );
-            if ($this->isValidAnswer($answer)) {
-                $answeredQuestions++;
-            }
-        }
+        // Contar cuántas preguntas tienen al menos una respuesta
+        $answeredQuestions = $assessment->answers
+            ->unique("question_id")
+            ->count();
 
         // Actualizar el estado de la evaluación
-        if ($answeredQuestions >= $requiredAnswers) {
+        if ($answeredQuestions >= $totalQuestions) {
             $assessment->status = "complete";
             $assessment->save();
 
@@ -185,7 +174,7 @@ class AssessmentController extends Controller
                 ->with(
                     "message",
                     "Progreso guardado. Faltan " .
-                        ($requiredAnswers - $answeredQuestions) .
+                        ($totalQuestions - $answeredQuestions) .
                         " preguntas por responder."
                 );
         }
