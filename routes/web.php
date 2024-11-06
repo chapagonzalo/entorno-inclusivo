@@ -1,13 +1,13 @@
 <?php
-
+/** @var \Illuminate\Support\Facades\Route $router */
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Middleware\AdministradorMiddleware;
 use App\Http\Middleware\TechnicalMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\ReportController;
 
 Route::get("/", function () {
     return Inertia::render("Welcome", [
@@ -27,10 +27,20 @@ Route::middleware(AdministradorMiddleware::class)->group(function () {
         ReportController::class,
         "dashboard",
     ])->name("reports.dashboard");
-    Route::get("/admin/reports/{assessment}", [
+    Route::post("/admin/reports/{assessment}/generate", [
         ReportController::class,
         "generate",
     ])->name("reports.generate");
+    Route::get("/admin/reports/{report}", [
+        ReportController::class,
+        "show",
+    ])->name("reports.show");
+
+    // Si necesitas exportar informes
+    Route::get("/admin/reports/{report}/export", [
+        ReportController::class,
+        "export",
+    ])->name("reports.export");
 });
 
 Route::middleware(TechnicalMiddleware::class)->group(function () {

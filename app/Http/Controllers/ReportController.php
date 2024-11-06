@@ -9,16 +9,58 @@ use App\Models\Metric;
 use App\Models\Location;
 use App\Models\Element;
 use App\Models\ElementInstance;
+use App\Models\Report;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
+    public function index()
+    {
+        $reports = Report::with([
+            "assessment.elementInstance.location",
+            "assessment.elementInstance.element",
+            "assessment.user",
+        ])
+            ->latest()
+            ->paginate(10);
+
+        return Inertia::render("Reports/Index", [
+            "reports" => $reports,
+        ]);
+    }
+
+    public function show(Report $report)
+    {
+        return Inertia::render("Reports/Show", [
+            "report" => [
+                ...$report
+                    ->load([
+                        "assessment.elementInstance.location",
+                        "assessment.elementInstance.element",
+                        "assessment.user",
+                    ])
+                    ->toArray(),
+                "final_score" => (float) $report->final_score, // Asegurarse de que sea un número
+            ],
+            "metrics" => collect($report->metrics_scores)
+                ->map(function ($metric) {
+                    return [
+                        ...$metric,
+                        "score" => (float) $metric["score"], // Asegurarse de que score sea un número
+                    ];
+                })
+                ->toArray(),
+            "recommendations" => $report->recommendations ?? [],
+        ]);
+    }
+
     public function dashboard(Request $request)
     {
         // Obtener los filtros de la request
-        $locationId = $request->input("location_id");
-        $elementId = $request->input("element_id");
+        $locationId = $request->get("location_id");
+        $elementId = $request->get("element_id");
 
         // Query base para evaluaciones completas
         $reportsQuery = Assessment::with([
@@ -47,16 +89,17 @@ class ReportController extends Controller
         }
 
         // Obtener los reportes paginados
-        $reports = $reportsQuery->paginate(10)->withQueryString();
+        $reports = $reportsQuery->paginate(10);
 
         // Obtener las ubicaciones y elementos para los filtros
-        $locations = Location::orderBy("name")->get();
-        $elements = Element::orderBy("name")->get();
+        $locations = Location::query()->orderBy("name")->get();
+        $elements = Element::query()->orderBy("name")->get();
 
         // Estadísticas generales
         $stats = [
             "total_assessments" => $reportsQuery->count(),
-            "locations_assessed" => ElementInstance::distinct()
+            "locations_assessed" => ElementInstance::query()
+                ->distinct()
                 ->whereHas("assessments", function ($query) {
                     $query->where("status", "complete");
                 })
@@ -79,47 +122,6 @@ class ReportController extends Controller
         ]);
     }
 
-    private function getCriticalAreas($locationId = null, $elementId = null)
-    {
-        $query = Metric::with(["element"])->whereHas(
-            "questions.answers",
-            function ($query) {
-                $query->whereHas("assessment", function ($q) {
-                    $q->where("status", "complete");
-                });
-            }
-        );
-
-        if ($locationId || $elementId) {
-            $query->whereHas("element.elementInstances", function ($q) use (
-                $locationId,
-                $elementId
-            ) {
-                if ($locationId) {
-                    $q->where("location_id", $locationId);
-                }
-                if ($elementId) {
-                    $q->where("element_id", $elementId);
-                }
-            });
-        }
-
-        return $query
-            ->get()
-            ->map(function ($metric) {
-                $avgScore = $this->calculateMetricScore($metric);
-                return [
-                    "name" => $metric->name,
-                    "element" => $metric->element->name,
-                    "score" => $avgScore,
-                ];
-            })
-            ->filter(function ($area) {
-                return $area["score"] < 50; // Áreas con puntuación menor al 50%
-            })
-            ->values();
-    }
-
     public function generate(Assessment $assessment)
     {
         if ($assessment->status !== "complete") {
@@ -129,106 +131,104 @@ class ReportController extends Controller
             );
         }
 
-        $element = $assessment->elementInstance->element;
-        $metrics = $element->metrics;
+        try {
+            DB::beginTransaction();
 
+            // Calcular métricas
+            $metrics = $this->calculateMetrics($assessment);
+
+            // Generar resumen
+            $summary = $this->generateSummary($metrics);
+
+            // Generar recomendaciones
+            $recommendations = $this->generateRecommendations($metrics);
+
+            // Guardar el informe
+            $report = new Report();
+            $report->assessment_id = $assessment->id;
+            $report->final_score = $summary["score"];
+            $report->accessibility_level = $summary["level"];
+            $report->metrics_scores = $metrics;
+            $report->recommendations = $recommendations;
+            $report->main_findings = $summary["mainFindings"];
+            $report->save();
+
+            DB::commit();
+
+            return Inertia::render("Reports/Show", [
+                "report" => $report->load([
+                    "assessment.elementInstance.location",
+                    "assessment.elementInstance.element",
+                    "assessment.user",
+                ]),
+                "metrics" => $metrics,
+                "recommendations" => $recommendations,
+                "summary" => $summary,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Error generando reporte: " . $e->getMessage());
+            return back()->with(
+                "error",
+                "Error al generar el informe: " . $e->getMessage()
+            );
+        }
+    }
+
+    private function calculateMetrics(Assessment $assessment)
+    {
+        $metrics = Metric::query()
+            ->where(
+                // Agregado query()
+                "element_id",
+                $assessment->elementInstance->element_id
+            )
+            ->get();
         $metricScores = [];
-        $totalWeight = 0;
-        $weightedTotal = 0;
 
         foreach ($metrics as $metric) {
             $score = $this->calculateMetricScore($metric, $assessment);
-            $weightedScore = $score * ($metric->weight / 100);
 
             $metricScores[] = [
                 "name" => $metric->name,
-                "description" => $metric->description,
                 "score" => $score,
+                "description" => $metric->description,
                 "weight" => $metric->weight,
-                "weighted_score" => $weightedScore,
                 "details" => $this->getMetricDetails($metric, $assessment),
             ];
-
-            $totalWeight += $metric->weight;
-            $weightedTotal += $weightedScore;
         }
 
-        $finalScore =
-            $totalWeight > 0 ? ($weightedTotal / $totalWeight) * 100 : 0;
+        usort($metricScores, function ($a, $b) {
+            return $a["score"] <=> $b["score"];
+        });
 
-        $recommendations = $this->generateRecommendations($metricScores);
-
-        return Inertia::render("Reports/Show", [
-            "assessment" => $assessment->load(
-                "elementInstance.location",
-                "elementInstance.element",
-                "user"
-            ),
-            "metrics" => $metricScores,
-            "finalScore" => $finalScore,
-            "recommendations" => $recommendations,
-            "summary" => [
-                "score" => $finalScore,
-                "level" => $this->determineAccessibilityLevel($finalScore),
-                "mainFindings" => $this->analyzeMainFindings($metricScores),
-            ],
-        ]);
+        return $metricScores;
     }
 
     private function calculateMetricScore(
         Metric $metric,
-        Assessment $assessment = null
+        Assessment $assessment
     ) {
         $totalScore = 0;
         $totalWeight = 0;
 
-        \Log::info("Calculando puntuación para métrica: " . $metric->name);
-
         foreach ($metric->questions as $question) {
             $questionWeight = $question->pivot->question_weight;
-
-            if ($assessment) {
-                $answer = $assessment
-                    ->answers()
-                    ->where("question_id", $question->id)
-                    ->first();
-            } else {
-                $answer = $question
-                    ->answers()
-                    ->whereHas("assessment", function ($query) {
-                        $query->where("status", "complete");
-                    })
-                    ->first();
-            }
+            $answer = $assessment
+                ->answers()
+                ->where("question_id", $question->id)
+                ->first();
 
             $expectedAnswer = $question->expectedAnswer;
-
-            \Log::info("Pregunta ID: " . $question->id);
-            \Log::info(
-                "Respuesta: " .
-                    ($answer ? json_encode($answer) : "No hay respuesta")
-            );
-            \Log::info(
-                "Respuesta esperada: " .
-                    ($expectedAnswer
-                        ? json_encode($expectedAnswer)
-                        : "No hay respuesta esperada")
-            );
 
             if ($answer && $expectedAnswer) {
                 $score = $this->evaluateAnswer($answer, $expectedAnswer);
                 $totalScore += $score * $questionWeight;
                 $totalWeight += $questionWeight;
-
-                \Log::info("Puntuación para esta pregunta: " . $score);
-                \Log::info("Peso de la pregunta: " . $questionWeight);
             }
         }
 
-        $finalScore = $totalWeight > 0 ? ($totalScore / $totalWeight) * 100 : 0;
-        \Log::info("Puntuación final de la métrica: " . $finalScore);
-
-        return $finalScore;
+        return $totalWeight > 0 ? ($totalScore / $totalWeight) * 100 : 0;
     }
 
     private function evaluateAnswer($answer, $expectedAnswer)
@@ -295,6 +295,7 @@ class ReportController extends Controller
                 ->answers()
                 ->where("question_id", $question->id)
                 ->first();
+
             if ($answer) {
                 $details[] = [
                     "question" => $question->content,
@@ -308,6 +309,25 @@ class ReportController extends Controller
             }
         }
         return $details;
+    }
+
+    private function generateSummary($metrics)
+    {
+        $totalScore = 0;
+        $totalWeight = 0;
+
+        foreach ($metrics as $metric) {
+            $totalScore += $metric["score"] * $metric["weight"];
+            $totalWeight += $metric["weight"];
+        }
+
+        $finalScore = $totalWeight > 0 ? $totalScore / $totalWeight : 0;
+
+        return [
+            "score" => $finalScore,
+            "level" => $this->determineAccessibilityLevel($finalScore),
+            "mainFindings" => $this->analyzeMainFindings($metrics),
+        ];
     }
 
     private function determineAccessibilityLevel($score)
@@ -360,12 +380,77 @@ class ReportController extends Controller
 
     private function getRecommendationText($metricName, $score)
     {
-        // Aquí podrías tener una base de recomendaciones más detallada
         if ($score < 40) {
             return "Necesita atención urgente en {$metricName}. Se recomienda una revisión completa.";
         } elseif ($score < 70) {
             return "Se sugieren mejoras en {$metricName} para alcanzar los estándares óptimos.";
         }
         return "Mantener el buen estado de {$metricName} y realizar revisiones periódicas.";
+    }
+
+    private function getCriticalAreas($locationId = null, $elementId = null)
+    {
+        $query = Metric::with(["element"])->whereHas(
+            "questions.answers",
+            function ($query) {
+                $query->whereHas("assessment", function ($q) {
+                    $q->where("status", "complete");
+                });
+            }
+        );
+
+        if ($locationId || $elementId) {
+            $query->whereHas("element.elementInstances", function ($q) use (
+                $locationId,
+                $elementId
+            ) {
+                if ($locationId) {
+                    $q->where("location_id", $locationId);
+                }
+                if ($elementId) {
+                    $q->where("element_id", $elementId);
+                }
+            }); // Corregido el cierre del whereHas
+        }
+
+        return $query
+            ->get()
+            ->map(function ($metric) {
+                // Obtener la última evaluación completa para esta métrica
+                $latestAssessment = Assessment::query() // Agregado query()
+                    ->whereHas("elementInstance", function ($query) use (
+                        $metric
+                    ) {
+                        $query->where("element_id", $metric->element_id);
+                    })
+                    ->where("status", "complete")
+                    ->latest()
+                    ->first();
+
+                // Si no hay evaluación, retornar score 0
+                if (!$latestAssessment) {
+                    return [
+                        "name" => $metric->name,
+                        "element" => $metric->element->name,
+                        "score" => 0,
+                    ];
+                }
+
+                // Calcular el score usando la última evaluación
+                $avgScore = $this->calculateMetricScore(
+                    $metric,
+                    $latestAssessment
+                );
+
+                return [
+                    "name" => $metric->name,
+                    "element" => $metric->element->name,
+                    "score" => $avgScore,
+                ];
+            })
+            ->filter(function ($area) {
+                return $area["score"] < 50;
+            })
+            ->values();
     }
 }
