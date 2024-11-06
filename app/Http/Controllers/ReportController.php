@@ -10,24 +10,77 @@ use App\Models\Location;
 use App\Models\Element;
 use App\Models\ElementInstance;
 use App\Models\Report;
+use App\Services\ReportPdfGenerator;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $reports = Report::with([
+        $query = Report::with([
             "assessment.elementInstance.location",
             "assessment.elementInstance.element",
             "assessment.user",
-        ])
-            ->latest()
-            ->paginate(10);
+        ]);
+
+        // Aplicar filtros
+        if ($request->location_id) {
+            $query->whereHas("assessment.elementInstance", function ($q) use (
+                $request
+            ) {
+                $q->where("location_id", $request->location_id);
+            });
+        }
+
+        if ($request->element_id) {
+            $query->whereHas("assessment.elementInstance", function ($q) use (
+                $request
+            ) {
+                $q->where("element_id", $request->element_id);
+            });
+        }
+
+        if ($request->accessibility_level) {
+            $query->where("accessibility_level", $request->accessibility_level);
+        }
+
+        if ($request->score_range) {
+            list($min, $max) = explode("-", $request->score_range);
+            $query->whereBetween("final_score", [$min, $max]);
+        }
+
+        if ($request->date_range) {
+            switch ($request->date_range) {
+                case "today":
+                    $query->whereDate("created_at", today());
+                    break;
+                case "week":
+                    $query->where("created_at", ">=", now()->subWeek());
+                    break;
+                case "month":
+                    $query->where("created_at", ">=", now()->subMonth());
+                    break;
+                case "year":
+                    $query->where("created_at", ">=", now()->subYear());
+                    break;
+            }
+        }
+
+        $reports = $query->latest()->paginate(10);
 
         return Inertia::render("Reports/Index", [
             "reports" => $reports,
+            "locations" => Location::orderBy("name")->get(),
+            "elements" => Element::orderBy("name")->get(),
+            "filters" => $request->only([
+                "location_id",
+                "element_id",
+                "date_range",
+                "accessibility_level",
+                "score_range",
+            ]),
         ]);
     }
 
@@ -452,5 +505,18 @@ class ReportController extends Controller
                 return $area["score"] < 50;
             })
             ->values();
+    }
+
+    public function export(Report $report, ReportPdfGenerator $pdfGenerator)
+    {
+        $pdf = $pdfGenerator->generate($report);
+
+        $fileName = sprintf(
+            "informe-accesibilidad-%s-%s.pdf",
+            $report->assessment->elementInstance->element->name,
+            date("Y-m-d")
+        );
+
+        return $pdf->download($fileName);
     }
 }

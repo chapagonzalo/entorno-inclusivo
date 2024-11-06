@@ -57,6 +57,19 @@ export default function Show({ report, metrics, recommendations }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                        {/* Agregar botón de exportación */}
+                        <div className="flex justify-between items-center mb-6">
+                            <h1 className="text-2xl font-bold">
+                                Informe de Evaluación
+                            </h1>
+                            <a
+                                href={route("reports.export", report.id)}
+                                className="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                target="_blank"
+                            >
+                                Exportar PDF
+                            </a>
+                        </div>
                         <h1 className="text-2xl font-bold mb-6">
                             Informe de Evaluación
                         </h1>

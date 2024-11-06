@@ -45,12 +45,21 @@ const ReportList = ({ reports }) => {
                             </p>
                         </div>
                         <div className="flex items-center space-x-4">
+                            {/* Ver evaluación */}
+                            <Link
+                                href={route("assessments.show", assessment.id)}
+                                className="text-blue-600 hover:underline mr-4"
+                            >
+                                Ver Evaluación
+                            </Link>
+
+                            {/* Generar informe (solo si está completa) */}
                             {assessment.status === "complete" && (
                                 <button
                                     onClick={() =>
                                         handleGenerateReport(assessment)
                                     }
-                                    className="text-blue-600 hover:underline"
+                                    className="text-green-600 hover:underline"
                                 >
                                     Generar Informe
                                 </button>
@@ -68,8 +77,8 @@ const Dashboard = ({ reports, stats, locations, elements, filters }) => {
         <Layout>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    {/* Estadísticas */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    {/* Estadísticas simplificadas */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div className="bg-white rounded-lg shadow p-6">
                             <h3 className="text-lg font-semibold mb-2">
                                 Total Evaluaciones
@@ -84,14 +93,6 @@ const Dashboard = ({ reports, stats, locations, elements, filters }) => {
                             </h3>
                             <p className="text-3xl">
                                 {stats.locations_assessed}
-                            </p>
-                        </div>
-                        <div className="bg-white rounded-lg shadow p-6">
-                            <h3 className="text-lg font-semibold mb-2">
-                                Áreas Críticas
-                            </h3>
-                            <p className="text-3xl">
-                                {stats.critical_areas.length}
                             </p>
                         </div>
                     </div>
@@ -145,7 +146,7 @@ const Dashboard = ({ reports, stats, locations, elements, filters }) => {
                     <div className="bg-white rounded-lg shadow overflow-hidden">
                         <div className="px-6 py-4 border-b border-gray-200">
                             <h2 className="text-lg font-semibold">
-                                Evaluaciones Recientes
+                                Evaluaciones
                             </h2>
                         </div>
                         <div className="p-6">

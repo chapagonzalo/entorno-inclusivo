@@ -36,8 +36,7 @@ Route::middleware(AdministradorMiddleware::class)->group(function () {
         "show",
     ])->name("reports.show");
 
-    // Si necesitas exportar informes
-    Route::get("/admin/reports/{report}/export", [
+    Route::get("/reports/{report}/export", [
         ReportController::class,
         "export",
     ])->name("reports.export");
@@ -67,15 +66,14 @@ Route::middleware(TechnicalMiddleware::class)->group(function () {
     Route::post("/assessments", [AssessmentController::class, "store"])->name(
         "assessments.store"
     );
-    Route::get("/assessments/{id}", [
-        AssessmentController::class,
-        "show",
-    ])->name("assessments.show");
     Route::post("/assessments/{id}/answers", [
         AssessmentController::class,
         "storeAnswers",
     ])->name("assessments.storeAnswers");
 });
+Route::get("/assessments/{id}", [AssessmentController::class, "show"])->name(
+    "assessments.show"
+);
 
 //* termina la sección de prueba
 
