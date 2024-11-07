@@ -1,162 +1,204 @@
 import React from "react";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
+import Layout from "@/Layouts/AuthenticatedLayout";
 
-export default function Index({ reports }) {
-  return (
-    <AuthenticatedLayout>
-      <Head title="Gestión de Informes" />
-
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900">
-                Gestión de Informes
-              </h2>
-              <Link
-                href={route("reports.dashboard")}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-              >
-                Ver Dashboard
-              </Link>
+const ReportsList = ({ reports }) => {
+    // Si no hay reportes, mostrar mensaje
+    if (!reports || reports.length === 0) {
+        return (
+            <div className="text-center py-8">
+                <p className="text-gray-500">No hay informes disponibles.</p>
             </div>
+        );
+    }
 
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Fecha
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Ubicación
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Elemento
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Técnico
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Estado
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Acciones
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {reports.data.map((report) => (
-                    <tr key={report.id}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {new Date(report.created_at).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {report.element_instance.location.name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {report.element_instance.element.name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {report.user.name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            report.status === "complete"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
-                          {report.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        {report.status === "complete" ? (
-                          <Link
-                            href={route("reports.generate", report.id)}
-                            className="text-indigo-600 hover:text-indigo-900 mr-4"
-                          >
-                            Ver Informe
-                          </Link>
-                        ) : (
-                          <span className="text-gray-400">
-                            Evaluación incompleta
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+    // Asegurarse de que reports.data existe (para paginación)
+    const reportsData = reports.data || reports;
 
-            {/* Paginación */}
-            <div className="mt-4">
-              {
-                <div className="mt-4">
-                  {reports.links && (
-                    <div className="flex justify-between items-center">
-                      <div className="flex-1 flex justify-between sm:hidden">
-                        {reports.prev_page_url && (
-                          <Link
-                            href={reports.prev_page_url}
-                            className="relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                          >
-                            Anterior
-                          </Link>
-                        )}
-                        {reports.next_page_url && (
-                          <Link
-                            href={reports.next_page_url}
-                            className="ml-3 relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                          >
-                            Siguiente
-                          </Link>
-                        )}
-                      </div>
-                      <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+    return (
+        <div className="space-y-4">
+            {reportsData.map((report) => (
+                <div key={report.id} className="bg-white rounded-lg shadow p-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         <div>
-                          <p className="text-sm text-gray-700">
-                            Mostrando{" "}
-                            <span className="font-medium">{reports.from}</span>{" "}
-                            a <span className="font-medium">{reports.to}</span>{" "}
-                            de{" "}
-                            <span className="font-medium">{reports.total}</span>{" "}
-                            resultados
-                          </p>
+                            <p className="text-gray-600">Ubicación</p>
+                            <p className="font-medium">
+                                {report.assessment?.element_instance?.location
+                                    ?.name || "N/A"}
+                            </p>
                         </div>
                         <div>
-                          {/* Aquí puedes agregar números de página si lo deseas */}
+                            <p className="text-gray-600">Elemento</p>
+                            <p className="font-medium">
+                                {report.assessment?.element_instance?.element
+                                    ?.name || "N/A"}
+                            </p>
                         </div>
-                      </div>
+                        <div>
+                            <p className="text-gray-600">Puntuación</p>
+                            <p className="font-medium">{report.final_score}%</p>
+                        </div>
+                        <div>
+                            <p className="text-gray-600">
+                                Nivel de Accesibilidad
+                            </p>
+                            <p className="font-medium">
+                                {report.accessibility_level}
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-gray-600">Fecha</p>
+                            <p className="font-medium">
+                                {new Date(
+                                    report.created_at,
+                                ).toLocaleDateString()}
+                            </p>
+                        </div>
+                        <div className="flex items-end">
+                            <Link
+                                href={route("reports.show", report.id)}
+                                className="text-blue-600 hover:underline"
+                            >
+                                Ver Detalles
+                            </Link>
+                        </div>
                     </div>
-                  )}
                 </div>
-              }
-            </div>
-          </div>
+            ))}
         </div>
-      </div>
-    </AuthenticatedLayout>
-  );
-}
+    );
+};
+
+const Index = ({ reports, locations, elements, filters, dateRange }) => {
+    const handleFilterChange = (newFilters) => {
+        router.get(route("reports.index"), {
+            ...filters,
+            ...newFilters,
+        });
+    };
+
+    return (
+        <Layout>
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center mb-6">
+                        <h1 className="text-2xl font-semibold">
+                            Informes de Accesibilidad
+                        </h1>
+                    </div>
+
+                    {/* Filtros */}
+                    <div className="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 className="text-lg font-semibold mb-4">Filtros</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {/* Filtro de Ubicación */}
+                            <select
+                                value={filters.location_id || ""}
+                                onChange={(e) =>
+                                    handleFilterChange({
+                                        location_id: e.target.value,
+                                    })
+                                }
+                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                            >
+                                <option value="">Todas las ubicaciones</option>
+                                {locations.map((location) => (
+                                    <option
+                                        key={location.id}
+                                        value={location.id}
+                                    >
+                                        {location.name}
+                                    </option>
+                                ))}
+                            </select>
+
+                            {/* Filtro de Elemento */}
+                            <select
+                                value={filters.element_id || ""}
+                                onChange={(e) =>
+                                    handleFilterChange({
+                                        element_id: e.target.value,
+                                    })
+                                }
+                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                            >
+                                <option value="">Todos los elementos</option>
+                                {elements.map((element) => (
+                                    <option key={element.id} value={element.id}>
+                                        {element.name}
+                                    </option>
+                                ))}
+                            </select>
+
+                            {/* Filtro de Rango de Fecha */}
+                            <select
+                                value={filters.date_range || ""}
+                                onChange={(e) =>
+                                    handleFilterChange({
+                                        date_range: e.target.value,
+                                    })
+                                }
+                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                            >
+                                <option value="">Todas las fechas</option>
+                                <option value="today">Hoy</option>
+                                <option value="week">Última semana</option>
+                                <option value="month">Último mes</option>
+                                <option value="year">Último año</option>
+                            </select>
+                        </div>
+
+                        {/* Filtros adicionales */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            {/* Filtro de Nivel de Accesibilidad */}
+                            <select
+                                value={filters.accessibility_level || ""}
+                                onChange={(e) =>
+                                    handleFilterChange({
+                                        accessibility_level: e.target.value,
+                                    })
+                                }
+                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                            >
+                                <option value="">Todos los niveles</option>
+                                <option value="Excelente">Excelente</option>
+                                <option value="Bueno">Bueno</option>
+                                <option value="Aceptable">Aceptable</option>
+                                <option value="Necesita Mejoras">
+                                    Necesita Mejoras
+                                </option>
+                                <option value="Crítico">Crítico</option>
+                            </select>
+
+                            {/* Filtro de Rango de Puntuación */}
+                            <select
+                                value={filters.score_range || ""}
+                                onChange={(e) =>
+                                    handleFilterChange({
+                                        score_range: e.target.value,
+                                    })
+                                }
+                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                            >
+                                <option value="">Todas las puntuaciones</option>
+                                <option value="90-100">90-100%</option>
+                                <option value="75-89">75-89%</option>
+                                <option value="60-74">60-74%</option>
+                                <option value="40-59">40-59%</option>
+                                <option value="0-39">0-39%</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* Lista de Informes */}
+                    <div className="bg-white rounded-lg shadow overflow-hidden">
+                        <ReportsList reports={reports} />
+                    </div>
+                </div>
+            </div>
+        </Layout>
+    );
+};
+
+export default Index;

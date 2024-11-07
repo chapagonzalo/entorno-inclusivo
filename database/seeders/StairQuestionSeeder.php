@@ -128,7 +128,7 @@ class StairQuestionSeeder extends Seeder
                 "context" =>
                     "El estado de la escalera debe evaluarse como Bueno (B), Regular (R) o Malo (M), según cumpla con los criterios de accesibilidad establecidos.",
                 "element_id" => 1,
-                "answer_types" => ["text", "enum_quality"],
+                "answer_types" => ["enum_quality"],
             ],
         ];
 
