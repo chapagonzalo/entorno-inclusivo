@@ -178,20 +178,6 @@ class AssessmentController extends Controller
         }
     }
 
-    /**
-     * Verifica si una respuesta es válida
-     */
-    private function isValidAnswer($answer)
-    {
-        if (!$answer) {
-            return false;
-        }
-
-        return !empty($answer->content) ||
-            !empty($answer->answer_text) ||
-            !empty($answer->answer_enum) ||
-            $answer->answer_numeric !== null;
-    }
     // Mostrar una evaluación con sus respuestas (enviando a React)
     public function show($id)
     {

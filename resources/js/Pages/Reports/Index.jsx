@@ -4,7 +4,6 @@ import { router } from "@inertiajs/react";
 import Layout from "@/Layouts/AuthenticatedLayout";
 
 const ReportsList = ({ reports }) => {
-    // Si no hay reportes, mostrar mensaje
     if (!reports || reports.length === 0) {
         return (
             <div className="text-center py-8">
@@ -13,52 +12,80 @@ const ReportsList = ({ reports }) => {
         );
     }
 
-    // Asegurarse de que reports.data existe (para paginación)
     const reportsData = reports.data || reports;
 
     return (
         <div className="space-y-4">
             {reportsData.map((report) => (
                 <div key={report.id} className="bg-white rounded-lg shadow p-6">
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <p className="text-gray-600">Ubicación</p>
+                            <p className="text-gray-600 text-sm">Ubicación</p>
                             <p className="font-medium">
                                 {report.assessment?.element_instance?.location
                                     ?.name || "N/A"}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-600">Elemento</p>
+                            <p className="text-gray-600 text-sm">Elemento</p>
                             <p className="font-medium">
                                 {report.assessment?.element_instance?.element
                                     ?.name || "N/A"}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-600">Puntuación</p>
-                            <p className="font-medium">{report.final_score}%</p>
+                            <p className="text-gray-600 text-sm">Puntuación</p>
+                            <div className="flex items-center">
+                                <div className="w-full bg-gray-200 rounded-full h-2.5 mr-2">
+                                    <div
+                                        className={`h-2.5 rounded-full ${
+                                            report.final_score >= 70
+                                                ? "bg-green-600"
+                                                : report.final_score >= 50
+                                                  ? "bg-yellow-400"
+                                                  : "bg-red-600"
+                                        }`}
+                                        style={{
+                                            width: `${report.final_score}%`,
+                                        }}
+                                    ></div>
+                                </div>
+                                <span className="font-medium">
+                                    {report.final_score}%
+                                </span>
+                            </div>
                         </div>
                         <div>
-                            <p className="text-gray-600">
+                            <p className="text-gray-600 text-sm">
                                 Nivel de Accesibilidad
                             </p>
-                            <p className="font-medium">
+                            <span
+                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                    report.accessibility_level === "Excelente"
+                                        ? "bg-green-100 text-green-800"
+                                        : report.accessibility_level === "Bueno"
+                                          ? "bg-blue-100 text-blue-800"
+                                          : report.accessibility_level ===
+                                              "Aceptable"
+                                            ? "bg-yellow-100 text-yellow-800"
+                                            : "bg-red-100 text-red-800"
+                                }`}
+                            >
                                 {report.accessibility_level}
-                            </p>
+                            </span>
                         </div>
                         <div>
-                            <p className="text-gray-600">Fecha</p>
+                            <p className="text-gray-600 text-sm">Fecha</p>
                             <p className="font-medium">
                                 {new Date(
                                     report.created_at,
                                 ).toLocaleDateString()}
                             </p>
                         </div>
-                        <div className="flex items-end">
+                        <div className="flex items-end justify-end">
                             <Link
                                 href={route("reports.show", report.id)}
-                                className="text-blue-600 hover:underline"
+                                className="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150"
                             >
                                 Ver Detalles
                             </Link>
@@ -70,37 +97,29 @@ const ReportsList = ({ reports }) => {
     );
 };
 
-const Index = ({ reports, locations, elements, filters, dateRange }) => {
-    const handleFilterChange = (newFilters) => {
-        router.get(route("reports.index"), {
-            ...filters,
-            ...newFilters,
-        });
-    };
-
+const Index = ({ reports, locations, elements, filters }) => {
     return (
         <Layout>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center mb-6">
-                        <h1 className="text-2xl font-semibold">
-                            Informes de Accesibilidad
-                        </h1>
-                    </div>
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6">
+                        <div className="flex justify-between items-center mb-6">
+                            <h1 className="text-2xl font-semibold text-gray-900">
+                                Informes de Accesibilidad
+                            </h1>
+                        </div>
 
-                    {/* Filtros */}
-                    <div className="bg-white rounded-lg shadow p-6 mb-6">
-                        <h2 className="text-lg font-semibold mb-4">Filtros</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {/* Filtro de Ubicación */}
+                        {/* Filtros */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                             <select
                                 value={filters.location_id || ""}
                                 onChange={(e) =>
-                                    handleFilterChange({
+                                    router.get(route("reports.index"), {
+                                        ...filters,
                                         location_id: e.target.value,
                                     })
                                 }
-                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                             >
                                 <option value="">Todas las ubicaciones</option>
                                 {locations.map((location) => (
@@ -113,15 +132,15 @@ const Index = ({ reports, locations, elements, filters, dateRange }) => {
                                 ))}
                             </select>
 
-                            {/* Filtro de Elemento */}
                             <select
                                 value={filters.element_id || ""}
                                 onChange={(e) =>
-                                    handleFilterChange({
+                                    router.get(route("reports.index"), {
+                                        ...filters,
                                         element_id: e.target.value,
                                     })
                                 }
-                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                             >
                                 <option value="">Todos los elementos</option>
                                 {elements.map((element) => (
@@ -131,35 +150,15 @@ const Index = ({ reports, locations, elements, filters, dateRange }) => {
                                 ))}
                             </select>
 
-                            {/* Filtro de Rango de Fecha */}
-                            <select
-                                value={filters.date_range || ""}
-                                onChange={(e) =>
-                                    handleFilterChange({
-                                        date_range: e.target.value,
-                                    })
-                                }
-                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                            >
-                                <option value="">Todas las fechas</option>
-                                <option value="today">Hoy</option>
-                                <option value="week">Última semana</option>
-                                <option value="month">Último mes</option>
-                                <option value="year">Último año</option>
-                            </select>
-                        </div>
-
-                        {/* Filtros adicionales */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                            {/* Filtro de Nivel de Accesibilidad */}
                             <select
                                 value={filters.accessibility_level || ""}
                                 onChange={(e) =>
-                                    handleFilterChange({
+                                    router.get(route("reports.index"), {
+                                        ...filters,
                                         accessibility_level: e.target.value,
                                     })
                                 }
-                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                             >
                                 <option value="">Todos los niveles</option>
                                 <option value="Excelente">Excelente</option>
@@ -170,29 +169,9 @@ const Index = ({ reports, locations, elements, filters, dateRange }) => {
                                 </option>
                                 <option value="Crítico">Crítico</option>
                             </select>
-
-                            {/* Filtro de Rango de Puntuación */}
-                            <select
-                                value={filters.score_range || ""}
-                                onChange={(e) =>
-                                    handleFilterChange({
-                                        score_range: e.target.value,
-                                    })
-                                }
-                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                            >
-                                <option value="">Todas las puntuaciones</option>
-                                <option value="90-100">90-100%</option>
-                                <option value="75-89">75-89%</option>
-                                <option value="60-74">60-74%</option>
-                                <option value="40-59">40-59%</option>
-                                <option value="0-39">0-39%</option>
-                            </select>
                         </div>
-                    </div>
 
-                    {/* Lista de Informes */}
-                    <div className="bg-white rounded-lg shadow overflow-hidden">
+                        {/* Lista de Informes */}
                         <ReportsList reports={reports} />
                     </div>
                 </div>

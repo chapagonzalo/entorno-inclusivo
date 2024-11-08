@@ -95,14 +95,11 @@ class ReportController extends Controller
                         "assessment.user",
                     ])
                     ->toArray(),
-                "final_score" => (float) $report->final_score, // Asegurarse de que sea un número
+                "final_score" => (float) $report->final_score,
             ],
             "metrics" => collect($report->metrics_scores)
                 ->map(function ($metric) {
-                    return [
-                        ...$metric,
-                        "score" => (float) $metric["score"], // Asegurarse de que score sea un número
-                    ];
+                    return [...$metric, "score" => (float) $metric["score"]];
                 })
                 ->toArray(),
             "recommendations" => $report->recommendations ?? [],
@@ -120,9 +117,10 @@ class ReportController extends Controller
             "elementInstance.element",
             "elementInstance.location",
             "user",
+            "report",
         ])
             ->where("status", "complete")
-            ->latest();
+            ->orderBy("updated_at", "desc");
 
         // Aplicar filtros si existen
         if ($locationId) {
@@ -142,7 +140,13 @@ class ReportController extends Controller
         }
 
         // Obtener los reportes paginados
-        $reports = $reportsQuery->paginate(10);
+        $reports = $reportsQuery->paginate(10)->through(function ($assessment) {
+            $assessment->has_report = $assessment->report !== null;
+            $assessment->report_id = $assessment->report
+                ? $assessment->report->id
+                : null;
+            return $assessment;
+        });
 
         // Obtener las ubicaciones y elementos para los filtros
         $locations = Location::query()->orderBy("name")->get();
@@ -181,6 +185,13 @@ class ReportController extends Controller
             return back()->with(
                 "error",
                 "La evaluación debe estar completa para generar un informe."
+            );
+        }
+
+        if ($assessment->report) {
+            return back()->with(
+                "error",
+                "Ya existe un informe para esta evaluación."
             );
         }
 

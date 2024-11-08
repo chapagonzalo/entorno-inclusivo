@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { router } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
 import Layout from "@/Layouts/AuthenticatedLayout";
-import MapaUniversidad from "../../assets/mapaUniversidad.png"; // Asegúrate de que esta importación sea correcta
+import MapaUniversidad from "../../assets/mapaUniversidad.png";
 
 const Questions = () => {
     const { assessment, flash } = usePage().props;
@@ -43,18 +43,25 @@ const Questions = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e, shouldComplete = false) => {
         e.preventDefault();
         router.post(route("assessments.storeAnswers", assessment.id), {
             answers,
+            complete: shouldComplete,
         });
+    };
+
+    const handleSaveAndExit = (e) => {
+        e.preventDefault();
+        handleSubmit(e, false);
+        router.get(route("assessments.index"));
     };
 
     const renderAnswerInputs = (question) => {
         return (
-            <>
+            <div className="space-y-4">
                 {question.answer_types.includes("enum_yesno") && (
-                    <div key={`${question.id}-enum-yesno`} className="mb-4">
+                    <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">
                             Sí/No:
                         </label>
@@ -75,7 +82,7 @@ const Questions = () => {
                 )}
 
                 {question.answer_types.includes("enum_quality") && (
-                    <div key={`${question.id}-enum-quality`} className="mb-4">
+                    <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">
                             Calidad:
                         </label>
@@ -97,7 +104,7 @@ const Questions = () => {
                 )}
 
                 {question.answer_types.includes("numeric") && (
-                    <div key={`${question.id}-numeric`} className="mb-4">
+                    <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">
                             Valor numérico:
                         </label>
@@ -113,13 +120,13 @@ const Questions = () => {
                         />
                     </div>
                 )}
+
                 {question.answer_types.includes("text") && (
-                    <div key={`${question.id}-text`} className="mb-4">
+                    <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">
-                            Desarrollar(opcional):
+                            Observaciones adicionales:
                         </label>
-                        <input
-                            type="text"
+                        <textarea
                             value={answers[question.id]?.text || ""}
                             onChange={(e) =>
                                 handleAnswerChange(question.id, {
@@ -127,10 +134,11 @@ const Questions = () => {
                                 })
                             }
                             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            rows="3"
                         />
                     </div>
                 )}
-            </>
+            </div>
         );
     };
 
@@ -138,15 +146,12 @@ const Questions = () => {
         <Layout>
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                 {flash?.success && (
-                    <div
-                        className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
-                        role="alert"
-                    >
+                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
                         <span className="block sm:inline">{flash.success}</span>
                     </div>
                 )}
 
-                {/* Cabecera con información del elemento y ubicación */}
+                {/* Cabecera con información */}
                 <div className="bg-white shadow-sm rounded-lg p-6 mb-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
@@ -187,41 +192,42 @@ const Questions = () => {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-8">
+                <form className="space-y-6">
                     {/* Lista de preguntas */}
-                    <div className="space-y-6">
-                        {questions.map((question) => (
-                            <div
-                                key={question.id}
-                                className="bg-white shadow overflow-hidden sm:rounded-lg"
-                            >
-                                <div className="px-4 py-5 sm:p-6">
-                                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                                        {question.content}
-                                    </h3>
-                                    {/* Descripción/Contexto de la pregunta */}
-                                    <p className="text-gray-600 text-sm mb-4">
-                                        {question.context}
-                                    </p>
-                                    <div className="space-y-4">
-                                        {renderAnswerInputs(question)}
-                                    </div>
-                                </div>
+                    {questions.map((question) => (
+                        <div
+                            key={question.id}
+                            className="bg-white shadow overflow-hidden sm:rounded-lg"
+                        >
+                            <div className="px-4 py-5 sm:p-6">
+                                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                    {question.content}
+                                </h3>
+                                <p className="text-gray-600 text-sm mb-4">
+                                    {question.context}
+                                </p>
+                                {renderAnswerInputs(question)}
                             </div>
-                        ))}
-                    </div>
-
-                    {/* Botón de envío */}
-                    {questions.length > 0 && (
-                        <div className="flex justify-end">
-                            <button
-                                type="submit"
-                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                Guardar Respuestas
-                            </button>
                         </div>
-                    )}
+                    ))}
+
+                    {/* Botones de acción */}
+                    <div className="flex justify-end space-x-4 pt-4">
+                        <button
+                            type="button"
+                            onClick={handleSaveAndExit}
+                            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+                        >
+                            Guardar y Salir
+                        </button>
+                        <button
+                            type="button"
+                            onClick={(e) => handleSubmit(e, true)}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                        >
+                            Finalizar Evaluación
+                        </button>
+                    </div>
                 </form>
             </div>
         </Layout>
