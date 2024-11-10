@@ -43,18 +43,27 @@ const Questions = () => {
         }));
     };
 
+    const areAllQuestionsAnswered = () => {
+        return questions.every((question) => {
+            const answer = answers[question.id];
+            if (!answer) return false;
+
+            // Verificar que al menos un tipo de respuesta tenga contenido
+            return (
+                answer.text?.trim() ||
+                answer.enum?.trim() ||
+                answer.numeric?.toString()?.trim() ||
+                answer.quality?.trim()
+            );
+        });
+    };
+
     const handleSubmit = (e, shouldComplete = false) => {
         e.preventDefault();
         router.post(route("assessments.storeAnswers", assessment.id), {
             answers,
             complete: shouldComplete,
         });
-    };
-
-    const handleSaveAndExit = (e) => {
-        e.preventDefault();
-        handleSubmit(e, false);
-        router.get(route("assessments.index"));
     };
 
     const renderAnswerInputs = (question) => {
@@ -215,17 +224,16 @@ const Questions = () => {
                     <div className="flex justify-end space-x-4 pt-4">
                         <button
                             type="button"
-                            onClick={handleSaveAndExit}
-                            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
-                        >
-                            Guardar y Salir
-                        </button>
-                        <button
-                            type="button"
                             onClick={(e) => handleSubmit(e, true)}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                            className={`px-4 py-2 rounded-md text-white ${
+                                areAllQuestionsAnswered()
+                                    ? "bg-green-600 hover:bg-green-700"
+                                    : "bg-blue-600 hover:bg-blue-700"
+                            }`}
                         >
-                            Finalizar Evaluación
+                            {areAllQuestionsAnswered()
+                                ? "Finalizar Evaluación"
+                                : "Guardar Progreso"}
                         </button>
                     </div>
                 </form>
