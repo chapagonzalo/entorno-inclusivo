@@ -96,6 +96,8 @@ class AssessmentController extends Controller
                 "answer_text" => null,
                 "answer_enum" => null,
                 "answer_numeric" => null,
+                "altura" => null, // Nuevo campo para la altura
+                "longitud" => null, // Nuevo campo para la longitud
             ];
 
             // Procesar respuestas que vienen como array (múltiples tipos)
@@ -115,6 +117,13 @@ class AssessmentController extends Controller
                 if (isset($answer["numeric"])) {
                     $answerData["answer_numeric"] = $answer["numeric"];
                     $answerData["content"] = (string) $answer["numeric"];
+                }
+                // Guardar altura y longitud si están presentes
+                if (isset($answer["altura"])) {
+                    $answerData["altura"] = $answer["altura"];
+                }
+                if (isset($answer["longitud"])) {
+                    $answerData["longitud"] = $answer["longitud"];
                 }
             } else {
                 // Procesar respuestas que vienen como string simple

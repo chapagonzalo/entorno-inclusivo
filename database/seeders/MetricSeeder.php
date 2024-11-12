@@ -94,16 +94,53 @@ class MetricSeeder extends Seeder
                 "description" =>
                     "Evalúa la presencia y calidad de elementos de apoyo como pasamanos",
                 "weight" => 40,
-                "questions" => [6, 7, 8, 9],
-                "question_weights" => [25, 25, 25, 25],
+                "questions" => [6, 7, 8, 9, 10, 11],
+                "question_weights" => [
+                    16.66,
+                    16.66,
+                    16.67,
+                    16.67,
+                    16.67,
+                    16.67,
+                ],
             ],
             [
                 "name" => "Accesibilidad y Señalización",
                 "description" =>
                     "Evalúa elementos de accesibilidad y señalización",
                 "weight" => 30,
-                "questions" => [12, 14, 15],
-                "question_weights" => [33.33, 33.33, 33.34],
+                "questions" => [12, 13, 14, 15],
+                "question_weights" => [25, 25, 25, 25],
+            ],
+        ];
+    }
+
+    private function getRampMetrics(): array
+    {
+        return [
+            [
+                "name" => "Dimensiones y Pendiente",
+                "description" =>
+                    "Evalúa el ancho, la pendiente y la longitud de la rampa",
+                "weight" => 40,
+                "questions" => [16, 17, 18, 19],
+                "question_weights" => [25, 25, 25, 25],
+            ],
+            [
+                "name" => "Elementos de Seguridad",
+                "description" =>
+                    "Evalúa la presencia y calidad de elementos de seguridad como pasamanos y descansos",
+                "weight" => 30,
+                "questions" => [20, 21, 22, 23, 24],
+                "question_weights" => [20, 20, 20, 20, 20],
+            ],
+            [
+                "name" => "Accesibilidad y Señalización",
+                "description" =>
+                    "Evalúa elementos de accesibilidad y señalización",
+                "weight" => 30,
+                "questions" => [25, 26, 27, 28, 29],
+                "question_weights" => [14.29, 14.29, 14.29, 14.29, 14.29],
             ],
         ];
     }
@@ -116,43 +153,109 @@ class MetricSeeder extends Seeder
                 "description" =>
                     "Evalúa la claridad visual, ubicación y legibilidad de la señalética",
                 "weight" => 35,
-                "questions" => [1, 3, 4, 5],
-                "question_weights" => [25, 25, 25, 25],
+                "questions" => [30, 31, 32, 33, 34, 35, 36],
+                "question_weights" => [
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                ],
             ],
             [
                 "name" => "Accesibilidad Universal",
                 "description" =>
                     "Evalúa la inclusión de elementos para diferentes tipos de discapacidad",
                 "weight" => 35,
-                "questions" => [7, 8, 10, 11],
-                "question_weights" => [25, 25, 25, 25],
-            ],
-            [
-                "name" => "Sistemas de Comunicación",
-                "description" =>
-                    "Evalúa la presencia y efectividad de diferentes medios de comunicación",
-                "weight" => 30,
-                "questions" => [12, 13, 14],
-                "question_weights" => [33.33, 33.33, 33.34],
+                "questions" => [37, 38, 39, 40, 41, 42, 43],
+                "question_weights" => [
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                ],
             ],
         ];
     }
 
-    private function getRampMetrics(): array
-    {
-        // TODO: Implementar métricas para rampas
-        return [];
-    }
-
     private function getDoorMetrics(): array
     {
-        // TODO: Implementar métricas para puertas
-        return [];
+        return [
+            [
+                "name" => "Ancho Libre y Apertura",
+                "description" =>
+                    "Evalúa el ancho libre de paso, el ángulo de apertura y el espacio de maniobra",
+                "weight" => 35,
+                "questions" => [45, 46, 47, 48, 49, 50],
+                "question_weights" => [
+                    16.67,
+                    16.67,
+                    16.67,
+                    16.67,
+                    16.67,
+                    16.67,
+                ],
+            ],
+            [
+                "name" => "Accesibilidad y Señalización",
+                "description" =>
+                    "Evalúa la altura de la manija, la mirilla y la señalización",
+                "weight" => 35,
+                "questions" => [51, 52, 53, 54, 55],
+                "question_weights" => [20, 20, 20, 20, 20],
+            ],
+        ];
     }
 
     private function getBathroomMetrics(): array
     {
-        // TODO: Implementar métricas para baños
-        return [];
+        return [
+            [
+                "name" => "Espacio Libre y Giro",
+                "description" =>
+                    "Evalúa el espacio libre para giro, el ancho lateral del inodoro y la profundidad frontal",
+                "weight" => 35,
+                "questions" => [56, 57, 58, 59, 60, 61, 62],
+                "question_weights" => [
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                    14.29,
+                ],
+            ],
+            [
+                "name" => "Accesibilidad del Inodoro",
+                "description" =>
+                    "Evalúa la altura del asiento del inodoro y la accesibilidad de las barras de apoyo",
+                "weight" => 35,
+                "questions" => [63, 64, 65, 66, 67, 68, 69, 70],
+                "question_weights" => [
+                    12.5,
+                    12.5,
+                    12.5,
+                    12.5,
+                    12.5,
+                    12.5,
+                    12.5,
+                    12.5,
+                ],
+            ],
+            [
+                "name" => "Accesibilidad del Lavamanos y Ducha",
+                "description" =>
+                    "Evalúa la altura del lavamanos, la ducha y sus elementos",
+                "weight" => 30,
+                "questions" => [71, 72, 73, 74],
+                "question_weights" => [25, 25, 25, 25],
+            ],
+        ];
     }
 }

@@ -26,6 +26,8 @@ const Questions = () => {
                         enum: answer.answer_enum || "",
                         numeric: answer.answer_numeric || "",
                         quality: answer.answer_enum || "",
+                        altura: answer.answer_numeric || "",
+                        longitud: answer.answer_numeric || "",
                     };
                 });
                 setAnswers(existingAnswers);
@@ -60,8 +62,21 @@ const Questions = () => {
 
     const handleSubmit = (e, shouldComplete = false) => {
         e.preventDefault();
+        // Actualizar respuestas con altura y longitud
+        const updatedAnswers = {};
+        for (const questionId in answers) {
+            updatedAnswers[questionId] = {
+                ...answers[questionId],
+                numeric:
+                    answers[questionId].altura && answers[questionId].longitud
+                        ? (answers[questionId].altura * 100) /
+                          (answers[questionId].longitud * 100)
+                        : null,
+            };
+        }
+
         router.post(route("assessments.storeAnswers", assessment.id), {
-            answers,
+            answers: updatedAnswers,
             complete: shouldComplete,
         });
     };
@@ -69,6 +84,7 @@ const Questions = () => {
     const renderAnswerInputs = (question) => {
         return (
             <div className="space-y-4">
+                {/* Opciones de respuesta según el tipo de pregunta */}
                 {question.answer_types.includes("enum_yesno") && (
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">
@@ -112,10 +128,185 @@ const Questions = () => {
                     </div>
                 )}
 
-                {question.answer_types.includes("numeric") && (
+                {/* Automatización del cálculo de la pendiente */}
+                {question.answer_types.includes("numeric_slope") && (
+                    <div className="mb-4">
+                        <div className="flex space-x-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">
+                                    Altura (metros):
+                                </label>
+                                <input
+                                    type="number"
+                                    value={answers[question.id]?.altura || ""}
+                                    onChange={(e) =>
+                                        handleAnswerChange(question.id, {
+                                            altura: e.target.value,
+                                        })
+                                    }
+                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">
+                                    Longitud (metros):
+                                </label>
+                                <input
+                                    type="number"
+                                    value={answers[question.id]?.longitud || ""}
+                                    onChange={(e) =>
+                                        handleAnswerChange(question.id, {
+                                            longitud: e.target.value,
+                                        })
+                                    }
+                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                />
+                            </div>
+                        </div>
+                        <div className="mt-2">
+                            <span className="text-gray-600 font-medium">
+                                Pendiente (%):{" "}
+                            </span>
+                            <span className="text-gray-800 font-semibold">
+                                {(answers[question.id]?.altura * 100) /
+                                    (
+                                        answers[question.id]?.longitud * 100
+                                    ).toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+                )}
+
+                {question.answer_types.includes("numeric_width") && (
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">
-                            Valor numérico:
+                            Ancho (metros):
+                        </label>
+                        <input
+                            type="number"
+                            value={answers[question.id]?.numeric || ""}
+                            onChange={(e) =>
+                                handleAnswerChange(question.id, {
+                                    numeric: e.target.value,
+                                })
+                            }
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                )}
+
+                {question.answer_types.includes("numeric_height") && (
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Altura (metros):
+                        </label>
+                        <input
+                            type="number"
+                            value={answers[question.id]?.numeric || ""}
+                            onChange={(e) =>
+                                handleAnswerChange(question.id, {
+                                    numeric: e.target.value,
+                                })
+                            }
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                )}
+
+                {question.answer_types.includes("numeric_depth") && (
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Profundidad (metros):
+                        </label>
+                        <input
+                            type="number"
+                            value={answers[question.id]?.numeric || ""}
+                            onChange={(e) =>
+                                handleAnswerChange(question.id, {
+                                    numeric: e.target.value,
+                                })
+                            }
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                )}
+
+                {question.answer_types.includes("numeric_angle") && (
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Angulo (grados):
+                        </label>
+                        <input
+                            type="number"
+                            value={answers[question.id]?.numeric || ""}
+                            onChange={(e) =>
+                                handleAnswerChange(question.id, {
+                                    numeric: e.target.value,
+                                })
+                            }
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                )}
+
+                {question.answer_types.includes("numeric_area") && (
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Área (metros cuadrados):
+                        </label>
+                        <input
+                            type="number"
+                            value={answers[question.id]?.numeric || ""}
+                            onChange={(e) =>
+                                handleAnswerChange(question.id, {
+                                    numeric: e.target.value,
+                                })
+                            }
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                )}
+
+                {question.answer_types.includes("numeric_diameter") && (
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Diámetro (metros):
+                        </label>
+                        <input
+                            type="number"
+                            value={answers[question.id]?.numeric || ""}
+                            onChange={(e) =>
+                                handleAnswerChange(question.id, {
+                                    numeric: e.target.value,
+                                })
+                            }
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                )}
+
+                {question.answer_types.includes("numeric_force") && (
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Fuerza (newtons):
+                        </label>
+                        <input
+                            type="number"
+                            value={answers[question.id]?.numeric || ""}
+                            onChange={(e) =>
+                                handleAnswerChange(question.id, {
+                                    numeric: e.target.value,
+                                })
+                            }
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                )}
+
+                {question.answer_types.includes("numeric_illumination") && (
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Iluminación (lux):
                         </label>
                         <input
                             type="number"
@@ -150,7 +341,6 @@ const Questions = () => {
             </div>
         );
     };
-
     return (
         <Layout>
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">

@@ -24,6 +24,8 @@ return new class extends Migration {
             $table->text("answer_text")->nullable();
             $table->string("answer_enum")->nullable();
             $table->decimal("answer_numeric", 10, 2)->nullable();
+            $table->decimal("altura", 10, 2)->nullable();
+            $table->decimal("longitud", 10, 2)->nullable();
             $table->timestamps();
         });
     }

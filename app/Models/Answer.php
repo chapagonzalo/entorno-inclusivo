@@ -15,6 +15,8 @@ class Answer extends Model
         "answer_text",
         "answer_enum",
         "answer_numeric",
+        "altura",
+        "longitud",
     ];
 
     public function question()

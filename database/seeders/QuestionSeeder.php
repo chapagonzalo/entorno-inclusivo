@@ -143,238 +143,128 @@ class QuestionSeeder extends Seeder
         }
     }
 
-    private function createSignageQuestions(): void
-    {
-        $questions = [
-            [
-                "content" => "¿En el edificio hay señalética accesible?",
-                "context" =>
-                    "La señalética accesible es aquella que permite a personas con discapacidades orientarse, comunicarse y moverse por el entorno de manera autónoma. Debe ser clara, visible y comprensible para todos.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" =>
-                    "¿La señalética posee el símbolo internacional de accesibilidad?",
-                "context" =>
-                    "El símbolo internacional de accesibilidad es esencial para identificar espacios y servicios accesibles, debe estar visible y seguir los estándares internacionales de diseño.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La señalética tiene una buena iluminación?",
-                "context" =>
-                    "La iluminación adecuada es crucial para la visibilidad de la señalética. Debe ser uniforme, evitar reflejos y asegurar que la información sea legible en diferentes condiciones de luz.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La señalética se encuentra libre de obstáculos?",
-                "context" =>
-                    "La señalética debe ser visible y accesible sin obstáculos que impidan su lectura o percepción. El área circundante debe estar despejada para permitir un acercamiento adecuado.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La tipografía utilizada es legible?",
-                "context" =>
-                    "La tipografía debe ser clara, de tamaño adecuado y con suficiente contraste. Se recomiendan fuentes sans-serif con un tamaño mínimo según la distancia de lectura.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" =>
-                    "¿Se encuentra protegida con cristal o algún otro elemento?",
-                "context" =>
-                    "La protección de la señalética no debe interferir con su visibilidad ni generar reflejos. Si existe protección, debe ser antirreflejante y no crear barreras visuales.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" =>
-                    "¿El edificio posee señalética en sistema Braille?",
-                "context" =>
-                    "La señalética en Braille es esencial para personas con discapacidad visual. Debe estar ubicada a una altura accesible y seguir los estándares de escritura Braille.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El edificio posee plano háptico?",
-                "context" =>
-                    "Los planos hápticos permiten a personas con discapacidad visual comprender la distribución espacial mediante el tacto. Deben incluir leyendas en Braille y relieves claramente diferenciables.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" =>
-                    "¿El plano háptico se encuentra próximo al ingreso del edificio?",
-                "context" =>
-                    "La ubicación del plano háptico debe ser accesible desde el ingreso, preferentemente en un lugar intuitivo y de fácil acceso, con espacio suficiente para su exploración.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" => "¿Posee intérprete de señas?",
-                "context" =>
-                    "La disponibilidad de intérprete de señas facilita la comunicación para personas sordas. Puede ser presencial o mediante sistemas de video interpretación.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El edificio cuenta con formatos audiovisuales?",
-                "context" =>
-                    "Los formatos audiovisuales complementan la señalética tradicional, proporcionando información accesible para diferentes tipos de usuarios. Deben incluir subtítulos y audiodescripción.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El edificio posee señales audibles?",
-                "context" =>
-                    "Las señales audibles son importantes para personas con discapacidad visual. Deben ser claras, con volumen adecuado y diferenciables de otros sonidos ambientales.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El audio contiene descripción y/o locución?",
-                "context" =>
-                    "La descripción auditiva debe ser clara, informativa y proporcionar detalles relevantes sobre el entorno y la orientación. Debe usar un lenguaje simple y directo.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" =>
-                    "¿El edificio cuenta con asistencia humana en caso de ser necesario?",
-                "context" =>
-                    "La asistencia humana complementa los sistemas de señalización, proporcionando apoyo personalizado cuando sea necesario. El personal debe estar capacitado en atención a personas con discapacidad.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["text", "enum_yesno"],
-            ],
-            [
-                "content" =>
-                    "¿Según lo comprendido, observado y calculado; cuál es el estado de la señalética?",
-                "context" =>
-                    "Evaluación general del estado y funcionalidad de la señalética, considerando su efectividad para diferentes tipos de usuarios y su cumplimiento con los estándares de accesibilidad.",
-                "element_id" => self::ELEMENTS["signage"],
-                "answer_types" => ["enum_quality"],
-            ],
-        ];
-
-        $this->createQuestions($questions);
-    }
-
-    private function createStairQuestions(): void
+    private function createStairsQuestions(): void
     {
         $questions = [
             [
                 "content" =>
                     "¿El tramo de escalera cumple con la cantidad de alzadas corridas entre descansos?",
                 "context" =>
-                    "Las escaleras no deben tener más de 12 alzadas corridas entre descansos.",
+                    "Las escaleras no deben tener más de 12 alzadas corridas entre descansos. Esto es importante para asegurar la seguridad y permitir descansos adecuados en recorridos largos.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" => "¿La escalera cumple con el ancho libre?",
                 "context" =>
-                    "El ancho mínimo entre los zócalos debe ser de 1.20 metros (puede reducirse a 1.10 metros en lotes pequeños).",
+                    "El ancho mínimo entre los zócalos debe ser de 1.20 metros para garantizar que las personas, incluidas aquellas con movilidad reducida o en silla de ruedas, puedan utilizarla cómodamente. En lotes más pequeños (8.66 metros o menos de ancho), este puede reducirse a 1.10 metros.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["numeric_width", "enum_yesno"],
+                "answer_types" => ["numeric_width", "text"],
             ],
             [
                 "content" =>
                     "¿Los escalones de la escalera son iguales entre sí?",
                 "context" =>
-                    "Todos los escalones deben tener la misma altura y profundidad.",
+                    "Todos los escalones de la escalera deben ser de la misma altura y profundidad, asegurando un patrón de movimiento uniforme y reduciendo el riesgo de accidentes.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
-                    "¿La altura de los escalones (alzada) es correcta?",
-                "context" => "La altura debe estar entre 0.15 y 0.18 metros.",
+                    "¿Los escalones de escalera cumplen con el ancho mínimo y máximo de pedada y alzada?",
+                "context" =>
+                    "La altura de los escalones (alzada) debe estar entre 0.15 metros y 0.18 metros, mientras que la profundidad de la huella (pedada) debe estar entre 0.26 metros y 0.30 metros para facilitar el desplazamiento seguro y cómodo.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["numeric_height", "numeric_depth", "text"],
             ],
             [
                 "content" =>
-                    "¿La profundidad de los escalones (pedada) es correcta?",
+                    "Si la escalera cuenta con un descanso, ¿cumple con el ancho mínimo establecido?",
                 "context" =>
-                    "La profundidad debe estar entre 0.26 y 0.30 metros.",
+                    "Los descansos deben tener una profundidad mínima de dos tercios del ancho de la escalera, o al menos 1.25 metros si hay giros de 90° o 180°. Si es un tramo recto sin giros, el mínimo es de 0.95 metros.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["numeric_depth", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El descanso cumple con la profundidad mínima?",
-                "context" =>
-                    "Mínimo 1.25 metros para giros, 0.95 metros en tramo recto.",
-                "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["numeric_length", "enum_yesno"],
+                "answer_types" => ["numeric_length", "text"],
             ],
             [
                 "content" =>
                     "¿La escalera cuenta con pasamanos en ambos lados?",
                 "context" =>
-                    "Debe tener pasamanos en ambos lados para ofrecer apoyo.",
+                    "Es esencial que las escaleras tengan pasamanos en ambos lados para ofrecer apoyo tanto a personas diestras como zurdas, mejorando la seguridad tanto en subida como en bajada.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura de los pasamanos es correcta?",
-                "context" =>
-                    "Los pasamanos deben estar a 0.90 metros desde la nariz del escalón.",
-                "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El diámetro de los pasamanos es adecuado?",
-                "context" => "El diámetro mínimo debe ser de 0.04 metros.",
-                "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["numeric_diameter", "enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
-                    "¿La extensión horizontal de los pasamanos es correcta?",
+                    "¿Los pasamanos cumplen con las medidas establecidas?",
                 "context" =>
-                    "Deben extenderse entre 0.15 y 0.40 metros antes y después del tramo.",
+                    "Los pasamanos deben estar a una altura de 0.90 metros desde la nariz del escalón hasta el plano superior del pasamanos. Además, deben tener un diámetro mínimo de 0.04 metros para facilitar su agarre.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["numeric_length", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura del zócalo es adecuada?",
-                "context" =>
-                    "Los zócalos deben tener una altura mínima de 0.10 metros.",
-                "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => [
+                    "numeric_height",
+                    "numeric_diameter",
+                    "text",
+                ],
             ],
             [
                 "content" =>
-                    "¿El solado de prevención sobresale la distancia correcta?",
+                    "¿Si los pasamanos cuentan con extensión horizontal esta cuenta con las medidas establecidas?",
                 "context" =>
-                    "Debe sobresalir 0.60 metros más allá de los bordes laterales.",
+                    "Los pasamanos deben extenderse horizontalmente antes y después del tramo de escalones por una longitud mínima de 0.15 metros y un máximo de 0.40 metros para mejorar la accesibilidad.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["numeric_length", "enum_yesno"],
+                "answer_types" => ["numeric_length", "text"],
             ],
             [
-                "content" => "¿La iluminación es adecuada?",
-                "context" => "Debe tener un nivel mínimo de 100 lux.",
+                "content" => "¿Los pasamanos cumplen con la longitud total?",
+                "context" =>
+                    "La longitud total de los pasamanos debe abarcar todo el recorrido de la escalera, incluyendo la extensión en los descansos cuando sea necesario, para ofrecer apoyo continuo.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["numeric_illumination", "enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿La escalera cuenta con zócalos?",
+                "context" =>
+                    "Si uno o ambos lados de la escalera no tienen una contención lateral, deben incluir zócalos de al menos 0.10 metros de altura para evitar que bastones o sillas de ruedas se deslicen hacia fuera.",
+                "element_id" => self::ELEMENTS["stairs"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "¿Los zócalos cumplen con las medidas establecidas?",
+                "context" =>
+                    "Los zócalos deben tener una altura mínima de 0.10 metros, cumpliendo con las normativas de seguridad.",
+                "element_id" => self::ELEMENTS["stairs"],
+                "answer_types" => ["numeric_height", "text"],
+            ],
+            [
+                "content" => "¿La escalera cuenta con solado de prevención?",
+                "context" =>
+                    "El solado de prevención, formado por baldosas con relieves y colores contrastantes, es clave para advertir a personas con discapacidad visual sobre la presencia de escaleras y posibles peligros.",
+                "element_id" => self::ELEMENTS["stairs"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "Si la escalera es suspendida cumple con las medidas establecidas para este tipo de acceso?",
+                "context" =>
+                    "Las escaleras suspendidas deben estar señalizadas con un solado contrastante y botones de relieve que sobresalgan 0.60 metros más allá de los bordes laterales para impedir el paso y advertir de la escalera.",
+                "element_id" => self::ELEMENTS["stairs"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
                     "¿Observa algún tipo de señalética accesible de escalera?",
                 "context" =>
-                    "Debe contar con señalización adecuada y pictogramas accesibles.",
+                    "Las escaleras deben estar señalizadas de manera adecuada con pictogramas accesibles y, si es necesario, incluir información en Braille.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
                     "Según lo comprendido, observado y calculado; ¿cuál es el estado de la escalera?",
                 "context" =>
-                    "Evaluación general del estado y accesibilidad de la escalera.",
+                    "El estado de la escalera debe evaluarse como Bueno (B), Regular (R) o Malo (M), según cumpla con los criterios de accesibilidad establecidos.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_quality"],
+                "answer_types" => ["enum_quality", "text"],
             ],
         ];
 
@@ -385,129 +275,229 @@ class QuestionSeeder extends Seeder
     {
         $questions = [
             [
-                "content" => "¿El ancho de la rampa es adecuado?",
-                "context" => "El ancho debe estar entre 0.90 y 1.20 metros.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_width", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La pendiente de la rampa es correcta?",
+                "content" =>
+                    "¿La rampa cumple con el ancho mínimo y máximo establecido?",
                 "context" =>
-                    "La pendiente no debe exceder el 8%. Fórmula: (altura/longitud) x 100.",
+                    "El ancho de la rampa debe estar entre 0.90 metros y 1.20 metros, permitiendo el tránsito adecuado de personas con movilidad reducida, incluidas aquellas que utilizan sillas de ruedas.",
                 "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_slope", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La longitud del tramo es adecuada?",
-                "context" =>
-                    "Máximo 6 metros entre descansos, calculado en proyección horizontal.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_length", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura del pasamanos inferior es correcta?",
-                "context" =>
-                    "El pasamanos inferior debe estar entre 0.75 y 0.80 metros.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura del pasamanos superior es correcta?",
-                "context" =>
-                    "El pasamanos superior debe estar entre 0.90 y 0.95 metros.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El diámetro de los pasamanos es adecuado?",
-                "context" =>
-                    "Los pasamanos deben tener un diámetro entre 0.04 y 0.05 metros.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_diameter", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La longitud del descanso es suficiente?",
-                "context" =>
-                    "El descanso debe tener mínimo 1.50 metros de largo.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_length", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura del zócalo es adecuada?",
-                "context" =>
-                    "El zócalo debe tener una altura mínima de 0.10 metros.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El espacio de giro en descansos es suficiente?",
-                "context" => "Para giros de 90°, mínimo 1.20 x 1.20 metros.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_area", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El espacio para giro de 180° es adecuado?",
-                "context" => "Para giros de 180°, mínimo 1.50 x 1.50 metros.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_area", "enum_yesno"],
+                "answer_types" => ["numeric_width", "text"],
             ],
             [
                 "content" =>
-                    "¿La extensión horizontal de los pasamanos es correcta?",
+                    "De acuerdo con la fórmula para calcular la pendiente y los cuadros de referencia, la rampa ¿cumple con la pendiente adecuada máxima de 8 %?",
                 "context" =>
-                    "Deben extenderse 0.30 metros al comienzo y final de la rampa.",
+                    "La pendiente de la rampa no debe exceder el 8%, para asegurar que sea accesible sin demasiado esfuerzo físico. Se calcula multiplicando la altura a salvar por el valor de relación (por ejemplo, 1/12.5).",
                 "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_length", "enum_yesno"],
+                "answer_types" => ["numeric_slope", "text"],
             ],
             [
-                "content" => "¿El espacio de aproximación está libre?",
+                "content" => "¿La rampa cuenta con solado de prevención?",
                 "context" =>
-                    "Debe existir un espacio de 1.50 metros de diámetro al inicio y final.",
+                    "El solado de prevención, constituido por baldosas con relieves, es esencial para advertir a las personas, especialmente con discapacidad visual, sobre cambios o peligros en el camino.",
                 "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_diameter", "enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
-                "content" => "¿La iluminación es adecuada?",
+                "content" => "¿El color del solado es contrastante?",
                 "context" =>
-                    "Debe tener un nivel mínimo de 100 lux, uniforme en toda la rampa.",
+                    "El color del solado de prevención debe ser contrastante respecto al suelo circundante, lo que facilita su detección por parte de personas con discapacidad visual.",
                 "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_illumination", "enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
-                "content" =>
-                    "¿El solado de prevención tiene el ancho correcto?",
+                "content" => "¿Cuenta con pasamanos?",
                 "context" =>
-                    "Debe tener un ancho mínimo de 0.60 metros en todo el ancho de la rampa.",
+                    "Las rampas deben tener pasamanos dobles y continuos a ambos lados para que las personas puedan sujetarse, tanto al subir como al bajar.",
                 "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["numeric_width", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La rampa cuenta con solado antideslizante?",
-                "context" =>
-                    "La superficie debe ser antideslizante y sin irregularidades.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["enum_yesno"],
-            ],
-            [
-                "content" => "¿Cuenta con pasamanos en ambos lados?",
-                "context" => "Debe tener pasamanos continuos en ambos lados.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["enum_yesno"],
-            ],
-            [
-                "content" => "¿Cuenta con señalización adecuada?",
-                "context" =>
-                    "Debe tener señalización clara y pictogramas accesibles.",
-                "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
-                    "Según lo comprendido, observado y calculado; ¿cuál es el estado de la rampa?",
+                    "En caso de poseer pasamanos dobles, ¿cumple con las medidas establecidas?",
                 "context" =>
-                    "Evaluación general del estado y accesibilidad de la rampa.",
+                    "Los pasamanos deben estar colocados a una altura de entre 0.75 y 0.90 metros y deben sobresalir entre 0.15 y 0.20 metros más allá del borde de la rampa.",
                 "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["enum_quality"],
+                "answer_types" => ["numeric_height", "text"],
+            ],
+            [
+                "content" => "¿Los laterales tienen algún tipo de contención?",
+                "context" =>
+                    "Los laterales de la rampa deben contar con barreras de contención, como zócalos o muros, para evitar que sillas de ruedas o bastones se deslicen fuera de la rampa.",
+                "element_id" => self::ELEMENTS["ramps"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿Si no tienen, cuenta con zócalo?",
+                "context" =>
+                    "Si la rampa no tiene muros laterales, debe contar con un zócalo de al menos 0.10 metros de altura para impedir que las ruedas de las sillas de ruedas o bastones se deslicen fuera.",
+                "element_id" => self::ELEMENTS["ramps"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "¿Hay descansos en las distancias correspondientes?",
+                "context" =>
+                    "Las rampas deben contar con descansos cada 6 metros para permitir que las personas puedan detenerse y descansar si lo necesitan. El descanso debe tener un largo mínimo de 1.50 metros.",
+                "element_id" => self::ELEMENTS["ramps"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "¿Permite giro de 90° a usuarios en silla de ruedas y ambulantes?",
+                "context" =>
+                    "El descanso en la rampa debe permitir giros de 90° para que los usuarios en silla de ruedas o con movilidad reducida puedan cambiar de dirección cómodamente.",
+                "element_id" => self::ELEMENTS["ramps"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "¿Permite giro de 180° a usuarios en silla de ruedas y ambulantes?",
+                "context" =>
+                    "Si la rampa tiene varios tramos, debe contar con descansos que permitan realizar giros de 180°, brindando suficiente espacio para maniobrar.",
+                "element_id" => self::ELEMENTS["ramps"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿Cumple con el largo mínimo?",
+                "context" =>
+                    "El largo mínimo de la rampa depende de la altura que debe salvarse, y debe estar de acuerdo con la pendiente máxima permitida (8%).",
+                "element_id" => self::ELEMENTS["ramps"],
+                "answer_types" => ["numeric_length", "text"],
+            ],
+            [
+                "content" =>
+                    "¿Observa algún tipo de señalética accesible de rampa?",
+                "context" =>
+                    "Las rampas deben estar señalizadas adecuadamente con pictogramas accesibles y, si es necesario, incluir información en Braille.",
+                "element_id" => self::ELEMENTS["ramps"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "¿Según lo comprendido, observado y calculado; cuál es el estado de la rampa?",
+                "context" =>
+                    "El estado de la rampa debe evaluarse como Bueno (B), Regular (R) o Malo (M), según cumpla con los criterios establecidos para accesibilidad.",
+                "element_id" => self::ELEMENTS["ramps"],
+                "answer_types" => ["enum_quality", "text"],
+            ],
+        ];
+
+        $this->createQuestions($questions);
+    }
+
+    private function createSignageQuestions(): void
+    {
+        $questions = [
+            [
+                "content" => "¿En el edificio hay señalética accesible?",
+                "context" =>
+                    "La señalética accesible es aquella que permite a personas con discapacidades orientarse, comunicarse y moverse por el entorno de manera autónoma, utilizando pictogramas, textos, símbolos y otros elementos que son perceptibles tanto para personas sin discapacidad como para aquellas con discapacidades sensoriales o de movilidad.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "¿La señalética posee el símbolo internacional de accesibilidad?",
+                "context" =>
+                    "El símbolo internacional de accesibilidad representa la independencia y participación activa de las personas con discapacidad. Este símbolo debe estar presente en la señalética para indicar accesibilidad.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿La señalética tiene una buena iluminación?",
+                "context" =>
+                    "Es fundamental que la señalética esté bien iluminada para garantizar su visibilidad a todas horas, lo que facilita su lectura y comprensión, especialmente para personas con baja visión.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿La señalética se encuentra libre de obstáculos?",
+                "context" =>
+                    "La señalética debe estar colocada en lugares donde no existan objetos o barreras que impidan su visibilidad o acceso, lo que facilita que las personas con movilidad reducida o discapacidades sensoriales puedan usarla.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿La tipografía utilizada es legible?",
+                "context" =>
+                    "La legibilidad de la tipografía es clave, recomendándose el uso de fuentes como Sans Serif y evitar abreviaciones o frases complejas para facilitar la lectura rápida y clara.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "¿Se encuentra protegida con cristal o algún otro elemento?",
+                "context" =>
+                    "Se debe evitar proteger la señalética con cristales u otros elementos que puedan reflejar luz o dificultar su visibilidad y comprensión.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "¿El edificio posee señalética en sistema Braille?",
+                "context" =>
+                    "El sistema Braille es esencial para personas con discapacidad visual, permitiendo la lectura táctil de la información en la señalética.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿El edificio posee plano háptico?",
+                "context" =>
+                    "Los planos hápticos son representaciones táctiles del entorno que permiten a las personas, especialmente con discapacidad visual, orientarse y conocer la distribución del espacio.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "¿El plano háptico se encuentra próximo al ingreso del edificio?",
+                "context" =>
+                    "Es importante que el plano háptico esté ubicado cerca del ingreso del edificio para que sea accesible desde el momento en que la persona entra al lugar.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿Posee intérprete de señas?",
+                "context" =>
+                    "La presencia de intérpretes de lengua de señas asegura la accesibilidad para personas con discapacidad auditiva, facilitando la comunicación.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿El edificio cuenta con formatos audiovisuales?",
+                "context" =>
+                    "Los formatos audiovisuales accesibles incluyen subtitulado, audio descripción y locución, lo que permite a personas con discapacidades sensoriales acceder a la información de manera inclusiva.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿El edificio posee señales audibles?",
+                "context" =>
+                    "Las señales audibles son importantes para personas con discapacidad visual, permitiendo que la información visual sea replicada mediante sonido, como anuncios por megafonía.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿El audio contiene descripción y/o locución?",
+                "context" =>
+                    "La audio descripción y locución proporcionan detalles adicionales sobre el entorno o eventos importantes para personas con discapacidad visual.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "¿El edificio cuenta con asistencia humana en caso de ser necesario?",
+                "context" =>
+                    "La asistencia humana puede ser proporcionada mediante guías, intérpretes o personal de apoyo que ayuden a las personas con discapacidades a moverse por el edificio o acceder a servicios.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" =>
+                    "Según lo comprendido, observado y calculado; ¿cuál es el estado de la señalética?",
+                "context" =>
+                    "El estado de la señalética se debe evaluar como Bueno (B), Regular (R) o Malo (M), considerando si cumple o no con los estándares de accesibilidad descritos.",
+                "element_id" => self::ELEMENTS["signage"],
+                "answer_types" => ["enum_quality", "text"],
             ],
         ];
 
@@ -521,139 +511,89 @@ class QuestionSeeder extends Seeder
     {
         $questions = [
             [
-                "content" => "¿El ancho libre de la puerta es adecuado?",
+                "content" =>
+                    "¿La puerta cumple con el ancho mínimo establecido?",
                 "context" =>
-                    "El ancho libre mínimo debe ser de 0.80 metros para permitir el paso de una silla de ruedas.",
+                    "Las puertas deben tener un ancho suficiente para permitir el paso de personas con movilidad reducida, incluidas aquellas que utilizan sillas de ruedas. El ancho mínimo recomendado es de 0.80 metros.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_width", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura de la manija es correcta?",
-                "context" =>
-                    "La manija debe estar a una altura entre 0.80 y 1.00 metros del suelo.",
-                "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["numeric_width", "text"],
             ],
             [
                 "content" =>
-                    "¿La altura del mecanismo de apertura es adecuada?",
+                    "¿La puerta cuenta con el ángulo de apertura establecido?",
                 "context" =>
-                    "Los herrajes de accionamiento deben estar entre 0.80 y 1.20 metros del suelo.",
+                    "Las puertas deben abrirse al menos 90° para facilitar el acceso. Esto es especialmente importante para asegurar que las personas puedan entrar y salir sin dificultad.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["numeric_angle", "text"],
+            ],
+            [
+                "content" => "¿La puerta cuenta con mecanismo de apertura?",
+                "context" =>
+                    "Las puertas deben contar con un mecanismo de apertura que sea fácil de usar para todas las personas, incluidos aquellos con limitaciones de fuerza. Esto puede incluir manijas o pomos que no requieran girar la muñeca.",
+                "element_id" => self::ELEMENTS["doors"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
-                    "¿El espacio de maniobra frente a la puerta es suficiente?",
+                    "¿El herraje de apertura cuenta con las medidas establecidas?",
                 "context" =>
-                    "Debe existir un círculo libre de 1.50 metros de diámetro para el giro de una silla de ruedas.",
+                    "Los herrajes deben estar ubicados a una altura accesible (generalmente entre 0.80 m y 1.20 m desde el suelo) para que todas las personas puedan alcanzarlos y utilizarlos sin dificultad.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_diameter", "enum_yesno"],
+                "answer_types" => ["numeric_height", "text"],
             ],
             [
-                "content" => "¿El ángulo de apertura es suficiente?",
+                "content" => "¿La puerta cuenta con herrajes de retención?",
                 "context" =>
-                    "La puerta debe poder abrirse al menos 90° para permitir un acceso completo.",
+                    "Las puertas de dos o más hojas deben tener pasadores que se puedan accionar desde una altura accesible para garantizar que puedan mantenerse abiertas cuando sea necesario.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_angle", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura de la mirilla es accesible?",
-                "context" =>
-                    "La mirilla debe estar entre 1.10 y 1.50 metros de altura.",
-                "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura del zócalo protector es suficiente?",
-                "context" =>
-                    "El zócalo debe tener una altura mínima de 0.30 metros.",
-                "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
-                    "¿La separación entre la manija y la puerta es adecuada?",
+                    "¿Los herrajes de retención cumplen con las medidas mínimas y máximas establecidas?",
                 "context" =>
-                    "Debe existir una separación mínima de 0.04 metros entre la manija y la puerta.",
+                    "Es importante que los herrajes de retención estén dentro de las dimensiones específicas establecidas para asegurar que sean utilizables por todas las personas, incluidas aquellas con discapacidades.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_depth", "enum_yesno"],
+                "answer_types" => ["numeric_length", "text"],
             ],
             [
                 "content" =>
-                    "¿La altura de la banda inferior de señalización es correcta?",
+                    "¿El cerrojo de seguridad cumple con lo establecido?",
                 "context" =>
-                    "La banda inferior debe estar entre 0.85 y 1.10 metros de altura.",
+                    "Los cerrojos deben ser de fácil acceso y deben poder accionarse desde el interior en caso de emergencia, evitando el uso de cerraduras con llaves que podrían complicar la salida rápida.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿La puerta cuenta con herrajes suplementarios?",
+                "context" =>
+                    "Los herrajes suplementarios son aquellos que facilitan el uso de la puerta por personas de diferentes alturas. Deben estar colocados de manera que todos los usuarios puedan acceder a ellos.",
+                "element_id" => self::ELEMENTS["doors"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
-                    "¿La altura de la banda superior de señalización es correcta?",
+                    "¿Los herrajes suplementarios cuentan con las medidas establecidas?",
                 "context" =>
-                    "La banda superior debe estar entre 1.40 y 1.60 metros de altura.",
+                    "Estos herrajes deben cumplir con las dimensiones adecuadas para ser accesibles y utilizables por todos, garantizando la funcionalidad de la puerta.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["numeric_length", "text"],
             ],
             [
                 "content" =>
-                    "¿La fuerza necesaria para abrir la puerta es adecuada?",
-                "context" => "La fuerza máxima no debe superar los 25 newtons.",
-                "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_force", "enum_yesno"],
-            ],
-            [
-                "content" =>
-                    "¿El espacio libre lateral junto a la manija es suficiente?",
+                    "¿Observa algún tipo de señalética accesible de puerta?",
                 "context" =>
-                    "Debe existir un espacio libre lateral de al menos 0.30 metros junto a la manija.",
+                    "Es esencial que las puertas cuenten con señalización adecuada que indique su función y acceso, utilizando pictogramas y, si es necesario, información en Braille.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_width", "enum_yesno"],
-            ],
-            [
-                "content" =>
-                    "¿La iluminación en la zona de la puerta es adecuada?",
-                "context" =>
-                    "Debe tener un nivel mínimo de 100 lux en la zona de la puerta.",
-                "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["numeric_illumination", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El mecanismo de apertura es accesible?",
-                "context" =>
-                    "Debe ser de fácil accionamiento, tipo palanca o presión.",
-                "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["enum_yesno"],
-            ],
-            [
-                "content" => "¿La puerta cuenta con sistema de retención?",
-                "context" =>
-                    "En puertas de dos hojas, debe permitir fijar una o ambas hojas.",
-                "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["enum_yesno"],
-            ],
-            [
-                "content" =>
-                    "¿El contraste visual entre puerta y paredes es adecuado?",
-                "context" =>
-                    "Debe existir un contraste visual claro entre la puerta y las paredes circundantes.",
-                "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["enum_yesno"],
-            ],
-            [
-                "content" => "¿Cuenta con señalización accesible?",
-                "context" =>
-                    "Debe tener señalización clara y pictogramas accesibles.",
-                "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
                     "Según lo comprendido, observado y calculado; ¿cuál es el estado de la puerta?",
                 "context" =>
-                    "Evaluación general del estado y accesibilidad de la puerta.",
+                    "El estado de la puerta debe evaluarse como Bueno (B), Regular (R) o Malo (M), basándose en si cumple con los criterios de accesibilidad establecidos.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["enum_quality"],
+                "answer_types" => ["enum_quality", "text"],
             ],
         ];
 
@@ -664,159 +604,150 @@ class QuestionSeeder extends Seeder
     {
         $questions = [
             [
-                "content" => "¿El espacio libre para giro es suficiente?",
+                "content" =>
+                    "¿El baño cumple con las dimensiones mínimas establecidas?",
                 "context" =>
-                    "Debe permitir un giro de 360° con un diámetro mínimo de 1.50 metros.",
+                    "Es esencial que el baño tenga un espacio adecuado (mínimo de 1.5 metros cuadrados) para permitir la maniobra de una silla de ruedas, garantizando que todas las personas puedan utilizarlo sin restricciones.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_diameter", "enum_yesno"],
+                "answer_types" => ["numeric_area", "text"],
             ],
             [
                 "content" =>
-                    "¿El ancho del espacio lateral del inodoro es adecuado?",
+                    "¿El inodoro cumple con las medidas mínimas de aproximación establecidas?",
                 "context" =>
-                    "El espacio lateral debe tener mínimo 0.80 metros para transferencia.",
+                    "Debe haber suficiente espacio lateral (0.80 metros) y frontal (0.90 metros) alrededor del inodoro para facilitar la transferencia desde una silla de ruedas, asegurando un acceso cómodo y seguro.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_width", "enum_yesno"],
+                "answer_types" => ["numeric_width", "numeric_length", "text"],
             ],
             [
                 "content" =>
-                    "¿La profundidad del espacio frente al inodoro es correcta?",
+                    "¿El baño cumple con la medida mínima de altura de taza de inodoro?",
                 "context" =>
-                    "Debe existir un espacio frontal de 0.90 metros mínimo.",
+                    "La altura de la taza del inodoro debe estar entre 0.50 y 0.52 metros desde el nivel del suelo para facilitar el uso por personas con diferentes capacidades físicas.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_depth", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura del asiento del inodoro es adecuada?",
-                "context" =>
-                    "La altura debe estar entre 0.45 y 0.50 metros desde el nivel del piso.",
-                "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["numeric_height", "text"],
             ],
             [
                 "content" =>
-                    "¿La altura de la barra de apoyo horizontal es correcta?",
+                    "¿El baño cuenta con barras de apoyo y transferencia?",
                 "context" =>
-                    "Las barras horizontales deben estar entre 0.70 y 0.75 metros de altura.",
+                    "Las barras de apoyo son esenciales para ayudar a las personas a levantarse y sentarse en el inodoro. Deben estar fijadas firmemente y ubicarse a una altura accesible (0.75 m a 0.80 m).",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
-                    "¿La longitud de las barras de apoyo es suficiente?",
+                    "¿Las barras de apoyo y transferencia cuentan con las medidas establecidas?",
                 "context" =>
-                    "Las barras deben tener una longitud mínima de 0.70 metros.",
+                    "Las barras deben cumplir con las dimensiones específicas para asegurar su eficacia y seguridad, sobrepasando el borde del inodoro para brindar apoyo adicional.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_length", "enum_yesno"],
+                "answer_types" => ["numeric_length", "text"],
             ],
             [
-                "content" => "¿El diámetro de las barras de apoyo es adecuado?",
-                "context" => "El diámetro debe estar entre 0.03 y 0.04 metros.",
-                "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_diameter", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura superior del lavamanos es correcta?",
+                "content" => "¿El baño cuenta con bacha o mesada?",
                 "context" =>
-                    "Debe estar entre 0.80 y 0.85 metros desde el nivel del piso.",
+                    "Es importante que el baño tenga un lavabo accesible, que debe estar colocado a una altura adecuada para permitir su uso desde una silla de ruedas.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
-                    "¿La altura libre bajo el lavamanos es suficiente?",
+                    "¿La bacha o mesada cumple con las medidas establecidas?",
                 "context" =>
-                    "Debe tener mínimo 0.70 metros de altura libre inferior.",
+                    "La bacha debe tener dimensiones que permitan su uso cómodo por personas con diferentes capacidades, asegurando que se pueda acceder sin obstáculos.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["numeric_width", "numeric_length", "text"],
             ],
             [
                 "content" =>
-                    "¿La profundidad libre bajo el lavamanos es adecuada?",
+                    "¿La bacha o mesada cumple con las medidas de superficie mínima de aproximación?",
                 "context" =>
-                    "Debe tener mínimo 0.25 metros de profundidad libre.",
+                    "Debe haber suficiente espacio frente al lavabo (1.00 metro de profundidad) y a los lados (0.40 metros) para permitir el acceso y la utilización del mismo.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_depth", "enum_yesno"],
+                "answer_types" => ["numeric_width", "numeric_length", "text"],
+            ],
+            [
+                "content" => "¿La bacha o mesada cuenta con acceso libre?",
+                "context" =>
+                    "El área debajo del lavabo no debe tener muebles o estructuras que impidan el acercamiento de una silla de ruedas, garantizando así un acceso total.",
+                "element_id" => self::ELEMENTS["bathrooms"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿El baño cuenta con espejo?",
+                "context" =>
+                    "Los espejos deben estar instalados a una altura que permita su uso desde una silla de ruedas, facilitando la visibilidad sin necesidad de ajustar la posición.",
+                "element_id" => self::ELEMENTS["bathrooms"],
+                "answer_types" => ["enum_yesno", "text"],
+            ],
+            [
+                "content" => "¿El espejo cumple con las medidas establecidas?",
+                "context" =>
+                    "Debe cumplir con las dimensiones adecuadas y estar diseñado para facilitar el uso por personas con diversas capacidades, asegurando que sea funcional.",
+                "element_id" => self::ELEMENTS["bathrooms"],
+                "answer_types" => ["numeric_width", "numeric_height", "text"],
+            ],
+            [
+                "content" => "¿La grifería cumple con lo establecido?",
+                "context" =>
+                    "La grifería debe ser de fácil acceso y operar de manera simple (por ejemplo, tipo palanca) para que todas las personas puedan usarla sin dificultad.",
+                "element_id" => self::ELEMENTS["bathrooms"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
-                    "¿La altura del borde inferior del espejo es correcta?",
-                "context" => "Debe estar a máximo 0.90 metros del piso.",
+                    "¿El pulsador sanitario de emergencia cumple con las medidas establecidas?",
+                "context" =>
+                    "Debe estar colocado a una altura accesible (entre 0.40 m y 0.50 m) y ser fácil de usar en caso de necesidad urgente.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura de los accesorios es accesible?",
-                "context" => "Deben estar entre 0.70 y 1.20 metros de altura.",
-                "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El ancho de la ducha es adecuado?",
-                "context" => "Debe tener mínimo 0.90 metros de ancho.",
-                "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_width", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La profundidad de la ducha es suficiente?",
-                "context" => "Debe tener mínimo 1.20 metros de profundidad.",
-                "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_depth", "enum_yesno"],
-            ],
-            [
-                "content" => "¿La altura del asiento de ducha es correcta?",
-                "context" => "Debe estar entre 0.45 y 0.50 metros de altura.",
-                "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
-            ],
-            [
-                "content" => "¿El ancho de la puerta es suficiente?",
-                "context" => "Debe tener mínimo 0.80 metros de ancho libre.",
-                "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_width", "enum_yesno"],
+                "answer_types" => ["numeric_height", "text"],
             ],
             [
                 "content" =>
-                    "¿La altura del pulsador de emergencia es accesible?",
-                "context" => "Debe estar entre 0.40 y 0.50 metros del piso.",
+                    "El baño en caso de contar con ducha, ¿cumple con las medidas establecidas?",
+                "context" =>
+                    "La ducha debe tener suficiente espacio y un diseño accesible (0.90 m x 0.90 m) para facilitar su uso por personas con discapacidades.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_height", "enum_yesno"],
+                "answer_types" => ["numeric_width", "numeric_length", "text"],
             ],
             [
-                "content" => "¿El nivel de iluminación es adecuado?",
+                "content" => "¿El baño cuenta con accesorios?",
                 "context" =>
-                    "Debe tener mínimo 100 lux de iluminación uniforme.",
+                    "Los accesorios del baño (como toalleros y llaves de luz) deben estar ubicados en posiciones accesibles, dentro del alcance de las personas en silla de ruedas.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["numeric_illumination", "enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
-                "content" => "¿La grifería es de tipo palanca o presión?",
+                "content" =>
+                    "¿Los accesorios de baño cumplen con las medidas establecidas?",
                 "context" =>
-                    "Debe ser de fácil accionamiento sin requerir giro de muñeca.",
+                    "Deben estar situados a una altura que permita su uso sin dificultad, asegurando que sean accesibles para todos los usuarios.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["enum_yesno"],
+                "answer_types" => ["numeric_height", "text"],
             ],
             [
-                "content" => "¿La puerta abre hacia afuera o es corredera?",
+                "content" =>
+                    "¿Observa algún tipo de señalética accesible de baño?",
                 "context" =>
-                    "Debe abrir hacia afuera o ser corredera para no reducir el espacio interior.",
+                    "La señalética en el baño debe ser clara y accesible, utilizando pictogramas y, si es necesario, información en Braille para facilitar la comprensión.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["enum_yesno"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
-                "content" => "¿Cuenta con señalización accesible?",
+                "content" =>
+                    "¿La señalética accesible cuenta con las medidas establecidas?",
                 "context" =>
-                    "Debe tener el Símbolo Internacional de Accesibilidad y pictogramas claros.",
+                    "La señalética debe cumplir con las dimensiones adecuadas para ser legible y comprensible, asegurando su efectividad para todas las personas.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["enum_yesno"],
+                "answer_types" => ["numeric_width", "numeric_height", "text"],
             ],
             [
                 "content" =>
                     "Según lo comprendido, observado y calculado; ¿cuál es el estado del baño?",
                 "context" =>
-                    "Evaluación general del estado y accesibilidad del baño.",
+                    "El estado del baño debe evaluarse como Bueno (B), Regular (R) o Malo (M), dependiendo de si cumple o no con los criterios de accesibilidad establecidos.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["enum_quality"],
+                "answer_types" => ["enum_quality", "text"],
             ],
         ];
 

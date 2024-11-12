@@ -19,7 +19,7 @@ return new class extends Migration {
                 ->onDelete("cascade");
 
             // Columnas para almacenar distintos tipos de respuestas esperadas
-            $table->text("expected_answer_text")->nullable(); // Respuesta esperada en formato texto
+            $table->text("expected_answer_text")->nullable();
             $table
                 ->enum("expected_answer_enum", [
                     "Sí",
@@ -28,8 +28,10 @@ return new class extends Migration {
                     "Regular",
                     "Malo",
                 ])
-                ->nullable(); // Respuesta esperada en formato predefinido
-            $table->decimal("expected_answer_numeric", 10, 2)->nullable(); // Respuesta esperada numérica
+                ->nullable();
+            $table->decimal("expected_answer_numeric", 10, 2)->nullable();
+            $table->decimal("expected_answer_altura", 10, 2)->nullable();
+            $table->decimal("expected_answer_longitud", 10, 2)->nullable();
             $table->timestamps();
         });
     }

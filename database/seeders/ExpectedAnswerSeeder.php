@@ -46,6 +46,20 @@ class ExpectedAnswerSeeder extends Seeder
             "unit" => "metros",
             "context" => "longitud",
         ],
+        "numeric_depth" => [
+            "answer" => "0.60",
+            "value" => 0.6,
+            "type" => "numeric",
+            "unit" => "metros",
+            "context" => "profundidad",
+        ],
+        "numeric_angle" => [
+            "answer" => "90",
+            "value" => 90,
+            "type" => "numeric",
+            "unit" => "grados",
+            "context" => "ángulo",
+        ],
         "numeric_slope" => [
             "answer" => "8.00",
             "value" => 8.0,
@@ -53,12 +67,33 @@ class ExpectedAnswerSeeder extends Seeder
             "unit" => "porcentaje",
             "context" => "pendiente",
         ],
+        "numeric_area" => [
+            "answer" => "1.50",
+            "value" => 1.5,
+            "type" => "numeric",
+            "unit" => "metros cuadrados",
+            "context" => "área",
+        ],
         "numeric_diameter" => [
             "answer" => "1.50",
             "value" => 1.5,
             "type" => "numeric",
             "unit" => "metros",
             "context" => "diámetro",
+        ],
+        "numeric_force" => [
+            "answer" => "25",
+            "value" => 25,
+            "type" => "numeric",
+            "unit" => "newtons",
+            "context" => "fuerza",
+        ],
+        "numeric_illumination" => [
+            "answer" => "100",
+            "value" => 100,
+            "type" => "numeric",
+            "unit" => "lux",
+            "context" => "iluminación",
         ],
     ];
 
@@ -71,6 +106,7 @@ class ExpectedAnswerSeeder extends Seeder
             "step_width" => ["value" => 0.3, "min" => 0.26], // Ancho de escalón
             "handrail_height" => ["value" => 0.9], // Altura de pasamanos
             "width" => ["value" => 1.2], // Ancho de escalera
+            "landing_length" => ["value" => 1.5], // Longitud de descanso
         ],
         "ramps" => [
             "width" => ["value" => 0.9, "max" => 1.2], // Ancho de rampa
@@ -166,6 +202,7 @@ class ExpectedAnswerSeeder extends Seeder
         $expectedAnswer = new ExpectedAnswer();
         $expectedAnswer->question_id = $question->id;
 
+        // Obtener las respuestas esperadas desde el QuestionSeeder
         foreach ($question->answer_types as $type) {
             if (array_key_exists($type, self::EXPECTED_ANSWERS)) {
                 $this->setExpectedAnswerValues($expectedAnswer, $type);

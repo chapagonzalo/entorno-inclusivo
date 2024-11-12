@@ -242,11 +242,7 @@ class ReportController extends Controller
     private function calculateMetrics(Assessment $assessment)
     {
         $metrics = Metric::query()
-            ->where(
-                // Agregado query()
-                "element_id",
-                $assessment->elementInstance->element_id
-            )
+            ->where("element_id", $assessment->elementInstance->element_id)
             ->get();
         $metricScores = [];
 
@@ -348,9 +344,27 @@ class ReportController extends Controller
             return 1; // Por ahora, consideramos cualquier respuesta de texto como válida
         }
 
+        // Para la pendiente
+        if (
+            $answer->altura !== null &&
+            $answer->longitud !== null &&
+            $expectedAnswer->expected_answer_altura !== null &&
+            $expectedAnswer->expected_answer_longitud !== null
+        ) {
+            $pendienteActual =
+                ($answer->altura * 100) / ($answer->longitud * 100);
+            $pendienteEsperada =
+                ($expectedAnswer->expected_answer_altura * 100) /
+                ($expectedAnswer->expected_answer_longitud * 100);
+            $difference = abs($pendienteActual - $pendienteEsperada);
+            $tolerance = $pendienteEsperada * 0.1; // 10% de tolerancia
+            return $difference <= $tolerance
+                ? 1
+                : max(0, 1 - $difference / $pendienteEsperada);
+        }
+
         return 0;
     }
-
     private function getMetricDetails(Metric $metric, Assessment $assessment)
     {
         $details = [];
@@ -474,14 +488,14 @@ class ReportController extends Controller
                 if ($elementId) {
                     $q->where("element_id", $elementId);
                 }
-            }); // Corregido el cierre del whereHas
+            });
         }
 
         return $query
             ->get()
             ->map(function ($metric) {
                 // Obtener la última evaluación completa para esta métrica
-                $latestAssessment = Assessment::query() // Agregado query()
+                $latestAssessment = Assessment::query()
                     ->whereHas("elementInstance", function ($query) use (
                         $metric
                     ) {
