@@ -19,11 +19,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ElementSeeder::class,
             LocationSeeder::class,
-            BathroomQuestionSeeder::class,
-            DoorQuestionSeeder::class,
-            RampQuestionSeeder::class,
-            SignageQuestionSeeder::class,
-            StairQuestionSeeder::class,
+            QuestionSeeder::class,
+            ExpectedAnswerSeeder::class,
+            MetricSeeder::class,
+            StairAssessmentSeeder::class,
             AssessmentSeeder::class,
         ]);
     }

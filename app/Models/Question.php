@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     use HasFactory;
-    //faltan constantes para tipos
 
     const TYPE_TEXT = "text";
     const TYPE_ENUM_YESNO = "enum_yesno";
@@ -30,5 +29,28 @@ class Question extends Model
                 $question->answer_types = [self::TYPE_TEXT];
             }
         });
+    }
+
+    // Agregar las relaciones faltantes
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    public function expectedAnswer()
+    {
+        return $this->hasOne(ExpectedAnswer::class);
+    }
+
+    public function element()
+    {
+        return $this->belongsTo(Element::class);
+    }
+
+    public function metrics()
+    {
+        return $this->belongsToMany(Metric::class)->withPivot(
+            "question_weight"
+        );
     }
 }

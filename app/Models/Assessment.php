@@ -10,6 +10,7 @@ class Assessment extends Model
     use HasFactory;
 
     protected $fillable = ["user_id", "status", "element_instance_id"];
+    protected $with = ["elementInstance"];
 
     // Relación: Una evaluación pertenece a una instancia de elemento
     public function elementInstance()
@@ -17,14 +18,16 @@ class Assessment extends Model
         return $this->belongsTo(ElementInstance::class);
     }
 
+    // Relación: Una evaluación pertenece a una ubicación
     public function location()
     {
-        return $this->belongsTo(Location::class);
+        return $this->elementInstance->location;
     }
 
+    // Relación: Una evaluación pertenece a un tipo de elemento
     public function element()
     {
-        return $this->belongsTo(Element::class);
+        return $this->elementInstance->element;
     }
 
     public function user()
@@ -40,5 +43,10 @@ class Assessment extends Model
     public function answers()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function report()
+    {
+        return $this->hasOne(Report::class);
     }
 }

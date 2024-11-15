@@ -5,23 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Answer extends Model
+class Report extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         "assessment_id",
-        "question_id",
-        "content",
-        "answer_text",
-        "answer_enum",
-        "answer_numeric",
+        "final_score",
+        "accessibility_level",
+        "metrics_scores",
+        "recommendations",
+        "main_findings",
     ];
 
-    public function question()
-    {
-        return $this->belongsTo(Question::class);
-    }
+    protected $casts = [
+        "metrics_scores" => "array",
+        "recommendations" => "array",
+        "main_findings" => "array",
+    ];
 
     public function assessment()
     {
