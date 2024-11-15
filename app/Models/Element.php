@@ -16,16 +16,13 @@ class Element extends Model
         return $this->hasMany(ElementInstance::class);
     }
 
-    public function location()
-    {
-        return $this->belongsTo(Location::class);
-    }
-
+    // Relación: Un tipo de elemento puede tener muchas preguntas
     public function questions()
     {
         return $this->hasMany(Question::class);
     }
 
+    // Relación: Un tipo de elemento puede tener muchas métricas
     public function metrics()
     {
         return $this->hasMany(Metric::class);

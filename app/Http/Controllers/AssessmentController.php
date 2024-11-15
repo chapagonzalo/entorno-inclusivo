@@ -92,7 +92,7 @@ class AssessmentController extends Controller
             $answerData = [
                 "assessment_id" => $assessment->id,
                 "question_id" => $questionId,
-                "content" => "", // Valor por defecto
+                "content" => "",
                 "answer_text" => null,
                 "answer_enum" => null,
                 "answer_numeric" => null,

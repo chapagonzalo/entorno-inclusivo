@@ -85,8 +85,8 @@ Entorno Inclusivo es una plataforma digital desarrollada con Laravel 11, Inertia
 Después de la instalación, puedes acceder al sistema a través del link que da artisan serve.
 
 -   Puede probar los distintos roles usando las siguientes cuentas:
-    -   luciano@gmail.com || pw: lucho123 || rol:evaluador/técnico
-    -   samus@gmail.com || pw: samus123 || rol: administrador
+    -   tech@tech.com || pw: tech123@@@ || rol:evaluador/técnico
+    -   admin@admin.com || pw: administrador@@@ || rol: administrador
 
 ## Licencia
 

@@ -63,14 +63,6 @@ export default function Authenticated({ header, children }) {
                                         >
                                             Evaluaciones
                                         </NavLink>
-                                        <NavLink
-                                            href={route("assessments.create")}
-                                            active={route().current(
-                                                "assessments.create",
-                                            )}
-                                        >
-                                            Realizar Evaluación
-                                        </NavLink>
                                     </>
                                 )}
                             </div>
@@ -205,14 +197,6 @@ export default function Authenticated({ header, children }) {
                                 >
                                     Evaluaciones
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink
-                                    href={route("assessments.create")}
-                                    active={route().current(
-                                        "assessments.create",
-                                    )}
-                                >
-                                    Realizar Evaluación
-                                </ResponsiveNavLink>
                             </>
                         )}
                     </div>
@@ -251,7 +235,42 @@ export default function Authenticated({ header, children }) {
                 </header>
             )}
 
-            <main>{children}</main>
+            <main className="min-h-screen pb-24">{children}</main>
+
+            <footer className="bg-white text-gray-800 py-8 shadow-md border-t border-gray-200 fixed bottom-0 w-full">
+                {" "}
+                {/* Fondo blanco y borde superior */}
+                <div className="container mx-auto px-4">
+                    <div className="flex flex-col md:flex-row justify-between items-center">
+                        <div className="mb-4 md:mb-0">
+                            <a
+                                href="https://universidadydiscapacidad.unsl.edu.ar/"
+                                className="text-2xl font-bold text-gray-900 hover:text-[#427898]" // Hover azul oscuro
+                            >
+                                Universidad y Discapacidad
+                            </a>
+                        </div>
+                        <div className="flex space-x-6">
+                            <a
+                                href="/"
+                                className="text-gray-700 hover:text-[#6aced3] transition-colors duration-150" // Hover celeste
+                            >
+                                Inicio
+                            </a>
+                            <a
+                                href="/contact"
+                                className="text-gray-700 hover:text-[#6aced3] transition-colors duration-150"
+                            >
+                                Contacto
+                            </a>
+                        </div>
+                    </div>
+                    <div className="mt-4 text-center text-sm text-gray-500">
+                        &copy; 2024 Universidad y Discapacidad. Todos los
+                        derechos reservados.
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 }

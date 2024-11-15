@@ -24,7 +24,7 @@ const ReportList = ({ reports }) => {
             {reports.data.map((assessment) => (
                 <div
                     key={assessment.id}
-                    className="bg-white rounded-lg shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow"
+                    className="bg-white rounded-lg shadow-lg border border-gray-300 p-6 hover:shadow-xl transition-shadow focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div>
@@ -78,7 +78,7 @@ const ReportList = ({ reports }) => {
                         <div className="flex items-center space-x-4">
                             <Link
                                 href={route("assessments.show", assessment.id)}
-                                className="inline-flex items-center px-4 py-2 bg-blue-700 text-white font-medium rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                             >
                                 Ver Evaluación
                             </Link>
@@ -89,7 +89,7 @@ const ReportList = ({ reports }) => {
                                     onClick={() =>
                                         handleGenerateReport(assessment)
                                     }
-                                    className="inline-flex items-center px-4 py-2 bg-green-700 text-white font-medium rounded-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                                    className="inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
                                 >
                                     Generar Informe
                                 </button>
@@ -100,7 +100,7 @@ const ReportList = ({ reports }) => {
                                             "reports.show",
                                             assessment.report_id,
                                         )}
-                                        className="inline-flex items-center px-4 py-2 bg-indigo-700 text-white font-medium rounded-md hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
+                                        className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
                                     >
                                         Ver Informe
                                     </Link>
@@ -118,29 +118,29 @@ const Dashboard = ({ reports, stats, locations, elements, filters }) => {
     return (
         <Layout>
             <div className="py-12 bg-gray-50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6  lg:px-8">
                     {/* Estadísticas simplificadas */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                        <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-300">
                             <h3 className="text-xl font-bold text-gray-900 mb-2">
                                 Total Evaluaciones
                             </h3>
-                            <p className="text-4xl font-bold text-blue-700">
+                            <p className="text-4xl font-bold text-blue-600">
                                 {stats.total_assessments}
                             </p>
                         </div>
-                        <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                        <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-300">
                             <h3 className="text-xl font-bold text-gray-900 mb-2">
                                 Ubicaciones Evaluadas
                             </h3>
-                            <p className="text-4xl font-bold text-blue-700">
+                            <p className="text-4xl font-bold text-blue-600">
                                 {stats.locations_assessed}
                             </p>
                         </div>
                     </div>
 
                     {/* Filtros */}
-                    <div className="bg-white rounded-lg shadow-lg p-6 mb-8 border border-gray-200">
+                    <div className="bg-white rounded-lg shadow-lg p-6 mb-8 border border-gray-300">
                         <h2 className="text-xl font-bold text-gray-900 mb-4">
                             Filtros
                         </h2>
@@ -187,8 +187,8 @@ const Dashboard = ({ reports, stats, locations, elements, filters }) => {
                     </div>
 
                     {/* Lista de Evaluaciones */}
-                    <div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                    <div className="bg-white rounded-lg shadow-lg p-6 mb-8 border border-gray-300">
+                        <h2 className="text-xl font-bold text-gray-900 mb-4">
                             Evaluaciones
                         </h2>
                         <ReportList reports={reports} />

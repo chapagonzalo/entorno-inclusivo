@@ -23,7 +23,7 @@ export default function Dashboard() {
                             </h3>
                             <p className="text-gray-700 leading-relaxed">
                                 La señalética debe utilizar símbolos claros,
-                                tipografía legible, y ubicarse en lugares
+                                tipografía legible y ubicarse en lugares
                                 visibles y bien iluminados. Puede incluir el
                                 símbolo internacional de accesibilidad,
                                 información en Braille y señalización táctil y

@@ -17,24 +17,33 @@ const ReportsList = ({ reports }) => {
     return (
         <div className="space-y-4">
             {reportsData.map((report) => (
-                <div key={report.id} className="bg-white rounded-lg shadow p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div
+                    key={report.id}
+                    className="bg-white rounded-lg shadow-lg p-6 border border-gray-300"
+                >
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
                         <div>
-                            <p className="text-gray-600 text-sm">Ubicación</p>
-                            <p className="font-medium">
+                            <p className="text-gray-600 text-sm font-semibold">
+                                Ubicación
+                            </p>
+                            <p className="font-medium text-gray-900">
                                 {report.assessment?.element_instance?.location
                                     ?.name || "N/A"}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-600 text-sm">Elemento</p>
-                            <p className="font-medium">
+                            <p className="text-gray-600 text-sm font-semibold">
+                                Elemento
+                            </p>
+                            <p className="font-medium text-gray-900">
                                 {report.assessment?.element_instance?.element
                                     ?.name || "N/A"}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-600 text-sm">Puntuación</p>
+                            <p className="text-gray-600 text-sm font-semibold">
+                                Puntuación
+                            </p>
                             <div className="flex items-center">
                                 <div className="w-full bg-gray-200 rounded-full h-2.5 mr-2">
                                     <div
@@ -50,13 +59,13 @@ const ReportsList = ({ reports }) => {
                                         }}
                                     ></div>
                                 </div>
-                                <span className="font-medium">
+                                <span className="font-medium text-gray-900">
                                     {report.final_score}%
                                 </span>
                             </div>
                         </div>
                         <div>
-                            <p className="text-gray-600 text-sm">
+                            <p className="text-gray-600 text-sm font-semibold">
                                 Nivel de Accesibilidad
                             </p>
                             <span
@@ -75,14 +84,16 @@ const ReportsList = ({ reports }) => {
                             </span>
                         </div>
                         <div>
-                            <p className="text-gray-600 text-sm">Fecha</p>
-                            <p className="font-medium">
+                            <p className="text-gray-600 text-sm font-semibold">
+                                Fecha
+                            </p>
+                            <p className="font-medium text-gray-900">
                                 {new Date(
                                     report.created_at,
                                 ).toLocaleDateString()}
                             </p>
                         </div>
-                        <div className="flex items-end justify-end">
+                        <div className="flex items-end justify-end mt-4">
                             <Link
                                 href={route("reports.show", report.id)}
                                 className="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -101,74 +112,108 @@ const Index = ({ reports, locations, elements, filters }) => {
     return (
         <Layout>
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6 border border-gray-300">
                         <div className="flex justify-between items-center mb-6">
-                            <h1 className="text-2xl font-semibold text-gray-900">
+                            <h1 className="text-3xl font-semibold text-gray-900">
                                 Informes de Accesibilidad
                             </h1>
                         </div>
 
                         {/* Filtros */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                            <select
-                                value={filters.location_id || ""}
-                                onChange={(e) =>
-                                    router.get(route("reports.index"), {
-                                        ...filters,
-                                        location_id: e.target.value,
-                                    })
-                                }
-                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                            >
-                                <option value="">Todas las ubicaciones</option>
-                                {locations.map((location) => (
-                                    <option
-                                        key={location.id}
-                                        value={location.id}
-                                    >
-                                        {location.name}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            <div className="space-y-2">
+                                <label
+                                    htmlFor="location"
+                                    className="text-sm font-medium text-gray-700"
+                                >
+                                    Ubicación
+                                </label>
+                                <select
+                                    id="location"
+                                    value={filters.location_id || ""}
+                                    onChange={(e) =>
+                                        router.get(route("reports.index"), {
+                                            ...filters,
+                                            location_id: e.target.value,
+                                        })
+                                    }
+                                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                >
+                                    <option value="">
+                                        Todas las ubicaciones
                                     </option>
-                                ))}
-                            </select>
+                                    {locations.map((location) => (
+                                        <option
+                                            key={location.id}
+                                            value={location.id}
+                                        >
+                                            {location.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
 
-                            <select
-                                value={filters.element_id || ""}
-                                onChange={(e) =>
-                                    router.get(route("reports.index"), {
-                                        ...filters,
-                                        element_id: e.target.value,
-                                    })
-                                }
-                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                            >
-                                <option value="">Todos los elementos</option>
-                                {elements.map((element) => (
-                                    <option key={element.id} value={element.id}>
-                                        {element.name}
+                            <div className="space-y-2">
+                                <label
+                                    htmlFor="element"
+                                    className="text-sm font-medium text-gray-700"
+                                >
+                                    Elemento
+                                </label>
+                                <select
+                                    id="element"
+                                    value={filters.element_id || ""}
+                                    onChange={(e) =>
+                                        router.get(route("reports.index"), {
+                                            ...filters,
+                                            element_id: e.target.value,
+                                        })
+                                    }
+                                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                >
+                                    <option value="">
+                                        Todos los elementos
                                     </option>
-                                ))}
-                            </select>
+                                    {elements.map((element) => (
+                                        <option
+                                            key={element.id}
+                                            value={element.id}
+                                        >
+                                            {element.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
 
-                            <select
-                                value={filters.accessibility_level || ""}
-                                onChange={(e) =>
-                                    router.get(route("reports.index"), {
-                                        ...filters,
-                                        accessibility_level: e.target.value,
-                                    })
-                                }
-                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                            >
-                                <option value="">Todos los niveles</option>
-                                <option value="Excelente">Excelente</option>
-                                <option value="Bueno">Bueno</option>
-                                <option value="Aceptable">Aceptable</option>
-                                <option value="Necesita Mejoras">
-                                    Necesita Mejoras
-                                </option>
-                                <option value="Crítico">Crítico</option>
-                            </select>
+                            <div className="space-y-2">
+                                <label
+                                    htmlFor="accessibility_level"
+                                    className="text-sm font-medium text-gray-700"
+                                >
+                                    Nivel de Accesibilidad
+                                </label>
+                                <select
+                                    id="accessibility_level"
+                                    value={filters.accessibility_level || ""}
+                                    onChange={(e) =>
+                                        router.get(route("reports.index"), {
+                                            ...filters,
+                                            accessibility_level: e.target.value,
+                                        })
+                                    }
+                                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                >
+                                    <option value="">Todos los niveles</option>
+                                    <option value="Excelente">Excelente</option>
+                                    <option value="Bueno">Bueno</option>
+                                    <option value="Aceptable">Aceptable</option>
+                                    <option value="Necesita Mejoras">
+                                        Necesita Mejoras
+                                    </option>
+                                    <option value="Crítico">Crítico</option>
+                                </select>
+                            </div>
                         </div>
 
                         {/* Lista de Informes */}

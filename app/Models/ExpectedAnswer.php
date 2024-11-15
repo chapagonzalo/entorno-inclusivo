@@ -9,6 +9,14 @@ class ExpectedAnswer extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "question_id",
+        "expected_answer",
+        "expected_answer_text",
+        "expected_answer_enum",
+        "expected_answer_numeric",
+    ];
+
     public function question()
     {
         return $this->belongsTo(Question::class);

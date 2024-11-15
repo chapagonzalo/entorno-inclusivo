@@ -3,6 +3,7 @@ import { router } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
 import Layout from "@/Layouts/AuthenticatedLayout";
 import MapaUniversidad from "../../assets/mapaUniversidad.png";
+import SlopeCalculator from "./SlopeCalculator";
 
 const Questions = () => {
     const { assessment, flash } = usePage().props;
@@ -17,18 +18,31 @@ const Questions = () => {
         ) {
             setQuestions(assessment.element_instance.element.questions || []);
 
-            // Cargar respuestas existentes
-            if (assessment.answers) {
-                const existingAnswers = {};
-                assessment.answers.forEach((answer) => {
-                    existingAnswers[answer.question_id] = {
-                        text: answer.answer_text || "",
-                        enum: answer.answer_enum || "",
-                        numeric: answer.answer_numeric || "",
-                        quality: answer.answer_enum || "",
+            // Inicializar answers con todas las preguntas y valores vacíos
+            const initialAnswers = {};
+            assessment.element_instance.element.questions.forEach(
+                (question) => {
+                    initialAnswers[question.id] = {
+                        text: "",
+                        enum: "",
+                        numeric: "",
                     };
+                },
+            );
+            setAnswers(initialAnswers);
+
+            // Cargar respuestas existentes si las hay
+            if (assessment.answers) {
+                assessment.answers.forEach((answer) => {
+                    setAnswers((prev) => ({
+                        ...prev,
+                        [answer.question_id]: {
+                            text: answer.answer_text || "",
+                            enum: answer.answer_enum || "",
+                            numeric: answer.answer_numeric || "",
+                        },
+                    }));
                 });
-                setAnswers(existingAnswers);
             }
         }
     }, [assessment]);
@@ -43,189 +57,217 @@ const Questions = () => {
         }));
     };
 
+    const areAllQuestionsAnswered = () => {
+        // Verificar que todas las respuestas enum estén presentes
+        return questions.every((question) => {
+            const answer = answers[question.id];
+            return answer.enum?.trim() !== ""; // Comprobar si enum no está vacío
+        });
+    };
+
     const handleSubmit = (e, shouldComplete = false) => {
         e.preventDefault();
+        // Actualizar respuestas con altura y longitud
+        const updatedAnswers = {};
+        for (const questionId in answers) {
+            updatedAnswers[questionId] = {
+                ...answers[questionId],
+            };
+        }
+
         router.post(route("assessments.storeAnswers", assessment.id), {
-            answers,
+            answers: updatedAnswers,
             complete: shouldComplete,
         });
     };
 
-    const handleSaveAndExit = (e) => {
-        e.preventDefault();
-        handleSubmit(e, false);
-        router.get(route("assessments.index"));
-    };
-
     const renderAnswerInputs = (question) => {
         return (
-            <div className="space-y-4">
-                {question.answer_types.includes("enum_yesno") && (
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Sí/No:
-                        </label>
-                        <select
-                            value={answers[question.id]?.enum || ""}
-                            onChange={(e) =>
-                                handleAnswerChange(question.id, {
-                                    enum: e.target.value,
-                                })
-                            }
-                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                        >
-                            <option value="">Selecciona una opción</option>
-                            <option value="Sí">Sí</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                )}
+            <div className="space-y-6">
+                {/* Bloque de pregunta y opciones de respuesta */}
+                <div className="bg-white border border-gray-200 rounded-lg p-5 shadow-md">
+                    {/* Pregunta */}
+                    <h2 className="text-lg font-bold text-gray-900">
+                        {question.text}
+                    </h2>
 
-                {question.answer_types.includes("enum_quality") && (
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Calidad:
-                        </label>
-                        <select
-                            value={answers[question.id]?.quality || ""}
-                            onChange={(e) =>
-                                handleAnswerChange(question.id, {
-                                    quality: e.target.value,
-                                })
-                            }
-                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                        >
-                            <option value="">Selecciona una opción</option>
-                            <option value="Bueno">Bueno</option>
-                            <option value="Regular">Regular</option>
-                            <option value="Malo">Malo</option>
-                        </select>
-                    </div>
-                )}
+                    {/* Descripción opcional */}
+                    {question.description && (
+                        <p className="mt-1 text-sm text-gray-600">
+                            {question.description}
+                        </p>
+                    )}
 
-                {question.answer_types.includes("numeric") && (
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Valor numérico:
-                        </label>
-                        <input
-                            type="number"
-                            value={answers[question.id]?.numeric || ""}
-                            onChange={(e) =>
-                                handleAnswerChange(question.id, {
-                                    numeric: e.target.value,
-                                })
-                            }
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        />
-                    </div>
-                )}
+                    <div className="mt-4 space-y-3">
+                        {/* Opciones de respuesta según el tipo de pregunta */}
+                        {question.answer_types.includes("enum_yesno") && (
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-800 mb-1">
+                                    Sí/No:
+                                </label>
+                                <select
+                                    value={answers[question.id]?.enum || ""}
+                                    onChange={(e) =>
+                                        handleAnswerChange(question.id, {
+                                            enum: e.target.value,
+                                        })
+                                    }
+                                    className="block w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                >
+                                    <option value="">
+                                        Selecciona una opción
+                                    </option>
+                                    <option value="Sí">Sí</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        )}
 
-                {question.answer_types.includes("text") && (
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Observaciones adicionales:
-                        </label>
-                        <textarea
-                            value={answers[question.id]?.text || ""}
-                            onChange={(e) =>
-                                handleAnswerChange(question.id, {
-                                    text: e.target.value,
-                                })
-                            }
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            rows="3"
-                        />
+                        {question.answer_types.includes("enum_quality") && (
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-800 mb-1">
+                                    Calidad:
+                                </label>
+                                <select
+                                    value={answers[question.id]?.enum || ""}
+                                    onChange={(e) =>
+                                        handleAnswerChange(question.id, {
+                                            enum: e.target.value,
+                                        })
+                                    }
+                                    className="block w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                >
+                                    <option value="">
+                                        Selecciona una opción
+                                    </option>
+                                    <option value="Bueno">Bueno</option>
+                                    <option value="Regular">Regular</option>
+                                    <option value="Malo">Malo</option>
+                                </select>
+                            </div>
+                        )}
+
+                        {question.answer_types.includes("numeric") && (
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-800 mb-1">
+                                    Valor Numérico (Opcional):
+                                </label>
+                                <input
+                                    type="number"
+                                    value={answers[question.id]?.numeric || ""}
+                                    onChange={(e) =>
+                                        handleAnswerChange(question.id, {
+                                            numeric: e.target.value,
+                                        })
+                                    }
+                                    className="block w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                />
+                            </div>
+                        )}
+
+                        {question.id === 17 ? <SlopeCalculator /> : ""}
+
+                        {question.answer_types.includes("text") && (
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-800 mb-1">
+                                    Observaciones (Opcional):
+                                </label>
+                                <textarea
+                                    value={answers[question.id]?.text || ""}
+                                    onChange={(e) =>
+                                        handleAnswerChange(question.id, {
+                                            text: e.target.value,
+                                        })
+                                    }
+                                    className="block w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    rows="2"
+                                />
+                            </div>
+                        )}
                     </div>
-                )}
+                </div>
             </div>
         );
     };
-
     return (
         <Layout>
-            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <div className="max-w-full xl:max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+                {/* Notificación de éxito */}
                 {flash?.success && (
-                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                        <span className="block sm:inline">{flash.success}</span>
+                    <div className="bg-green-100 border-l-4 border-green-500 text-green-800 p-4 rounded-lg mb-8 text-center">
+                        <span className="block font-semibold">
+                            {flash.success}
+                        </span>
                     </div>
                 )}
 
-                {/* Cabecera con información */}
-                <div className="bg-white shadow-sm rounded-lg p-6 mb-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                                Evaluación de{" "}
-                                {assessment.element_instance?.element?.name}
-                            </h2>
-                            <div className="space-y-2">
-                                <p className="text-gray-600">
-                                    <span className="font-medium">
-                                        Ubicación:
+                {/* Cabecera de Evaluación */}
+                <div className="bg-gray-50 shadow-md rounded-lg p-8 mb-8">
+                    <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                        Evaluación de{" "}
+                        {assessment.element_instance?.element?.name}
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-2 text-gray-700 text-lg leading-relaxed">
+                            <p>
+                                <span className="font-semibold">
+                                    Ubicación:
+                                </span>{" "}
+                                {assessment.element_instance?.location?.name}
+                            </p>
+                            {assessment.element_instance?.description && (
+                                <p>
+                                    <span className="font-semibold">
+                                        Descripción:
                                     </span>{" "}
-                                    {
-                                        assessment.element_instance?.location
-                                            ?.name
-                                    }
+                                    {assessment.element_instance.description}
                                 </p>
-                                {assessment.element_instance?.description && (
-                                    <p className="text-gray-600">
-                                        <span className="font-medium">
-                                            Descripción:
-                                        </span>{" "}
-                                        {
-                                            assessment.element_instance
-                                                .description
-                                        }
-                                    </p>
-                                )}
-                            </div>
+                            )}
                         </div>
-                        <div className="flex justify-center items-start">
+                        <div className="flex justify-center md:justify-end items-start">
                             <img
                                 src={MapaUniversidad}
                                 alt="Mapa de ubicación"
-                                className="max-h-48 object-contain"
+                                className="max-h-40 object-contain shadow-lg rounded-lg"
                             />
                         </div>
                     </div>
                 </div>
 
-                <form className="space-y-6">
-                    {/* Lista de preguntas */}
-                    {questions.map((question) => (
-                        <div
-                            key={question.id}
-                            className="bg-white shadow overflow-hidden sm:rounded-lg"
-                        >
-                            <div className="px-4 py-5 sm:p-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                {/* Formulario de preguntas */}
+                <form className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                        {questions.map((question) => (
+                            <div
+                                key={question.id}
+                                className="bg-white shadow-md rounded-lg p-6"
+                            >
+                                <h3 className="text-xl font-semibold text-gray-900 mb-2 leading-tight">
                                     {question.content}
                                 </h3>
-                                <p className="text-gray-600 text-sm mb-4">
+                                <p className="text-gray-600 text-base mb-4 leading-relaxed">
                                     {question.context}
                                 </p>
+                                {/* Renderizado de inputs de respuesta */}
                                 {renderAnswerInputs(question)}
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
 
                     {/* Botones de acción */}
-                    <div className="flex justify-end space-x-4 pt-4">
-                        <button
-                            type="button"
-                            onClick={handleSaveAndExit}
-                            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
-                        >
-                            Guardar y Salir
-                        </button>
+                    <div className="flex justify-end mt-10">
                         <button
                             type="button"
                             onClick={(e) => handleSubmit(e, true)}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                            className={`px-6 py-3 rounded-lg text-white font-semibold transition duration-150 ${
+                                areAllQuestionsAnswered()
+                                    ? "bg-green-600 hover:bg-green-700"
+                                    : "bg-blue-600 hover:bg-blue-700"
+                            }`}
                         >
-                            Finalizar Evaluación
+                            {areAllQuestionsAnswered()
+                                ? "Finalizar Evaluación"
+                                : "Guardar Progreso"}
                         </button>
                     </div>
                 </form>

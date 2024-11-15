@@ -242,11 +242,7 @@ class ReportController extends Controller
     private function calculateMetrics(Assessment $assessment)
     {
         $metrics = Metric::query()
-            ->where(
-                // Agregado query()
-                "element_id",
-                $assessment->elementInstance->element_id
-            )
+            ->where("element_id", $assessment->elementInstance->element_id)
             ->get();
         $metricScores = [];
 
@@ -283,11 +279,17 @@ class ReportController extends Controller
                 ->where("question_id", $question->id)
                 ->first();
 
-            $expectedAnswer = $question->expectedAnswer;
-
-            if ($answer && $expectedAnswer) {
-                $score = $this->evaluateAnswer($answer, $expectedAnswer);
+            // Si hay respuesta, se calcula el score
+            if ($answer) {
+                $score = $this->evaluateAnswer(
+                    $answer,
+                    $question->expectedAnswer
+                );
                 $totalScore += $score * $questionWeight;
+                $totalWeight += $questionWeight;
+            } else {
+                // Si no hay respuesta, se considera 0
+                $totalScore += 0 * $questionWeight; // Puntuación 0
                 $totalWeight += $questionWeight;
             }
         }
@@ -342,15 +344,8 @@ class ReportController extends Controller
                     1 - $difference / $expectedAnswer->expected_answer_numeric
                 );
         }
-
-        // Para respuestas de texto
-        if ($answer->answer_text) {
-            return 1; // Por ahora, consideramos cualquier respuesta de texto como válida
-        }
-
         return 0;
     }
-
     private function getMetricDetails(Metric $metric, Assessment $assessment)
     {
         $details = [];
@@ -474,14 +469,14 @@ class ReportController extends Controller
                 if ($elementId) {
                     $q->where("element_id", $elementId);
                 }
-            }); // Corregido el cierre del whereHas
+            });
         }
 
         return $query
             ->get()
             ->map(function ($metric) {
                 // Obtener la última evaluación completa para esta métrica
-                $latestAssessment = Assessment::query() // Agregado query()
+                $latestAssessment = Assessment::query()
                     ->whereHas("elementInstance", function ($query) use (
                         $metric
                     ) {

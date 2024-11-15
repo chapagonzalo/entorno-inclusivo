@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     use HasFactory;
-    //faltan constantes para tipos
 
     const TYPE_TEXT = "text";
     const TYPE_ENUM_YESNO = "enum_yesno";

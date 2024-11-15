@@ -24,25 +24,24 @@ const Create = () => {
         <Layout>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    {/* Encabezado */}
-                    <div className="flex justify-between items-center mb-6">
-                        <h1 className="text-2xl font-semibold">
-                            Nueva Evaluación
-                        </h1>
-                    </div>
-
                     {/* Contenedor principal del formulario */}
                     <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                         <div className="p-6">
+                            {/* Encabezado */}
+                            <div className="flex justify-between items-center mb-6">
+                                <h1 className="text-2xl font-semibold">
+                                    Nueva Evaluación
+                                </h1>
+                            </div>
                             <form onSubmit={handleSubmit} className="space-y-8">
                                 {/* Sección de mapa y selección de ubicación */}
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
                                     {/* Mapa */}
                                     <div className="bg-gray-50 rounded-lg p-4 flex justify-center items-center">
                                         <img
                                             src={MapaUniversidad}
                                             alt="Mapa de la universidad"
-                                            className="max-h-80 object-contain"
+                                            className="max-h-96 object-contain"
                                         />
                                     </div>
 
