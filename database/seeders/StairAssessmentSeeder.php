@@ -16,46 +16,41 @@ class StairAssessmentSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear algunas instancias de escaleras
         $stairInstances = [
             [
-                "location_id" => 3, // Bloque 1,2 y 3
-                "element_id" => 1, // Escalera
+                "location_id" => 3,
+                "element_id" => 1,
                 "description" => "Escalera principal bloque 1",
             ],
             [
-                "location_id" => 4, // Bloque 4
+                "location_id" => 4,
                 "element_id" => 1,
                 "description" => "Escalera de emergencia bloque 4",
             ],
             [
-                "location_id" => 2, // Biblioteca
+                "location_id" => 2,
                 "element_id" => 1,
                 "description" => "Escalera acceso biblioteca",
             ],
         ];
 
-        // Usuario técnico para las evaluaciones
         $technicalUser = User::where("role", 1)->first();
 
         foreach ($stairInstances as $index => $instanceData) {
             $elementInstance = ElementInstance::create($instanceData);
 
-            // Crear una evaluación para cada instancia
             $assessment = Assessment::create([
                 "user_id" => $technicalUser->id,
                 "element_instance_id" => $elementInstance->id,
                 "status" => "complete",
             ]);
 
-            // Generar respuestas según el índice (0: bueno, 1: regular, 2: malo)
             $this->createAnswers($assessment, $index);
         }
     }
 
     private function createAnswers($assessment, $scenarioIndex)
     {
-        // Definir escenarios de respuesta
         $scenarios = [
             // Escenario Bueno
             [
@@ -81,8 +76,6 @@ class StairAssessmentSeeder extends Seeder
         ];
 
         $scenario = $scenarios[$scenarioIndex];
-
-        // Obtener todas las preguntas de escaleras
         $questions = $assessment->elementInstance->element->questions;
 
         foreach ($questions as $question) {
@@ -95,7 +88,6 @@ class StairAssessmentSeeder extends Seeder
                 "answer_numeric" => null,
             ];
 
-            // Asignar respuesta según el tipo de pregunta
             if (in_array("enum_yesno", $question->answer_types)) {
                 $answerData["answer_enum"] = $scenario["enum_yesno"];
                 $answerData["content"] = $scenario["enum_yesno"];

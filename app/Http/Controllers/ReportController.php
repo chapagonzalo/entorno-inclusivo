@@ -289,7 +289,7 @@ class ReportController extends Controller
                 $totalWeight += $questionWeight;
             } else {
                 // Si no hay respuesta, se considera 0
-                $totalScore += 0 * $questionWeight; // Puntuación 0
+                $totalScore += 0 * $questionWeight;
                 $totalWeight += $questionWeight;
             }
         }
@@ -326,25 +326,6 @@ class ReportController extends Controller
             ];
             return $qualityScores[$answer->answer_enum] ?? 0;
         }
-
-        // Para respuestas numéricas
-        if (
-            $answer->answer_numeric !== null &&
-            $expectedAnswer->expected_answer_numeric !== null
-        ) {
-            $difference = abs(
-                $answer->answer_numeric -
-                    $expectedAnswer->expected_answer_numeric
-            );
-            $tolerance = $expectedAnswer->expected_answer_numeric * 0.1; // 10% de tolerancia
-            return $difference <= $tolerance
-                ? 1
-                : max(
-                    0,
-                    1 - $difference / $expectedAnswer->expected_answer_numeric
-                );
-        }
-        return 0;
     }
     private function getMetricDetails(Metric $metric, Assessment $assessment)
     {

@@ -18,7 +18,6 @@ const Questions = () => {
         ) {
             setQuestions(assessment.element_instance.element.questions || []);
 
-            // Inicializar answers con todas las preguntas y valores vacíos
             const initialAnswers = {};
             assessment.element_instance.element.questions.forEach(
                 (question) => {
@@ -31,7 +30,6 @@ const Questions = () => {
             );
             setAnswers(initialAnswers);
 
-            // Cargar respuestas existentes si las hay
             if (assessment.answers) {
                 assessment.answers.forEach((answer) => {
                     setAnswers((prev) => ({
@@ -58,16 +56,14 @@ const Questions = () => {
     };
 
     const areAllQuestionsAnswered = () => {
-        // Verificar que todas las respuestas enum estén presentes
         return questions.every((question) => {
             const answer = answers[question.id];
-            return answer.enum?.trim() !== ""; // Comprobar si enum no está vacío
+            return answer.enum?.trim() !== "";
         });
     };
 
     const handleSubmit = (e, shouldComplete = false) => {
         e.preventDefault();
-        // Actualizar respuestas con altura y longitud
         const updatedAnswers = {};
         for (const questionId in answers) {
             updatedAnswers[questionId] = {

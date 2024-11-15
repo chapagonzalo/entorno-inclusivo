@@ -4,32 +4,6 @@ import Modal from "../Components/Modal";
 import { useState } from "react";
 
 export default function Welcome({ auth }) {
-    const handleImageError = () => {
-        document
-            .getElementById("screenshot-container")
-            ?.classList.add("!hidden");
-        document.getElementById("docs-card")?.classList.add("!row-span-1");
-        document
-            .getElementById("docs-card-content")
-            ?.classList.add("!flex-row");
-        document.getElementById("background")?.classList.add("!hidden");
-    };
-
-    const [modalStates, setModalStates] = useState({
-        accesibilidad: false,
-        evaluaciones: false,
-        informes: false,
-        cuestionarios: false,
-    });
-
-    const openModal = (modalName) => {
-        setModalStates((prev) => ({ ...prev, [modalName]: true }));
-    };
-
-    const closeModal = (modalName) => {
-        setModalStates((prev) => ({ ...prev, [modalName]: false }));
-    };
-
     return (
         <>
             <Head title="Bienvenido/a" />

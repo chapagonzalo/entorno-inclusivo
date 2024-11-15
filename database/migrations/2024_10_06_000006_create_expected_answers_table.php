@@ -17,8 +17,6 @@ return new class extends Migration {
                 ->foreignId("question_id")
                 ->constrained("questions")
                 ->onDelete("cascade");
-
-            // Columnas para almacenar distintos tipos de respuestas esperadas
             $table->text("expected_answer_text")->nullable();
             $table
                 ->enum("expected_answer_enum", [

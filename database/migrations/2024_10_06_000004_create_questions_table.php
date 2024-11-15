@@ -19,7 +19,7 @@ return new class extends Migration {
                 ->foreignId("element_id")
                 ->constrained("elements")
                 ->onDelete("cascade");
-            $table->json("answer_types")->nullable(); // Cambiado a nullable
+            $table->json("answer_types")->nullable();
             $table->timestamps();
         });
 

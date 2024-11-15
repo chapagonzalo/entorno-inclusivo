@@ -146,8 +146,6 @@ class AssessmentController extends Controller
         // Segunda parte: Verificar si está completa
         // Recargar la evaluación con sus relaciones actualizadas
         $assessment->load("elementInstance.element.questions", "answers");
-
-        // Obtener todas las preguntas para este elemento
         $totalQuestions = $assessment->elementInstance->element->questions->count();
 
         // Contar cuántas preguntas tienen al menos una respuesta
@@ -178,7 +176,6 @@ class AssessmentController extends Controller
         }
     }
 
-    // Mostrar una evaluación con sus respuestas (enviando a React)
     public function show($id)
     {
         $assessment = Assessment::with([
