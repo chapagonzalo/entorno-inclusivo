@@ -1,6 +1,5 @@
 import { Head, Link } from "@inertiajs/react";
 import Logo from "../assets/Logo.svg";
-import inicio from "../assets/inicio.png";
 import Modal from "../Components/Modal";
 import { useState } from "react";
 
@@ -15,6 +14,7 @@ export default function Welcome({ auth }) {
             ?.classList.add("!flex-row");
         document.getElementById("background")?.classList.add("!hidden");
     };
+
     const [modalStates, setModalStates] = useState({
         accesibilidad: false,
         evaluaciones: false,
@@ -33,7 +33,7 @@ export default function Welcome({ auth }) {
     return (
         <>
             <Head title="Bienvenido/a" />
-            <div className="font-sans bg-gray-100 text-black/50">
+            <div className="font-sans bg-gray-100 text-black/70">
                 <div className="relative flex min-h-screen flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
                     <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                         <header className="flex justify-between items-center py-10">

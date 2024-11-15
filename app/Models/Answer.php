@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Answer extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         "assessment_id",
         "question_id",
@@ -15,8 +16,6 @@ class Answer extends Model
         "answer_text",
         "answer_enum",
         "answer_numeric",
-        "altura",
-        "longitud",
     ];
 
     public function question()

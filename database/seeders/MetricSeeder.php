@@ -69,11 +69,20 @@ class MetricSeeder extends Seeder
             ->get();
 
         for ($i = 0; $i < count($metricData["questions"]); $i++) {
-            $questionIndex = $metricData["questions"][$i] - 1;
-            if (isset($questions[$questionIndex])) {
+            $questionId = $metricData["questions"][$i]; // Obtener el ID de la pregunta
+            $questionIndex = array_search(
+                $questionId,
+                $questions->pluck("id")->toArray()
+            ); // Buscar el índice del ID
+            if ($questionIndex !== false) {
                 $metric->questions()->attach($questions[$questionIndex]->id, [
                     "question_weight" => $metricData["question_weights"][$i],
                 ]);
+            } else {
+                // Manejar el caso en que la pregunta no se encuentre en la base de datos
+                Log::error(
+                    "La pregunta con ID {$questionId} no se encontró en la base de datos."
+                );
             }
         }
     }
@@ -86,8 +95,8 @@ class MetricSeeder extends Seeder
                 "description" =>
                     "Evalúa aspectos fundamentales de la estructura como dimensiones y estabilidad",
                 "weight" => 30,
-                "questions" => [1, 2, 3, 4],
-                "question_weights" => [25, 25, 25, 25],
+                "questions" => [1, 2, 3, 4, 5],
+                "question_weights" => [20, 20, 20, 20, 20],
             ],
             [
                 "name" => "Elementos de Apoyo",
@@ -169,15 +178,16 @@ class MetricSeeder extends Seeder
                 "description" =>
                     "Evalúa la inclusión de elementos para diferentes tipos de discapacidad",
                 "weight" => 35,
-                "questions" => [37, 38, 39, 40, 41, 42, 43],
+                "questions" => [37, 38, 39, 40, 41, 42, 43, 44],
                 "question_weights" => [
-                    14.29,
-                    14.29,
-                    14.29,
-                    14.29,
-                    14.29,
-                    14.29,
-                    14.29,
+                    12.5,
+                    12.5,
+                    12.5,
+                    12.5,
+                    12.5,
+                    12.5,
+                    12.5,
+                    12.5,
                 ],
             ],
         ];

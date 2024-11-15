@@ -15,8 +15,6 @@ class ExpectedAnswer extends Model
         "expected_answer_text",
         "expected_answer_enum",
         "expected_answer_numeric",
-        "expected_answer_altura",
-        "expected_answer_longitud",
     ];
 
     public function question()

@@ -18,14 +18,16 @@ class Assessment extends Model
         return $this->belongsTo(ElementInstance::class);
     }
 
+    // Relación: Una evaluación pertenece a una ubicación
     public function location()
     {
-        return $this->belongsTo(Location::class);
+        return $this->elementInstance->location;
     }
 
+    // Relación: Una evaluación pertenece a un tipo de elemento
     public function element()
     {
-        return $this->belongsTo(Element::class);
+        return $this->elementInstance->element;
     }
 
     public function user()

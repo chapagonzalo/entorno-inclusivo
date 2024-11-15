@@ -279,11 +279,17 @@ class ReportController extends Controller
                 ->where("question_id", $question->id)
                 ->first();
 
-            $expectedAnswer = $question->expectedAnswer;
-
-            if ($answer && $expectedAnswer) {
-                $score = $this->evaluateAnswer($answer, $expectedAnswer);
+            // Si hay respuesta, se calcula el score
+            if ($answer) {
+                $score = $this->evaluateAnswer(
+                    $answer,
+                    $question->expectedAnswer
+                );
                 $totalScore += $score * $questionWeight;
+                $totalWeight += $questionWeight;
+            } else {
+                // Si no hay respuesta, se considera 0
+                $totalScore += 0 * $questionWeight; // Puntuación 0
                 $totalWeight += $questionWeight;
             }
         }
@@ -338,31 +344,6 @@ class ReportController extends Controller
                     1 - $difference / $expectedAnswer->expected_answer_numeric
                 );
         }
-
-        // Para respuestas de texto
-        if ($answer->answer_text) {
-            return 1; // Por ahora, consideramos cualquier respuesta de texto como válida
-        }
-
-        // Para la pendiente
-        if (
-            $answer->altura !== null &&
-            $answer->longitud !== null &&
-            $expectedAnswer->expected_answer_altura !== null &&
-            $expectedAnswer->expected_answer_longitud !== null
-        ) {
-            $pendienteActual =
-                ($answer->altura * 100) / ($answer->longitud * 100);
-            $pendienteEsperada =
-                ($expectedAnswer->expected_answer_altura * 100) /
-                ($expectedAnswer->expected_answer_longitud * 100);
-            $difference = abs($pendienteActual - $pendienteEsperada);
-            $tolerance = $pendienteEsperada * 0.1; // 10% de tolerancia
-            return $difference <= $tolerance
-                ? 1
-                : max(0, 1 - $difference / $pendienteEsperada);
-        }
-
         return 0;
     }
     private function getMetricDetails(Metric $metric, Assessment $assessment)

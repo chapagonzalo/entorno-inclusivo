@@ -30,8 +30,6 @@ return new class extends Migration {
                 ])
                 ->nullable();
             $table->decimal("expected_answer_numeric", 10, 2)->nullable();
-            $table->decimal("expected_answer_altura", 10, 2)->nullable();
-            $table->decimal("expected_answer_longitud", 10, 2)->nullable();
             $table->timestamps();
         });
     }
