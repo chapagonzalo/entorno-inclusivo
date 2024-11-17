@@ -218,6 +218,39 @@ const Index = ({ reports, locations, elements, filters }) => {
 
                         {/* Lista de Informes */}
                         <ReportsList reports={reports} />
+
+                        {/* Paginación */}
+                        <div className="mt-6">
+                            <div className="flex items-center justify-center space-x-2">
+                                {reports.links.map((link, index) => {
+                                    const getLabel = (label) => {
+                                        if (label.includes("&laquo;"))
+                                            return "Anterior";
+                                        if (label.includes("&raquo;"))
+                                            return "Siguiente";
+                                        return label;
+                                    };
+
+                                    return (
+                                        <Link
+                                            key={index}
+                                            href={link.url}
+                                            className={`px-4 py-2 rounded-full font-medium border transition-all ${
+                                                link.active
+                                                    ? "bg-[#427898] text-white border-[#427898]" // Botón activo
+                                                    : link.url === null
+                                                      ? "bg-gray-200 text-gray-500 border-gray-200 cursor-not-allowed" // Botón deshabilitado
+                                                      : "bg-white text-[#427898] border-[#427898] hover:bg-[#6aced3] hover:text-white" // Botón normal
+                                            }`}
+                                            disabled={link.url === null}
+                                            preserveState={true}
+                                        >
+                                            {getLabel(link.label)}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

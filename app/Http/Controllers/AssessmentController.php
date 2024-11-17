@@ -22,7 +22,7 @@ class AssessmentController extends Controller
         ])
             ->where("user_id", auth()->id())
             ->latest()
-            ->get();
+            ->paginate(9);
 
         return Inertia::render("Assessments/Index", [
             "assessments" => $assessments,

@@ -8,63 +8,64 @@ use App\Models\Assessment;
 use App\Models\ElementInstance;
 use App\Models\Answer;
 use App\Models\User;
+use App\Models\Element;
 
-class StairAssessmentSeeder extends Seeder
+class AssessmentCompleteSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $stairInstances = [
+        $elements = Element::all();
+        $technicalUser = User::where("role", 1)->first();
+        $locations = [
+            // Add more locations if needed
             [
-                "location_id" => 3,
-                "element_id" => 1,
-                "description" => "Escalera principal bloque 1",
+                "name" => "Bloque 1",
             ],
             [
-                "location_id" => 4,
-                "element_id" => 1,
-                "description" => "Escalera de emergencia bloque 4",
+                "name" => "Biblioteca",
             ],
             [
-                "location_id" => 2,
-                "element_id" => 1,
-                "description" => "Escalera acceso biblioteca",
+                "name" => "Bloque 4",
             ],
         ];
 
-        $technicalUser = User::where("role", 1)->first();
+        foreach ($locations as $locationData) {
+            $location = \App\Models\Location::create($locationData);
 
-        foreach ($stairInstances as $index => $instanceData) {
-            $elementInstance = ElementInstance::create($instanceData);
+            foreach ($elements as $element) {
+                $elementInstance = ElementInstance::create([
+                    "location_id" => $location->id, // Use the created location
+                    "element_id" => $element->id,
+                    "description" => $element->name . " en " . $location->name, // Dynamic description
+                ]);
 
-            $assessment = Assessment::create([
-                "user_id" => $technicalUser->id,
-                "element_instance_id" => $elementInstance->id,
-                "status" => "complete",
-            ]);
+                $assessment = Assessment::create([
+                    "user_id" => $technicalUser->id,
+                    "element_instance_id" => $elementInstance->id,
+                    "status" => "complete",
+                ]);
 
-            $this->createAnswers($assessment, $index);
+                $this->createAnswers($assessment);
+            }
         }
     }
 
-    private function createAnswers($assessment, $scenarioIndex)
+    private function createAnswers($assessment)
     {
         $scenarios = [
-            // Escenario Bueno
             [
                 "enum_yesno" => "Sí",
                 "enum_quality" => "Bueno",
                 "text" => "Cumple con todos los requisitos",
             ],
-            // Escenario Regular
             [
                 "enum_yesno" => "Sí",
                 "enum_quality" => "Regular",
                 "text" => "Cumple parcialmente con los requisitos",
             ],
-            // Escenario Malo
             [
                 "enum_yesno" => "No",
                 "enum_quality" => "Malo",
@@ -72,10 +73,11 @@ class StairAssessmentSeeder extends Seeder
             ],
         ];
 
-        $scenario = $scenarios[$scenarioIndex];
         $questions = $assessment->elementInstance->element->questions;
 
         foreach ($questions as $question) {
+            $scenario = $scenarios[rand(0, count($scenarios) - 1)]; // Random scenario for each question
+
             $answerData = [
                 "assessment_id" => $assessment->id,
                 "question_id" => $question->id,

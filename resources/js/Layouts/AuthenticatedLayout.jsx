@@ -260,7 +260,7 @@ export default function Authenticated({ header, children }) {
 
             <main className="min-h-screen pb-24">{children}</main>
 
-            <footer className="bg-white text-gray-800 py-8 shadow-md border-t border-gray-200 fixed bottom-0 w-full">
+            <footer className="bg-white text-gray-800 py-8 shadow-md border-t border-gray-200 bottom-0 w-full">
                 {" "}
                 {/* Fondo blanco y borde superior */}
                 <div className="container mx-auto px-4">

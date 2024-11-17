@@ -161,14 +161,18 @@ const Index = ({ auth, assessments }) => {
                     </div>
 
                     {/* Main content */}
-                    {assessments.length > 0 ? (
+                    {assessments.data.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {assessments.map((assessment) => (
-                                <AssessmentCard
-                                    key={assessment.id}
-                                    assessment={assessment}
-                                />
-                            ))}
+                            {assessments.data.map(
+                                (
+                                    assessment, // <-  Iterar sobre assessments.data
+                                ) => (
+                                    <AssessmentCard
+                                        key={assessment.id}
+                                        assessment={assessment}
+                                    />
+                                ),
+                            )}
                         </div>
                     ) : (
                         <div className="bg-white rounded-lg shadow-sm p-6 text-center">
@@ -214,6 +218,39 @@ const Index = ({ auth, assessments }) => {
                             </div>
                         </div>
                     )}
+
+                    {/* Paginación */}
+                    <div className="mt-6">
+                        <div className="flex items-center justify-center space-x-2">
+                            {assessments.links.map((link, index) => {
+                                const getLabel = (label) => {
+                                    if (label.includes("&laquo;"))
+                                        return "Anterior";
+                                    if (label.includes("&raquo;"))
+                                        return "Siguiente";
+                                    return label;
+                                };
+
+                                return (
+                                    <Link
+                                        key={index}
+                                        href={link.url}
+                                        className={`px-4 py-2 rounded-full font-medium border transition-all ${
+                                            link.active
+                                                ? "bg-[#427898] text-white border-[#427898]" // Botón activo
+                                                : link.url === null
+                                                  ? "bg-gray-200 text-gray-500 border-gray-200 cursor-not-allowed" // Botón deshabilitado
+                                                  : "bg-white text-[#427898] border-[#427898] hover:bg-[#6aced3] hover:text-white" // Botón normal
+                                        }`}
+                                        disabled={link.url === null}
+                                        preserveState={true}
+                                    >
+                                        {getLabel(link.label)}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
             </div>
         </Layout>
