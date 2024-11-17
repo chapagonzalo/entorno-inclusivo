@@ -56,21 +56,18 @@ class StairAssessmentSeeder extends Seeder
             [
                 "enum_yesno" => "Sí",
                 "enum_quality" => "Bueno",
-                "numeric" => 1.2,
                 "text" => "Cumple con todos los requisitos",
             ],
             // Escenario Regular
             [
                 "enum_yesno" => "Sí",
                 "enum_quality" => "Regular",
-                "numeric" => 1.1,
                 "text" => "Cumple parcialmente con los requisitos",
             ],
             // Escenario Malo
             [
                 "enum_yesno" => "No",
                 "enum_quality" => "Malo",
-                "numeric" => 0.9,
                 "text" => "No cumple con los requisitos mínimos",
             ],
         ];
@@ -85,7 +82,6 @@ class StairAssessmentSeeder extends Seeder
                 "content" => "",
                 "answer_text" => null,
                 "answer_enum" => null,
-                "answer_numeric" => null,
             ];
 
             if (in_array("enum_yesno", $question->answer_types)) {
@@ -94,9 +90,6 @@ class StairAssessmentSeeder extends Seeder
             } elseif (in_array("enum_quality", $question->answer_types)) {
                 $answerData["answer_enum"] = $scenario["enum_quality"];
                 $answerData["content"] = $scenario["enum_quality"];
-            } elseif (in_array("numeric", $question->answer_types)) {
-                $answerData["answer_numeric"] = $scenario["numeric"];
-                $answerData["content"] = (string) $scenario["numeric"];
             } else {
                 $answerData["answer_text"] = $scenario["text"];
                 $answerData["content"] = $scenario["text"];

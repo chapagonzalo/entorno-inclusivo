@@ -27,7 +27,6 @@ return new class extends Migration {
                     "Malo",
                 ])
                 ->nullable();
-            $table->decimal("expected_answer_numeric", 10, 2)->nullable();
             $table->timestamps();
         });
     }

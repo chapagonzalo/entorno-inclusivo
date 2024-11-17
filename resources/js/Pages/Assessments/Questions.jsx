@@ -24,7 +24,6 @@ const Questions = () => {
                     initialAnswers[question.id] = {
                         text: "",
                         enum: "",
-                        numeric: "",
                     };
                 },
             );
@@ -37,7 +36,6 @@ const Questions = () => {
                         [answer.question_id]: {
                             text: answer.answer_text || "",
                             enum: answer.answer_enum || "",
-                            numeric: answer.answer_numeric || "",
                         },
                     }));
                 });
@@ -140,24 +138,6 @@ const Questions = () => {
                                     <option value="Regular">Regular</option>
                                     <option value="Malo">Malo</option>
                                 </select>
-                            </div>
-                        )}
-
-                        {question.answer_types.includes("numeric") && (
-                            <div>
-                                <label className="block text-sm font-semibold text-gray-800 mb-1">
-                                    Valor Numérico (Opcional):
-                                </label>
-                                <input
-                                    type="number"
-                                    value={answers[question.id]?.numeric || ""}
-                                    onChange={(e) =>
-                                        handleAnswerChange(question.id, {
-                                            numeric: e.target.value,
-                                        })
-                                    }
-                                    className="block w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                />
                             </div>
                         )}
 
