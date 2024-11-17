@@ -13,6 +13,7 @@ export default function Authenticated({ header, children }) {
 
     const isAdmin = user.role == 0;
     const isTechnical = user.role == 1;
+    const isSupervisor = user.role == 2;
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -43,6 +44,18 @@ export default function Authenticated({ header, children }) {
                                         >
                                             Evaluaciones
                                         </NavLink>
+                                        <NavLink
+                                            href={route("reports.index")}
+                                            active={route().current(
+                                                "reports.index",
+                                            )}
+                                        >
+                                            Informes
+                                        </NavLink>
+                                    </>
+                                )}
+                                {isSupervisor && (
+                                    <>
                                         <NavLink
                                             href={route("reports.index")}
                                             active={route().current(
@@ -179,6 +192,16 @@ export default function Authenticated({ header, children }) {
                                 >
                                     Evaluaciones
                                 </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route("reports.index")}
+                                    active={route().current("reports.index")}
+                                >
+                                    Informes
+                                </ResponsiveNavLink>
+                            </>
+                        )}
+                        {isSupervisor && (
+                            <>
                                 <ResponsiveNavLink
                                     href={route("reports.index")}
                                     active={route().current("reports.index")}
