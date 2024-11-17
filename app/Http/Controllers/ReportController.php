@@ -86,6 +86,27 @@ class ReportController extends Controller
 
     public function show(Report $report)
     {
+        $metrics = collect($report->metrics_scores)
+            ->map(function ($metric) use ($report) {
+                $metricModel = Metric::where("name", $metric["name"])
+                    ->where(
+                        "element_id",
+                        $report->assessment->elementInstance->element_id
+                    )
+                    ->first();
+
+                return [
+                    ...$metric,
+                    "score" => (float) $metric["score"],
+                    "questions" => $metricModel
+                        ? $this->getMetricQuestionsAndAnswers(
+                            $metricModel,
+                            $report->assessment
+                        )
+                        : [],
+                ];
+            })
+            ->toArray();
         return Inertia::render("Reports/Show", [
             "report" => [
                 ...$report
@@ -97,11 +118,7 @@ class ReportController extends Controller
                     ->toArray(),
                 "final_score" => (float) $report->final_score,
             ],
-            "metrics" => collect($report->metrics_scores)
-                ->map(function ($metric) {
-                    return [...$metric, "score" => (float) $metric["score"]];
-                })
-                ->toArray(),
+            "metrics" => $metrics,
             "recommendations" => $report->recommendations ?? [],
         ]);
     }
@@ -255,6 +272,11 @@ class ReportController extends Controller
                 "description" => $metric->description,
                 "weight" => $metric->weight,
                 "details" => $this->getMetricDetails($metric, $assessment),
+                "questions" => $this->getMetricQuestionsAndAnswers(
+                    $metric,
+                    $assessment
+                ),
+                "id" => $metric->id,
             ];
         }
 
@@ -349,6 +371,36 @@ class ReportController extends Controller
             }
         }
         return $details;
+    }
+
+    private function getMetricQuestionsAndAnswers(
+        Metric $metric,
+        Assessment $assessment
+    ): array {
+        $questionAndAnswers = [];
+        foreach ($metric->questions as $question) {
+            $answer = $assessment
+                ->answers()
+                ->where("question_id", $question->id)
+                ->first();
+            $expectedAnswer = $question->expectedAnswer;
+
+            if ($answer) {
+                $questionAndAnswers[] = [
+                    "question" => $question->content,
+                    "answer" => $answer->content,
+                    "expected_answer" => $expectedAnswer?->expected_answer, // Mostrar la respuesta esperada
+                    "expected_answer_text" =>
+                        $expectedAnswer?->expected_answer_text, // Mostrar la respuesta esperada (texto)
+                    "expected_answer_enum" =>
+                        $expectedAnswer?->expected_answer_enum, // Mostrar la respuesta esperada (enum)
+                    "score" => $this->evaluateAnswer($answer, $expectedAnswer), // Incluir la puntuación de la respuesta
+                    "answer_text" => $answer->answer_text,
+                    "answer_enum" => $answer->answer_enum,
+                ];
+            }
+        }
+        return $questionAndAnswers;
     }
 
     private function generateSummary($metrics)

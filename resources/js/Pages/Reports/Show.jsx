@@ -1,8 +1,10 @@
 import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import { Disclosure } from "@headlessui/react";
+import { ChevronUpIcon } from "@heroicons/react/24/solid";
 
-const MetricCard = ({ name, score, description }) => (
+const MetricCard = ({ name, score, description, questions }) => (
     <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-200">
         <h3 className="text-lg font-semibold text-gray-900 mb-2">{name}</h3>
         <div className="mt-2">
@@ -27,6 +29,58 @@ const MetricCard = ({ name, score, description }) => (
             </div>
         </div>
         <p className="mt-3 text-sm text-gray-600">{description}</p>
+
+        <Disclosure>
+            {({ open }) => (
+                <>
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75 mt-4">
+                        <span>Preguntas y Respuestas</span>
+                        <ChevronUpIcon
+                            className={`${
+                                open ? "transform rotate-180" : ""
+                            } w-5 h-5 text-purple-500`}
+                        />
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                        {questions &&
+                            questions.map((qa, index) => (
+                                <div key={index} className="mb-2">
+                                    <p className="font-semibold">
+                                        {qa.question}
+                                    </p>
+                                    <p>Respuesta: {qa.answer}</p>
+                                    {/* Mostrar respuesta esperada si existe */}
+                                    {qa.expected_answer && (
+                                        <p>
+                                            Respuesta Esperada:{" "}
+                                            {qa.expected_answer}
+                                        </p>
+                                    )}
+                                    {qa.expected_answer_text && (
+                                        <p>
+                                            Respuesta Esperada (texto):{" "}
+                                            {qa.expected_answer_text}
+                                        </p>
+                                    )}
+                                    <p>Puntuación: {qa.score}</p>
+                                    {qa.answer_text && (
+                                        <p>
+                                            Texto de la respuesta:{" "}
+                                            {qa.answer_text}
+                                        </p>
+                                    )}
+                                </div>
+                            ))}
+                        {!questions && (
+                            <p>
+                                No hay preguntas y respuestas disponibles para
+                                esta métrica.
+                            </p>
+                        )}
+                    </Disclosure.Panel>
+                </>
+            )}
+        </Disclosure>
     </div>
 );
 
@@ -191,6 +245,7 @@ export default function Show({ report, metrics, recommendations }) {
                                                     : 0
                                             }
                                             description={metric.description}
+                                            questions={metric.questions}
                                         />
                                     ))}
                             </div>
