@@ -1,97 +1,131 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Informe de Evaluación</title>
-    <style>
-        body {
-            font-family: DejaVu Sans, sans-serif;
-            line-height: 1.6;
-            margin: 20px;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #eaeaea;
-        }
-        .header h1 {
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
-        .section {
-            margin-bottom: 30px;
-        }
-        .section h2 {
-            color: #2d3748;
-            border-bottom: 1px solid #eaeaea;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-        }
-        .info-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        .info-table th, .info-table td {
-            border: 1px solid #e2e8f0;
-            padding: 10px;
-            text-align: left;
-        }
-        .info-table th {
-            background-color: #f7fafc;
-            font-weight: bold;
-            width: 30%;
-        }
-        .score-section {
-            text-align: center;
-            margin: 20px 0;
-            padding: 20px;
-            background-color: #f7fafc;
-            border-radius: 8px;
-        }
-        .final-score {
-            font-size: 36px;
-            font-weight: bold;
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
-        .accessibility-level {
-            font-size: 18px;
-            color: #4a5568;
-        }
-        .metric {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #f8fafc;
-            border-radius: 4px;
-        }
-        .metric h3 {
-            color: #2d3748;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-        .metric-score {
-            font-weight: bold;
-            color: #4a5568;
-            margin-bottom: 5px;
-        }
-        .recommendation {
-            margin-bottom: 15px;
-            padding: 15px;
-            background-color: #fffbeb;
-            border-radius: 4px;
-        }
-        .recommendation h3 {
-            color: #92400e;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-        .page-break {
-            page-break-before: always;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Informe de Evaluación</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.8;
+                margin: 20px;
+                color: #333333;
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 40px;
+                padding-bottom: 20px;
+                border-bottom: 3px solid #444444;
+            }
+            .header h1 {
+                color: #2b2d42;
+                font-size: 28px;
+                margin-bottom: 5px;
+            }
+            .header p {
+                font-size: 14px;
+                color: #4a5568;
+            }
+            .section {
+                margin-bottom: 40px;
+                page-break-before: always;
+            }
+            .header + .section {
+                page-break-before: auto;
+            }
+            .section h2 {
+                font-size: 22px;
+                color: #2b2d42;
+                border-bottom: 2px solid #888888;
+                padding-bottom: 5px;
+                margin-bottom: 20px;
+            }
+            .info-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 25px;
+                font-size: 14px;
+            }
+            .info-table th, .info-table td {
+                border: 1px solid #dddddd;
+                padding: 12px;
+            }
+            .info-table th {
+                background-color: #f3f4f6;
+                font-weight: bold;
+                color: #2d3748;
+                width: 35%;
+            }
+            .score-section {
+                text-align: center;
+                padding: 25px;
+                background-color: #e9f5ff;
+                border-radius: 10px;
+            }
+            .final-score {
+                font-size: 40px;
+                font-weight: bold;
+                color: #1a202c;
+                margin-bottom: 5px;
+            }
+            .accessibility-level {
+                font-size: 18px;
+                color: #718096;
+            }
+            .metric {
+                margin-bottom: 25px;
+                padding: 20px;
+                background-color: #f9fafb;
+                border-left: 5px solid #3182ce;
+                border-radius: 5px;
+            }
+            .metric h3 {
+                font-size: 18px;
+                color: #2b2d42;
+                margin: 0;
+                margin-bottom: 10px;
+            }
+            .metric-score {
+                font-size: 16px;
+                font-weight: bold;
+                color: #4a5568;
+                margin-bottom: 10px;
+            }
+            .recommendation {
+                margin-bottom: 20px;
+                padding: 20px;
+                background-color: #fffaf0;
+                border-left: 5px solid #d69e2e;
+                border-radius: 5px;
+            }
+            .recommendation h3 {
+                font-size: 18px;
+                color: #9c4221;
+                margin-top: 0;
+            }
+            .footer {
+                text-align: center;
+                color: #666666;
+                font-size: 12px;
+                margin-top: 40px;
+                border-top: 1px solid #cccccc;
+                padding-top: 10px;
+            }
+            .qa-block {
+                margin-bottom: 15px;
+                padding: 10px;
+                background-color: #f7fafc;
+                border-radius: 4px;
+                border: 1px solid #e2e8f0;
+            }
+            .qa-block p {
+                margin: 5px 0;
+                font-size: 14px;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        </style>
+    </head>
 <body>
     <div class="header">
         <h1>Informe de Evaluación de Accesibilidad</h1>
@@ -118,9 +152,6 @@
                 <td>{{ date('d/m/Y', strtotime($report->assessment->created_at)) }}</td>
             </tr>
         </table>
-    </div>
-
-    <div class="section">
         <div class="score-section">
             <div class="final-score">
                 {{ number_format($report->final_score, 1) }}%
@@ -137,9 +168,32 @@
             <div class="metric">
                 <h3>{{ $metric['name'] }}</h3>
                 <div class="metric-score">
-                    Puntuación: {{ number_format($metric['score'], 1) }}%
+                    <strong>Puntuación:</strong> {{ number_format($metric['score'], 1) }}%
                 </div>
                 <p>{{ $metric['description'] }}</p>
+
+                <h4>Preguntas y Respuestas</h4>
+                @foreach ($metric['questions'] as $qa)
+                    <div class="qa-block">
+                        <p><strong>Pregunta:</strong> {{ $qa['question'] }}</p>
+                        <p><strong>Respuesta:</strong>
+                            {{ $qa['answer'] }}
+                            @if($qa['answer_text'] != null)
+                                - {{$qa['answer_text']}}
+                            @endif
+                        </p>
+                        <p><strong>Respuesta Esperada:</strong>
+                            @if($qa['expected_answer'] != null)
+                                {{ $qa['expected_answer'] }}
+                            @endif
+                            @if($qa['expected_answer_text'] != null)
+                                - {{ $qa['expected_answer_text'] }}
+                            @endif
+                        </p>
+                        <p><strong>Puntuación:</strong> {{ $qa['score'] }}</p>
+                    </div>
+                    <hr>
+                @endforeach
             </div>
         @endforeach
     </div>

@@ -548,7 +548,29 @@ class ReportController extends Controller
 
     public function export(Report $report, ReportPdfGenerator $pdfGenerator)
     {
-        $pdf = $pdfGenerator->generate($report);
+        $metrics = collect($report->metrics_scores)
+            ->map(function ($metric) use ($report) {
+                $metricModel = Metric::where("name", $metric["name"])
+                    ->where(
+                        "element_id",
+                        $report->assessment->elementInstance->element_id
+                    )
+                    ->first();
+
+                return [
+                    ...$metric,
+                    "score" => (float) $metric["score"],
+                    "questions" => $metricModel
+                        ? $this->getMetricQuestionsAndAnswers(
+                            $metricModel,
+                            $report->assessment
+                        )
+                        : [],
+                ];
+            })
+            ->toArray();
+
+        $pdf = $pdfGenerator->generate($report, $metrics);
 
         $fileName = sprintf(
             "informe-accesibilidad-%s-%s.pdf",
