@@ -44,19 +44,6 @@ const ShowAnswer = ({ answer }) => {
             );
         }
 
-        if (answer.answer_numeric !== null) {
-            answerValues.push(
-                <div key="numeric" className="mt-2">
-                    <span className="text-gray-600 font-medium">
-                        Valor numérico:{" "}
-                    </span>
-                    <span className="text-gray-800">
-                        {answer.answer_numeric}
-                    </span>
-                </div>,
-            );
-        }
-
         if (answerValues.length === 0 && answer.content) {
             answerValues.push(
                 <div key="content" className="mt-2">

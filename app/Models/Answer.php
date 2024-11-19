@@ -15,7 +15,6 @@ class Answer extends Model
         "content",
         "answer_text",
         "answer_enum",
-        "answer_numeric",
     ];
 
     public function question()

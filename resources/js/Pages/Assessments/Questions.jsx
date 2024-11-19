@@ -18,20 +18,17 @@ const Questions = () => {
         ) {
             setQuestions(assessment.element_instance.element.questions || []);
 
-            // Inicializar answers con todas las preguntas y valores vacíos
             const initialAnswers = {};
             assessment.element_instance.element.questions.forEach(
                 (question) => {
                     initialAnswers[question.id] = {
                         text: "",
                         enum: "",
-                        numeric: "",
                     };
                 },
             );
             setAnswers(initialAnswers);
 
-            // Cargar respuestas existentes si las hay
             if (assessment.answers) {
                 assessment.answers.forEach((answer) => {
                     setAnswers((prev) => ({
@@ -39,7 +36,6 @@ const Questions = () => {
                         [answer.question_id]: {
                             text: answer.answer_text || "",
                             enum: answer.answer_enum || "",
-                            numeric: answer.answer_numeric || "",
                         },
                     }));
                 });
@@ -58,16 +54,14 @@ const Questions = () => {
     };
 
     const areAllQuestionsAnswered = () => {
-        // Verificar que todas las respuestas enum estén presentes
         return questions.every((question) => {
             const answer = answers[question.id];
-            return answer.enum?.trim() !== ""; // Comprobar si enum no está vacío
+            return answer.enum?.trim() !== "";
         });
     };
 
     const handleSubmit = (e, shouldComplete = false) => {
         e.preventDefault();
-        // Actualizar respuestas con altura y longitud
         const updatedAnswers = {};
         for (const questionId in answers) {
             updatedAnswers[questionId] = {
@@ -144,24 +138,6 @@ const Questions = () => {
                                     <option value="Regular">Regular</option>
                                     <option value="Malo">Malo</option>
                                 </select>
-                            </div>
-                        )}
-
-                        {question.answer_types.includes("numeric") && (
-                            <div>
-                                <label className="block text-sm font-semibold text-gray-800 mb-1">
-                                    Valor Numérico (Opcional):
-                                </label>
-                                <input
-                                    type="number"
-                                    value={answers[question.id]?.numeric || ""}
-                                    onChange={(e) =>
-                                        handleAnswerChange(question.id, {
-                                            numeric: e.target.value,
-                                        })
-                                    }
-                                    className="block w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                />
                             </div>
                         )}
 

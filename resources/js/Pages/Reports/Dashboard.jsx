@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "@inertiajs/react";
+import React, { useState } from "react";
+import { Link, usePage } from "@inertiajs/react";
 import { router } from "@inertiajs/react";
 import Layout from "@/Layouts/AuthenticatedLayout";
 
@@ -114,7 +114,23 @@ const ReportList = ({ reports }) => {
     );
 };
 
-const Dashboard = ({ reports, stats, locations, elements, filters }) => {
+const Dashboard = ({ stats, locations, elements }) => {
+    const { props } = usePage();
+    const reports = props.reports;
+    const initialFilters = props.filters || {}; // Inicializa filters si no existe
+
+    const [currentFilters, setCurrentFilters] = useState(initialFilters);
+
+    const handleFilterChange = (filterName, value) => {
+        const newFilters = { ...currentFilters, [filterName]: value };
+        setCurrentFilters(newFilters);
+
+        Inertia.get(route("reports.dashboard"), newFilters, {
+            preserveState: true, // Preserva el estado, incluyendo la paginación
+            replace: true, // Reemplaza la URL actual en el historial
+        });
+    };
+
     return (
         <Layout>
             <div className="py-12 bg-gray-50">
@@ -146,12 +162,12 @@ const Dashboard = ({ reports, stats, locations, elements, filters }) => {
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <select
-                                value={filters.location_id || ""}
+                                value={currentFilters.location_id || ""} // Usar currentFilters aquí
                                 onChange={(e) =>
-                                    router.get(route("reports.dashboard"), {
-                                        ...filters,
-                                        location_id: e.target.value,
-                                    })
+                                    handleFilterChange(
+                                        "location_id",
+                                        e.target.value,
+                                    )
                                 }
                                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base"
                             >
@@ -167,12 +183,12 @@ const Dashboard = ({ reports, stats, locations, elements, filters }) => {
                             </select>
 
                             <select
-                                value={filters.element_id || ""}
+                                value={currentFilters.element_id || ""} // Usar currentFilters aquí
                                 onChange={(e) =>
-                                    router.get(route("reports.dashboard"), {
-                                        ...filters,
-                                        element_id: e.target.value,
-                                    })
+                                    handleFilterChange(
+                                        "element_id",
+                                        e.target.value,
+                                    )
                                 }
                                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base"
                             >
@@ -188,10 +204,41 @@ const Dashboard = ({ reports, stats, locations, elements, filters }) => {
 
                     {/* Lista de Evaluaciones */}
                     <div className="bg-white rounded-lg shadow-lg p-6 mb-8 border border-gray-300">
-                        <h2 className="text-xl font-bold text-gray-900 mb-4">
-                            Evaluaciones
-                        </h2>
+                        {/* ... */}
                         <ReportList reports={reports} />
+
+                        {/* Paginación */}
+                        <div className="mt-6">
+                            <div className="flex items-center justify-center space-x-2">
+                                {reports.links.map((link, index) => {
+                                    const getLabel = (label) => {
+                                        if (label.includes("&laquo;"))
+                                            return "Anterior";
+                                        if (label.includes("&raquo;"))
+                                            return "Siguiente";
+                                        return label;
+                                    };
+
+                                    return (
+                                        <Link
+                                            key={index}
+                                            href={link.url}
+                                            className={`px-4 py-2 rounded-full font-medium border transition-all ${
+                                                link.active
+                                                    ? "bg-[#427898] text-white border-[#427898]" // Botón activo
+                                                    : link.url === null
+                                                      ? "bg-gray-200 text-gray-500 border-gray-200 cursor-not-allowed" // Botón deshabilitado
+                                                      : "bg-white text-[#427898] border-[#427898] hover:bg-[#6aced3] hover:text-white" // Botón normal
+                                            }`}
+                                            disabled={link.url === null}
+                                            preserveState={true}
+                                        >
+                                            {getLabel(link.label)}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

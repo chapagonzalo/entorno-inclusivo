@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId("element_id")->constrained()->onDelete("cascade");
             $table->string("name");
             $table->text("description");
-            $table->decimal("weight", 5, 2); // Peso/ponderación de 0 a 100
+            $table->decimal("weight", 5, 2);
             $table->timestamps();
         });
 
@@ -26,7 +26,7 @@ return new class extends Migration {
                 ->foreignId("question_id")
                 ->constrained()
                 ->onDelete("cascade");
-            $table->decimal("question_weight", 5, 2); // Peso específico de la pregunta en la métrica
+            $table->decimal("question_weight", 5, 2);
             $table->timestamps();
         });
     }

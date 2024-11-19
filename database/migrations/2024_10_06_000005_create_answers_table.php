@@ -22,8 +22,9 @@ return new class extends Migration {
                 ->onDelete("cascade");
             $table->text("content");
             $table->text("answer_text")->nullable();
-            $table->string("answer_enum")->nullable();
-            $table->decimal("answer_numeric", 10, 2)->nullable();
+            $table
+                ->enum("answer_enum", ["Sí", "No", "Bueno", "Regular", "Malo"])
+                ->nullable();
             $table->timestamps();
         });
     }
