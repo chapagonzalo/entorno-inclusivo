@@ -1,5 +1,6 @@
-import React from "react";
-import { Link } from "@inertiajs/react";
+import React, { useState } from "react";
+import { Link, usePage } from "@inertiajs/react";
+import { Inertia } from "@inertiajs/inertia";
 import { router } from "@inertiajs/react";
 import Layout from "@/Layouts/AuthenticatedLayout";
 
@@ -28,27 +29,27 @@ const ReportList = ({ reports }) => {
                 >
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div>
-                            <p className="text-gray-700 text-lg font-semibold mb-1">
+                            <p className="text-gray-700 text-xl font-semibold mb-1">
                                 Ubicación
                             </p>
-                            <p className="text-gray-900 text-base">
+                            <p className="text-gray-900 text-lg">
                                 {assessment.element_instance?.location?.name}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-700 text-lg font-semibold mb-1">
+                            <p className="text-gray-700 text-xl font-semibold mb-1">
                                 Elemento
                             </p>
-                            <p className="text-gray-900 text-base">
+                            <p className="text-gray-900 text-lg">
                                 {assessment.element_instance?.element?.name}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-700 text-lg font-semibold mb-1">
+                            <p className="text-gray-700 text-xl font-semibold mb-1">
                                 Estado
                             </p>
                             <p
-                                className={`text-base font-medium ${
+                                className={`text-lg font-medium ${
                                     assessment.status === "complete"
                                         ? "text-green-700"
                                         : "text-yellow-700"
@@ -60,25 +61,25 @@ const ReportList = ({ reports }) => {
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-700 text-lg font-semibold mb-1">
+                            <p className="text-gray-700 text-xl font-semibold mb-1">
                                 Fecha de creación
                             </p>
-                            <p className="text-gray-900 text-base">
+                            <p className="text-gray-900 text-lg">
                                 {formatDate(assessment.created_at)}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-700 text-lg font-semibold mb-1">
+                            <p className="text-gray-700 text-xl font-semibold mb-1">
                                 Última modificación
                             </p>
-                            <p className="text-gray-900 text-base">
+                            <p className="text-gray-900 text-lg">
                                 {formatDate(assessment.updated_at)}
                             </p>
                         </div>
                         <div className="flex items-center space-x-4">
                             <Link
                                 href={route("assessments.show", assessment.id)}
-                                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                className="text-lg inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                             >
                                 Ver Evaluación
                             </Link>
@@ -89,7 +90,7 @@ const ReportList = ({ reports }) => {
                                     onClick={() =>
                                         handleGenerateReport(assessment)
                                     }
-                                    className="inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                                    className="text-lg inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
                                 >
                                     Generar Informe
                                 </button>
@@ -100,7 +101,7 @@ const ReportList = ({ reports }) => {
                                             "reports.show",
                                             assessment.report_id,
                                         )}
-                                        className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
+                                        className="text-lg inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
                                     >
                                         Ver Informe
                                     </Link>
@@ -114,7 +115,23 @@ const ReportList = ({ reports }) => {
     );
 };
 
-const Dashboard = ({ reports, stats, locations, elements, filters }) => {
+const Dashboard = ({ stats, locations, elements }) => {
+    const { props } = usePage();
+    const reports = props.reports;
+    const initialFilters = props.filters || {}; // Inicializa filters si no existe
+
+    const [currentFilters, setCurrentFilters] = useState(initialFilters);
+
+    const handleFilterChange = (filterName, value) => {
+        const newFilters = { ...currentFilters, [filterName]: value };
+        setCurrentFilters(newFilters);
+
+        Inertia.get(route("reports.dashboard"), newFilters, {
+            preserveState: true, // Preserva el estado, incluyendo la paginación
+            replace: true, // Reemplaza la URL actual en el historial
+        });
+    };
+
     return (
         <Layout>
             <div className="py-12 bg-gray-50">
@@ -146,14 +163,14 @@ const Dashboard = ({ reports, stats, locations, elements, filters }) => {
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <select
-                                value={filters.location_id || ""}
+                                value={currentFilters.location_id || ""} // Usar currentFilters aquí
                                 onChange={(e) =>
-                                    router.get(route("reports.dashboard"), {
-                                        ...filters,
-                                        location_id: e.target.value,
-                                    })
+                                    handleFilterChange(
+                                        "location_id",
+                                        e.target.value,
+                                    )
                                 }
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base"
+                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
                             >
                                 <option value="">Todas las ubicaciones</option>
                                 {locations.map((location) => (
@@ -167,14 +184,14 @@ const Dashboard = ({ reports, stats, locations, elements, filters }) => {
                             </select>
 
                             <select
-                                value={filters.element_id || ""}
+                                value={currentFilters.element_id || ""} // Usar currentFilters aquí
                                 onChange={(e) =>
-                                    router.get(route("reports.dashboard"), {
-                                        ...filters,
-                                        element_id: e.target.value,
-                                    })
+                                    handleFilterChange(
+                                        "element_id",
+                                        e.target.value,
+                                    )
                                 }
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base"
+                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
                             >
                                 <option value="">Todos los elementos</option>
                                 {elements.map((element) => (
@@ -188,10 +205,41 @@ const Dashboard = ({ reports, stats, locations, elements, filters }) => {
 
                     {/* Lista de Evaluaciones */}
                     <div className="bg-white rounded-lg shadow-lg p-6 mb-8 border border-gray-300">
-                        <h2 className="text-xl font-bold text-gray-900 mb-4">
-                            Evaluaciones
-                        </h2>
+                        {/* ... */}
                         <ReportList reports={reports} />
+
+                        {/* Paginación */}
+                        <div className="mt-6">
+                            <div className="flex items-center justify-center space-x-2">
+                                {reports.links.map((link, index) => {
+                                    const getLabel = (label) => {
+                                        if (label.includes("&laquo;"))
+                                            return "Anterior";
+                                        if (label.includes("&raquo;"))
+                                            return "Siguiente";
+                                        return label;
+                                    };
+
+                                    return (
+                                        <Link
+                                            key={index}
+                                            href={link.url}
+                                            className={`px-4 py-2 rounded-full font-medium border transition-all ${
+                                                link.active
+                                                    ? "bg-[#427898] text-white border-[#427898]" // Botón activo
+                                                    : link.url === null
+                                                      ? "bg-gray-200 text-gray-500 border-gray-200 cursor-not-allowed" // Botón deshabilitado
+                                                      : "bg-white text-[#427898] border-[#427898] hover:bg-[#6aced3] hover:text-white" // Botón normal
+                                            }`}
+                                            disabled={link.url === null}
+                                            preserveState={true}
+                                        >
+                                            {getLabel(link.label)}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

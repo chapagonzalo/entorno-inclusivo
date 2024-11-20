@@ -12,6 +12,12 @@ export default {
 
     theme: {
         extend: {
+            fontSize: {
+                sm: "0.875rem", // Tamaño pequeño
+                base: "1rem", // Tamaño base
+                lg: "1.125rem", // Tamaño grande
+                xl: "1.25rem", // Tamaño extra grande
+            },
             fontFamily: {
                 sans: ["Verdana", "Geneva", "Tahoma", "sans-serif"],
             },
@@ -21,7 +27,7 @@ export default {
                 verde: "#b2d77f",
                 naranja: "#f79c42",
                 amarillo: "#ffe170",
-                blancoSuave: '#F5F5F5'
+                blancoSuave: "#F5F5F5",
             },
         },
     },

@@ -61,14 +61,14 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Las escaleras no deben tener más de 12 alzadas corridas entre descansos. Esto es importante para asegurar la seguridad y permitir descansos adecuados en recorridos largos.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" => "¿La escalera cumple con el ancho libre?",
                 "context" =>
                     "El ancho mínimo entre los zócalos debe ser de 1.20 metros para garantizar que las personas, incluidas aquellas con movilidad reducida o en silla de ruedas, puedan utilizarla cómodamente. En lotes más pequeños (8.66 metros o menos de ancho), este puede reducirse a 1.10 metros.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
@@ -84,7 +84,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "La altura de los escalones (alzada) debe estar entre 0.15 metros y 0.18 metros, mientras que la profundidad de la huella (pedada) debe estar entre 0.26 metros y 0.30 metros para facilitar el desplazamiento seguro y cómodo.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
@@ -92,7 +92,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Los descansos deben tener una profundidad mínima de dos tercios del ancho de la escalera, o al menos 1.25 metros si hay giros de 90° o 180°. Si es un tramo recto sin giros, el mínimo es de 0.95 metros.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
@@ -108,7 +108,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Los pasamanos deben estar a una altura de 0.90 metros desde la nariz del escalón hasta el plano superior del pasamanos. Además, deben tener un diámetro mínimo de 0.04 metros para facilitar su agarre.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
@@ -116,7 +116,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Los pasamanos deben extenderse horizontalmente antes y después del tramo de escalones por una longitud mínima de 0.15 metros y un máximo de 0.40 metros para mejorar la accesibilidad.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" => "¿Los pasamanos cumplen con la longitud total?",
@@ -138,7 +138,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Los zócalos deben tener una altura mínima de 0.10 metros, cumpliendo con las normativas de seguridad.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" => "¿La escalera cuenta con solado de prevención?",
@@ -153,7 +153,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Las escaleras suspendidas deben estar señalizadas con un solado contrastante y botones de relieve que sobresalgan 0.60 metros más allá de los bordes laterales para impedir el paso y advertir de la escalera.",
                 "element_id" => self::ELEMENTS["stairs"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
@@ -185,7 +185,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "El ancho de la rampa debe estar entre 0.90 metros y 1.20 metros, permitiendo el tránsito adecuado de personas con movilidad reducida, incluidas aquellas que utilizan sillas de ruedas.",
                 "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
@@ -193,7 +193,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "La pendiente de la rampa no debe exceder el 8%, para asegurar que sea accesible sin demasiado esfuerzo físico. Se calcula multiplicando la altura a salvar por el valor de relación (por ejemplo, 1/12.5).",
                 "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["enum_yesno", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" => "¿La rampa cuenta con solado de prevención?",
@@ -222,7 +222,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Los pasamanos deben estar colocados a una altura de entre 0.75 y 0.90 metros y deben sobresalir entre 0.15 y 0.20 metros más allá del borde de la rampa.",
                 "element_id" => self::ELEMENTS["ramps"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" => "¿Los laterales tienen algún tipo de contención?",
@@ -421,7 +421,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Las puertas deben tener un ancho suficiente para permitir el paso de personas con movilidad reducida, incluidas aquellas que utilizan sillas de ruedas. El ancho mínimo recomendado es de 0.80 metros.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
@@ -429,7 +429,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Las puertas deben abrirse al menos 90° para facilitar el acceso. Esto es especialmente importante para asegurar que las personas puedan entrar y salir sin dificultad.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" => "¿La puerta cuenta con mecanismo de apertura?",
@@ -444,7 +444,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Los herrajes deben estar ubicados a una altura accesible (generalmente entre 0.80 m y 1.20 m desde el suelo) para que todas las personas puedan alcanzarlos y utilizarlos sin dificultad.",
                 "element_id" => self::ELEMENTS["doors"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" => "¿La puerta cuenta con herrajes de retención?",
@@ -514,7 +514,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Es esencial que el baño tenga un espacio adecuado (mínimo de 1.5 metros cuadrados) para permitir la maniobra de una silla de ruedas, garantizando que todas las personas puedan utilizarlo sin restricciones.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
@@ -522,7 +522,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Debe haber suficiente espacio lateral (0.80 metros) y frontal (0.90 metros) alrededor del inodoro para facilitar la transferencia desde una silla de ruedas, asegurando un acceso cómodo y seguro.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
@@ -530,7 +530,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "La altura de la taza del inodoro debe estar entre 0.50 y 0.52 metros desde el nivel del suelo para facilitar el uso por personas con diferentes capacidades físicas.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
@@ -569,7 +569,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Debe haber suficiente espacio frente al lavabo (1.00 metro de profundidad) y a los lados (0.40 metros) para permitir el acceso y la utilización del mismo.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" => "¿La bacha o mesada cuenta con acceso libre?",
@@ -605,7 +605,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "Debe estar colocado a una altura accesible (entre 0.40 m y 0.50 m) y ser fácil de usar en caso de necesidad urgente.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" =>
@@ -613,7 +613,7 @@ class QuestionSeeder extends Seeder
                 "context" =>
                     "La ducha debe tener suficiente espacio y un diseño accesible (0.90 m x 0.90 m) para facilitar su uso por personas con discapacidades.",
                 "element_id" => self::ELEMENTS["bathrooms"],
-                "answer_types" => ["enum_yesno", "text", "numeric"],
+                "answer_types" => ["enum_yesno", "text"],
             ],
             [
                 "content" => "¿El baño cuenta con accesorios?",

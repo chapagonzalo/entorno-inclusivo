@@ -69,17 +69,16 @@ class MetricSeeder extends Seeder
             ->get();
 
         for ($i = 0; $i < count($metricData["questions"]); $i++) {
-            $questionId = $metricData["questions"][$i]; // Obtener el ID de la pregunta
+            $questionId = $metricData["questions"][$i];
             $questionIndex = array_search(
                 $questionId,
                 $questions->pluck("id")->toArray()
-            ); // Buscar el índice del ID
+            );
             if ($questionIndex !== false) {
                 $metric->questions()->attach($questions[$questionIndex]->id, [
                     "question_weight" => $metricData["question_weights"][$i],
                 ]);
             } else {
-                // Manejar el caso en que la pregunta no se encuentre en la base de datos
                 Log::error(
                     "La pregunta con ID {$questionId} no se encontró en la base de datos."
                 );
@@ -119,7 +118,7 @@ class MetricSeeder extends Seeder
                     "Evalúa elementos de accesibilidad y señalización",
                 "weight" => 30,
                 "questions" => [12, 13, 14, 15],
-                "question_weights" => [25, 25, 25, 25],
+                "question_weights" => [20, 20, 35, 25],
             ],
         ];
     }

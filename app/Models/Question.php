@@ -12,7 +12,6 @@ class Question extends Model
     const TYPE_TEXT = "text";
     const TYPE_ENUM_YESNO = "enum_yesno";
     const TYPE_ENUM_QUALITY = "enum_quality";
-    const TYPE_NUMERIC = "numeric";
 
     protected $fillable = ["content", "context", "element_id", "answer_types"];
 
@@ -31,7 +30,6 @@ class Question extends Model
         });
     }
 
-    // Agregar las relaciones faltantes
     public function answers()
     {
         return $this->hasMany(Answer::class);

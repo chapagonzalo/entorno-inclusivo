@@ -22,7 +22,7 @@ class AssessmentController extends Controller
         ])
             ->where("user_id", auth()->id())
             ->latest()
-            ->get();
+            ->paginate(9);
 
         return Inertia::render("Assessments/Index", [
             "assessments" => $assessments,
@@ -83,6 +83,9 @@ class AssessmentController extends Controller
 
         $validatedData = $request->validate([
             "answers" => "required|array",
+            "answers.*" => "array",
+            "answers.*.text" => "nullable|string|max:255",
+            "answers.*.enum" => "nullable|string|in:Sí,No,Bueno,Regular,Malo",
         ]);
 
         // Primera parte: Guardar las respuestas
@@ -95,7 +98,6 @@ class AssessmentController extends Controller
                 "content" => "",
                 "answer_text" => null,
                 "answer_enum" => null,
-                "answer_numeric" => null,
             ];
 
             // Procesar respuestas que vienen como array (múltiples tipos)
@@ -112,10 +114,6 @@ class AssessmentController extends Controller
                     $answerData["answer_enum"] = $answer["quality"];
                     $answerData["content"] = $answer["quality"];
                 }
-                if (isset($answer["numeric"])) {
-                    $answerData["answer_numeric"] = $answer["numeric"];
-                    $answerData["content"] = (string) $answer["numeric"];
-                }
             } else {
                 // Procesar respuestas que vienen como string simple
                 $answerData["content"] = $answer;
@@ -124,8 +122,6 @@ class AssessmentController extends Controller
                     $answerData["answer_enum"] = $answer;
                 } elseif (in_array("enum_yesno", $question->answer_types)) {
                     $answerData["answer_enum"] = $answer;
-                } elseif (in_array("numeric", $question->answer_types)) {
-                    $answerData["answer_numeric"] = $answer;
                 } else {
                     $answerData["answer_text"] = $answer;
                 }
@@ -144,41 +140,44 @@ class AssessmentController extends Controller
         }
 
         // Segunda parte: Verificar si está completa
-        // Recargar la evaluación con sus relaciones actualizadas
         $assessment->load("elementInstance.element.questions", "answers");
-
-        // Obtener todas las preguntas para este elemento
         $totalQuestions = $assessment->elementInstance->element->questions->count();
-
-        // Contar cuántas preguntas tienen al menos una respuesta
         $answeredQuestions = $assessment->answers
             ->unique("question_id")
             ->count();
 
-        // Actualizar el estado de la evaluación
-        if ($answeredQuestions >= $totalQuestions) {
-            $assessment->status = "complete";
-            $assessment->save();
+        $assessment->status =
+            $answeredQuestions >= $totalQuestions ? "complete" : "incomplete";
+        $assessment->save();
 
-            return redirect()
-                ->route("assessments.show", $assessment->id)
-                ->with("message", "Evaluación completada correctamente.");
-        } else {
-            $assessment->status = "incomplete";
-            $assessment->save();
-
+        // Mensajes de éxito o error
+        if (!empty($errors)) {
             return redirect()
                 ->route("assessments.index")
+                ->withErrors($errors)
                 ->with(
                     "message",
-                    "Progreso guardado. Faltan " .
-                        ($totalQuestions - $answeredQuestions) .
-                        " preguntas por responder."
+                    "Progreso guardado con errores. Faltan respuestas o hay datos inválidos."
                 );
         }
+
+        $message =
+            $answeredQuestions >= $totalQuestions
+                ? "Evaluación completada correctamente."
+                : "Progreso guardado. Faltan " .
+                    ($totalQuestions - $answeredQuestions) .
+                    " preguntas por responder.";
+
+        return redirect()
+            ->route(
+                $answeredQuestions >= $totalQuestions
+                    ? "assessments.show"
+                    : "assessments.index",
+                $assessment->id
+            )
+            ->with("message", $message);
     }
 
-    // Mostrar una evaluación con sus respuestas (enviando a React)
     public function show($id)
     {
         $assessment = Assessment::with([
@@ -188,8 +187,11 @@ class AssessmentController extends Controller
             "user",
         ])->findOrFail($id);
 
+        $questions = $assessment->elementInstance->element->questions()->get();
+
         return Inertia::render("Assessments/Show", [
             "assessment" => $assessment,
+            "questions" => $questions,
         ]);
     }
 }

@@ -4,7 +4,6 @@ function SlopeCalculator() {
     const [height, setHeight] = useState("");
     const [length, setLength] = useState("");
 
-    // Función para calcular la pendiente en porcentaje
     const calculateSlope = () => {
         if (height && length) {
             return ((height / length) * 100).toFixed(2);

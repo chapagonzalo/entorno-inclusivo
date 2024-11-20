@@ -44,19 +44,6 @@ const ShowAnswer = ({ answer }) => {
             );
         }
 
-        if (answer.answer_numeric !== null) {
-            answerValues.push(
-                <div key="numeric" className="mt-2">
-                    <span className="text-gray-600 font-medium">
-                        Valor numérico:{" "}
-                    </span>
-                    <span className="text-gray-800">
-                        {answer.answer_numeric}
-                    </span>
-                </div>,
-            );
-        }
-
         if (answerValues.length === 0 && answer.content) {
             answerValues.push(
                 <div key="content" className="mt-2">
@@ -70,7 +57,7 @@ const ShowAnswer = ({ answer }) => {
 
     return (
         <div className="bg-white border-l-4 border-blue-500 shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
-            <p className="text-lg font-semibold text-gray-900 mb-3">
+            <p className="text-xl font-semibold text-gray-900 mb-3">
                 {answer.question.content}
             </p>
             <div className="space-y-2">{renderAnswerValue()}</div>
@@ -85,25 +72,25 @@ const AssessmentDetails = ({ assessment }) => (
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-gray-600 text-sm">Ubicación</p>
+                <p className="text-gray-600 text-lg">Ubicación</p>
                 <p className="font-semibold text-gray-900">
                     {assessment.element_instance.location.name}
                 </p>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-gray-600 text-sm">Elemento</p>
+                <p className="text-gray-600 text-lg">Elemento</p>
                 <p className="font-semibold text-gray-900">
                     {assessment.element_instance.element.name}
                 </p>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-gray-600 text-sm">Evaluador</p>
+                <p className="text-gray-600 text-lg">Evaluador</p>
                 <p className="font-semibold text-gray-900">
                     {assessment.user.name}
                 </p>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-gray-600 text-sm">Estado</p>
+                <p className="text-gray-600 text-lg">Estado</p>
                 <p
                     className={`font-semibold ${
                         assessment.status === "complete"
@@ -118,7 +105,7 @@ const AssessmentDetails = ({ assessment }) => (
             </div>
             {assessment.element_instance.description && (
                 <div className="col-span-2 bg-gray-50 p-4 rounded-lg">
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-600 text-lg">
                         Descripción del elemento
                     </p>
                     <p className="font-semibold text-gray-900 mt-1">
@@ -130,7 +117,7 @@ const AssessmentDetails = ({ assessment }) => (
     </div>
 );
 
-export default function Show({ assessment }) {
+export default function Show({ assessment, questions }) {
     return (
         <AuthenticatedLayout>
             <Head title="Detalles de la Evaluación" />
@@ -162,12 +149,22 @@ export default function Show({ assessment }) {
                         <div className="p-6">
                             {assessment.answers.length > 0 ? (
                                 <div className="space-y-4">
-                                    {assessment.answers.map((answer) => (
-                                        <ShowAnswer
-                                            key={answer.id}
-                                            answer={answer}
-                                        />
-                                    ))}
+                                    {questions.map((question) => {
+                                        const answer = assessment.answers.find(
+                                            (a) =>
+                                                a.question.id === question.id,
+                                        );
+                                        return (
+                                            <ShowAnswer
+                                                key={question.id}
+                                                answer={
+                                                    answer
+                                                        ? answer
+                                                        : { question }
+                                                }
+                                            />
+                                        );
+                                    })}
                                 </div>
                             ) : (
                                 <div className="text-center py-8 text-gray-500">

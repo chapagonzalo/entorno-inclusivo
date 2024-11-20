@@ -14,7 +14,6 @@ class AssessmentSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear instancias de elementos primero
         $elementInstance1 = ElementInstance::create([
             "element_id" => 1,
             "location_id" => 3,
@@ -27,7 +26,6 @@ class AssessmentSeeder extends Seeder
             "description" => "Rampa B1",
         ]);
 
-        // Ahora crear las evaluaciones
         $assessments = [
             [
                 "user_id" => 2,

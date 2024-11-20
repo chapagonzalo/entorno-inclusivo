@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
-class AdministradorMiddleware
+class AdminOrSupervisorMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,13 @@ class AdministradorMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user() && Auth::user()->role == User::ROLE_ADMIN) {
+        if (
+            Auth::check() &&
+            in_array(Auth::user()->role, [
+                User::ROLE_ADMIN,
+                User::ROLE_SUPERVISOR,
+            ])
+        ) {
             return $next($request);
         }
         return redirect("/");
