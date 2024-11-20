@@ -16,7 +16,7 @@ export default function Authenticated({ header, children }) {
     const isSupervisor = user.role == 2;
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-100 text-xl">
             <nav className="border-b border-gray-100 bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
@@ -88,7 +88,7 @@ export default function Authenticated({ header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-lg font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
                                                 {user.name}
 
@@ -226,10 +226,10 @@ export default function Authenticated({ header, children }) {
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
                         <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
+                            <div className="text-lg font-medium text-gray-800">
                                 {user.name}
                             </div>
-                            <div className="text-sm font-medium text-gray-500">
+                            <div className="text-xl font-medium text-gray-500">
                                 {user.email}
                             </div>
                         </div>
@@ -288,7 +288,7 @@ export default function Authenticated({ header, children }) {
                             </a>
                         </div>
                     </div>
-                    <div className="mt-4 text-center text-sm text-gray-500">
+                    <div className="mt-4 text-center text-lg text-gray-500">
                         &copy; 2024 Universidad y Discapacidad. Todos los
                         derechos reservados.
                     </div>

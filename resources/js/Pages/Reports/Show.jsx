@@ -4,9 +4,9 @@ import { Head } from "@inertiajs/react";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/24/solid";
 
-const MetricCard = ({ name, score, description, questions }) => (
+const MetricCard = ({ name, score, description, questions, weight }) => (
     <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">{name}</h3>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">{name}</h3>
         <div className="mt-2">
             <div className="flex items-center space-x-2">
                 <div className="flex-grow">
@@ -23,17 +23,17 @@ const MetricCard = ({ name, score, description, questions }) => (
                         ></div>
                     </div>
                 </div>
-                <span className="text-sm font-semibold">
+                <span className="text-lg font-semibold">
                     {typeof score === "number" ? score.toFixed(1) : "0.0"}%
                 </span>
             </div>
         </div>
-        <p className="mt-3 text-sm text-gray-600">{description}</p>
+        <p className="mt-3 text-lg text-gray-600">{description}</p>
 
         <Disclosure>
             {({ open }) => (
                 <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75 mt-4">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-lg font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75 mt-4">
                         <span>Preguntas y Respuestas</span>
                         <ChevronUpIcon
                             className={`${
@@ -41,7 +41,7 @@ const MetricCard = ({ name, score, description, questions }) => (
                             } w-5 h-5 text-purple-500`}
                         />
                     </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-lg text-gray-500">
                         {questions &&
                             questions.map((qa, index) => (
                                 <div key={index} className="mb-2">
@@ -62,6 +62,9 @@ const MetricCard = ({ name, score, description, questions }) => (
                                             {qa.expected_answer_text}
                                         </p>
                                     )}
+                                    {qa.weight && (
+                                        <p>Ponderación: {qa.weight}%</p>
+                                    )}
                                     <p>Puntuación: {qa.score}</p>
                                     {qa.answer_text && (
                                         <p>
@@ -81,6 +84,7 @@ const MetricCard = ({ name, score, description, questions }) => (
                 </>
             )}
         </Disclosure>
+        <p className="mt-3 text-lg text-gray-600">Peso: {weight}%</p>
     </div>
 );
 
@@ -103,7 +107,7 @@ const RecommendationCard = ({ recommendation }) => (
                 </svg>
             </div>
             <div className="ml-4">
-                <h4 className="text-lg font-semibold text-gray-900">
+                <h4 className="text-xl font-semibold text-gray-900">
                     {recommendation.area}
                 </h4>
                 <p className="mt-1 text-sm text-gray-600">
@@ -148,7 +152,7 @@ export default function Show({ report, metrics, recommendations }) {
                                 </h1>
                                 <a
                                     href={route("reports.export", report.id)}
-                                    className="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
+                                    className="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-lg text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
                                     target="_blank"
                                 >
                                     Exportar PDF
@@ -160,10 +164,10 @@ export default function Show({ report, metrics, recommendations }) {
                         <div className="p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <h2 className="text-sm font-medium text-gray-500">
+                                    <h2 className="text-lg font-medium text-gray-500">
                                         Ubicación
                                     </h2>
-                                    <p className="mt-1 text-lg text-gray-900">
+                                    <p className="mt-1 text-xl text-gray-900">
                                         {
                                             report.assessment?.element_instance
                                                 ?.location?.name
@@ -171,10 +175,10 @@ export default function Show({ report, metrics, recommendations }) {
                                     </p>
                                 </div>
                                 <div>
-                                    <h2 className="text-sm font-medium text-gray-500">
+                                    <h2 className="text-lg font-medium text-gray-500">
                                         Elemento Evaluado
                                     </h2>
-                                    <p className="mt-1 text-lg text-gray-900">
+                                    <p className="mt-1 text-xl text-gray-900">
                                         {
                                             report.assessment?.element_instance
                                                 ?.element?.name
@@ -207,7 +211,7 @@ export default function Show({ report, metrics, recommendations }) {
                                 </div>
                                 <div className="mt-4">
                                     <span
-                                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                                        className={`inline-flex items-center px-3 py-1 rounded-full text-lg font-medium ${
                                             report.accessibility_level ===
                                             "Excelente"
                                                 ? "bg-green-100 text-green-800"
@@ -246,6 +250,7 @@ export default function Show({ report, metrics, recommendations }) {
                                             }
                                             description={metric.description}
                                             questions={metric.questions}
+                                            weight={metric.weight}
                                         />
                                     ))}
                             </div>
@@ -273,7 +278,7 @@ export default function Show({ report, metrics, recommendations }) {
                         )}
 
                     {/* Fecha de Evaluación */}
-                    <div className="mt-4 text-sm text-gray-500 text-right">
+                    <div className="mt-4 text-lg text-gray-500 text-right">
                         Evaluación realizada el:{" "}
                         {new Date(report.created_at).toLocaleDateString()}
                     </div>

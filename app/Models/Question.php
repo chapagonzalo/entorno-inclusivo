@@ -30,7 +30,6 @@ class Question extends Model
         });
     }
 
-    // Agregar las relaciones faltantes
     public function answers()
     {
         return $this->hasMany(Answer::class);

@@ -6,7 +6,7 @@ import MapaUniversidad from "../../assets/mapaUniversidad.png";
 import SlopeCalculator from "./SlopeCalculator";
 
 const Questions = () => {
-    const { assessment, flash } = usePage().props;
+    const { assessment, flash, errors } = usePage().props;
     const [answers, setAnswers] = useState({});
     const [questions, setQuestions] = useState([]);
 
@@ -81,13 +81,13 @@ const Questions = () => {
                 {/* Bloque de pregunta y opciones de respuesta */}
                 <div className="bg-white border border-gray-200 rounded-lg p-5 shadow-md">
                     {/* Pregunta */}
-                    <h2 className="text-lg font-bold text-gray-900">
+                    <h2 className="text-xl font-bold text-gray-900">
                         {question.text}
                     </h2>
 
                     {/* Descripción opcional */}
                     {question.description && (
-                        <p className="mt-1 text-sm text-gray-600">
+                        <p className="mt-1 text-lg text-gray-600">
                             {question.description}
                         </p>
                     )}
@@ -96,7 +96,7 @@ const Questions = () => {
                         {/* Opciones de respuesta según el tipo de pregunta */}
                         {question.answer_types.includes("enum_yesno") && (
                             <div>
-                                <label className="block text-sm font-semibold text-gray-800 mb-1">
+                                <label className="block text-lg font-semibold text-gray-800 mb-1">
                                     Sí/No:
                                 </label>
                                 <select
@@ -106,7 +106,15 @@ const Questions = () => {
                                             enum: e.target.value,
                                         })
                                     }
-                                    className="block w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className={`block w-full p-2 border ${
+                                        errors[`answers.${question.id}`]
+                                            ? "border-red-500"
+                                            : "border-gray-300"
+                                    } rounded-md text-gray-700 focus:outline-none focus:ring-2 ${
+                                        errors[`answers.${question.id}`]
+                                            ? "focus:ring-red-500"
+                                            : "focus:ring-indigo-500"
+                                    }`}
                                 >
                                     <option value="">
                                         Selecciona una opción
@@ -114,12 +122,17 @@ const Questions = () => {
                                     <option value="Sí">Sí</option>
                                     <option value="No">No</option>
                                 </select>
+                                {errors[`answers.${question.id}`] && (
+                                    <p className="text-red-500 text-base mt-1">
+                                        {errors[`answers.${question.id}`]}
+                                    </p>
+                                )}
                             </div>
                         )}
 
                         {question.answer_types.includes("enum_quality") && (
                             <div>
-                                <label className="block text-sm font-semibold text-gray-800 mb-1">
+                                <label className="block text-xl font-semibold text-gray-800 mb-1">
                                     Calidad:
                                 </label>
                                 <select
@@ -129,7 +142,15 @@ const Questions = () => {
                                             enum: e.target.value,
                                         })
                                     }
-                                    className="block w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className={`block w-full p-2 border ${
+                                        errors[`answers.${question.id}`]
+                                            ? "border-red-500"
+                                            : "border-gray-300"
+                                    } rounded-md text-gray-700 focus:outline-none focus:ring-2 ${
+                                        errors[`answers.${question.id}`]
+                                            ? "focus:ring-red-500"
+                                            : "focus:ring-indigo-500"
+                                    }`}
                                 >
                                     <option value="">
                                         Selecciona una opción
@@ -138,14 +159,18 @@ const Questions = () => {
                                     <option value="Regular">Regular</option>
                                     <option value="Malo">Malo</option>
                                 </select>
+                                {errors[`answers.${question.id}`] && (
+                                    <p className="text-red-500 text-base mt-1">
+                                        {errors[`answers.${question.id}`]}
+                                    </p>
+                                )}
                             </div>
                         )}
-
                         {question.id === 17 ? <SlopeCalculator /> : ""}
 
                         {question.answer_types.includes("text") && (
                             <div>
-                                <label className="block text-sm font-semibold text-gray-800 mb-1">
+                                <label className="block text-xl font-semibold text-gray-800 mb-1">
                                     Observaciones (Opcional):
                                 </label>
                                 <textarea
@@ -155,9 +180,22 @@ const Questions = () => {
                                             text: e.target.value,
                                         })
                                     }
-                                    className="block w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className={`block w-full p-2 border ${
+                                        errors[`answers.${question.id}`]
+                                            ? "border-red-500"
+                                            : "border-gray-300"
+                                    } rounded-md text-gray-700 focus:outline-none focus:ring-2 ${
+                                        errors[`answers.${question.id}`]
+                                            ? "focus:ring-red-500"
+                                            : "focus:ring-indigo-500"
+                                    }`}
                                     rows="2"
                                 />
+                                {errors[`answers.${question.id}`] && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        {errors[`answers.${question.id}`]}
+                                    </p>
+                                )}
                             </div>
                         )}
                     </div>
@@ -165,6 +203,7 @@ const Questions = () => {
             </div>
         );
     };
+
     return (
         <Layout>
             <div className="max-w-full xl:max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
@@ -184,7 +223,7 @@ const Questions = () => {
                         {assessment.element_instance?.element?.name}
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-2 text-gray-700 text-lg leading-relaxed">
+                        <div className="space-y-2 text-gray-700 text-xl leading-relaxed">
                             <p>
                                 <span className="font-semibold">
                                     Ubicación:
@@ -221,7 +260,7 @@ const Questions = () => {
                                 <h3 className="text-xl font-semibold text-gray-900 mb-2 leading-tight">
                                     {question.content}
                                 </h3>
-                                <p className="text-gray-600 text-base mb-4 leading-relaxed">
+                                <p className="text-gray-600 text-lg mb-4 leading-relaxed">
                                     {question.context}
                                 </p>
                                 {/* Renderizado de inputs de respuesta */}
@@ -229,7 +268,6 @@ const Questions = () => {
                             </div>
                         ))}
                     </div>
-
                     {/* Botones de acción */}
                     <div className="flex justify-end mt-10">
                         <button

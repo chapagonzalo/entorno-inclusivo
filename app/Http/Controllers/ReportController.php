@@ -397,6 +397,7 @@ class ReportController extends Controller
                     "score" => $this->evaluateAnswer($answer, $expectedAnswer), // Incluir la puntuación de la respuesta
                     "answer_text" => $answer->answer_text,
                     "answer_enum" => $answer->answer_enum,
+                    "weight" => $question->pivot->question_weight,
                 ];
             }
         }

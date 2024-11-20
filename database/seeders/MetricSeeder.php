@@ -118,7 +118,7 @@ class MetricSeeder extends Seeder
                     "Evalúa elementos de accesibilidad y señalización",
                 "weight" => 30,
                 "questions" => [12, 13, 14, 15],
-                "question_weights" => [25, 25, 25, 25],
+                "question_weights" => [20, 20, 35, 25],
             ],
         ];
     }

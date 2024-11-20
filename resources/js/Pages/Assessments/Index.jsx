@@ -18,17 +18,17 @@ const AssessmentCard = ({ assessment }) => {
             <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="text-xl font-semibold text-gray-900">
                             {assessment.element_instance?.element?.name}
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-lg text-gray-500">
                             {new Date(
                                 assessment.created_at,
                             ).toLocaleDateString()}
                         </p>
                     </div>
                     <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-base font-medium ${getStatusColor(
                             assessment.status,
                         )}`}
                     >
@@ -68,7 +68,7 @@ const AssessmentCard = ({ assessment }) => {
                             >
                                 <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
-                            <span className="text-sm">
+                            <span className="text-base">
                                 {assessment.element_instance.description}
                             </span>
                         </div>
@@ -79,7 +79,7 @@ const AssessmentCard = ({ assessment }) => {
                     {assessment.status === "incomplete" ? (
                         <Link
                             href={route("assessments.questions", assessment.id)}
-                            className="inline-flex items-center px-4 py-2 border border-indigo-600 rounded-md text-sm font-medium text-indigo-600 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className="inline-flex items-center px-4 py-2 border border-indigo-600 rounded-md text-base font-medium text-indigo-600 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             <svg
                                 className="h-5 w-5 mr-2"
@@ -97,7 +97,7 @@ const AssessmentCard = ({ assessment }) => {
                     ) : (
                         <Link
                             href={route("assessments.show", assessment.id)}
-                            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             <svg
                                 className="h-5 w-5 mr-2"
@@ -132,14 +132,14 @@ const Index = ({ auth, assessments }) => {
                                 <h1 className="text-2xl font-semibold text-gray-900">
                                     Evaluaciones
                                 </h1>
-                                <p className="mt-1 text-sm text-gray-600">
+                                <p className="mt-1 text-lg text-gray-600">
                                     Gestiona y visualiza todas tus evaluaciones
                                     de accesibilidad
                                 </p>
                             </div>
                             <Link
                                 href={route("assessments.create")}
-                                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                                 <svg
                                     className="-ml-1 mr-2 h-5 w-5"
@@ -187,17 +187,17 @@ const Index = ({ auth, assessments }) => {
                             >
                                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                             </svg>
-                            <h3 className="mt-2 text-sm font-medium text-gray-900">
+                            <h3 className="mt-2 text-lg font-medium text-gray-900">
                                 No hay evaluaciones
                             </h3>
-                            <p className="mt-1 text-sm text-gray-500">
+                            <p className="mt-1 text-lg text-gray-500">
                                 Comienza creando una nueva evaluación de
                                 accesibilidad.
                             </p>
                             <div className="mt-6">
                                 <Link
                                     href={route("assessments.create")}
-                                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
                                     <svg
                                         className="-ml-1 mr-2 h-5 w-5"

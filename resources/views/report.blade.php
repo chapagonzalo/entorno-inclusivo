@@ -170,27 +170,23 @@
                 <div class="metric-score">
                     <strong>Puntuación:</strong> {{ number_format($metric['score'], 1) }}%
                 </div>
-                <p>{{ $metric['description'] }}</p>
+                <p><strong>Ponderación de la métrica:</strong> {{ $metric['weight'] }}%</p> <p>{{ $metric['description'] }}</p>
+
 
                 <h4>Preguntas y Respuestas</h4>
                 @foreach ($metric['questions'] as $qa)
                     <div class="qa-block">
                         <p><strong>Pregunta:</strong> {{ $qa['question'] }}</p>
-                        <p><strong>Respuesta:</strong>
-                            {{ $qa['answer'] }}
-                            @if($qa['answer_text'] != null)
-                                - {{$qa['answer_text']}}
-                            @endif
-                        </p>
-                        <p><strong>Respuesta Esperada:</strong>
-                            @if($qa['expected_answer'] != null)
-                                {{ $qa['expected_answer'] }}
-                            @endif
-                            @if($qa['expected_answer_text'] != null)
-                                - {{ $qa['expected_answer_text'] }}
-                            @endif
-                        </p>
+                        <p><strong>Respuesta:</strong> {{ $qa['answer'] }}</p>
+                        @if($qa['expected_answer'] != null)
+                            <p><strong>Respuesta Esperada:</strong> {{ $qa['expected_answer'] }}</p>
+                        @endif
+                        @if($qa['answer_text'] != null)
+                            <p><strong>Observación:</strong> {{ $qa['answer_text'] }}</p>
+                        @endif
+                        <p><strong>Ponderación de la pregunta:</strong> {{ $qa['weight'] }}%</p>
                         <p><strong>Puntuación:</strong> {{ $qa['score'] }}</p>
+
                     </div>
                     <hr>
                 @endforeach

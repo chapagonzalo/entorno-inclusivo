@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, usePage } from "@inertiajs/react";
+import { Inertia } from "@inertiajs/inertia";
 import { router } from "@inertiajs/react";
 import Layout from "@/Layouts/AuthenticatedLayout";
 
@@ -28,27 +29,27 @@ const ReportList = ({ reports }) => {
                 >
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div>
-                            <p className="text-gray-700 text-lg font-semibold mb-1">
+                            <p className="text-gray-700 text-xl font-semibold mb-1">
                                 Ubicación
                             </p>
-                            <p className="text-gray-900 text-base">
+                            <p className="text-gray-900 text-lg">
                                 {assessment.element_instance?.location?.name}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-700 text-lg font-semibold mb-1">
+                            <p className="text-gray-700 text-xl font-semibold mb-1">
                                 Elemento
                             </p>
-                            <p className="text-gray-900 text-base">
+                            <p className="text-gray-900 text-lg">
                                 {assessment.element_instance?.element?.name}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-700 text-lg font-semibold mb-1">
+                            <p className="text-gray-700 text-xl font-semibold mb-1">
                                 Estado
                             </p>
                             <p
-                                className={`text-base font-medium ${
+                                className={`text-lg font-medium ${
                                     assessment.status === "complete"
                                         ? "text-green-700"
                                         : "text-yellow-700"
@@ -60,25 +61,25 @@ const ReportList = ({ reports }) => {
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-700 text-lg font-semibold mb-1">
+                            <p className="text-gray-700 text-xl font-semibold mb-1">
                                 Fecha de creación
                             </p>
-                            <p className="text-gray-900 text-base">
+                            <p className="text-gray-900 text-lg">
                                 {formatDate(assessment.created_at)}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-700 text-lg font-semibold mb-1">
+                            <p className="text-gray-700 text-xl font-semibold mb-1">
                                 Última modificación
                             </p>
-                            <p className="text-gray-900 text-base">
+                            <p className="text-gray-900 text-lg">
                                 {formatDate(assessment.updated_at)}
                             </p>
                         </div>
                         <div className="flex items-center space-x-4">
                             <Link
                                 href={route("assessments.show", assessment.id)}
-                                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                className="text-lg inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                             >
                                 Ver Evaluación
                             </Link>
@@ -89,7 +90,7 @@ const ReportList = ({ reports }) => {
                                     onClick={() =>
                                         handleGenerateReport(assessment)
                                     }
-                                    className="inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                                    className="text-lg inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
                                 >
                                     Generar Informe
                                 </button>
@@ -100,7 +101,7 @@ const ReportList = ({ reports }) => {
                                             "reports.show",
                                             assessment.report_id,
                                         )}
-                                        className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
+                                        className="text-lg inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
                                     >
                                         Ver Informe
                                     </Link>
@@ -169,7 +170,7 @@ const Dashboard = ({ stats, locations, elements }) => {
                                         e.target.value,
                                     )
                                 }
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base"
+                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
                             >
                                 <option value="">Todas las ubicaciones</option>
                                 {locations.map((location) => (
@@ -190,7 +191,7 @@ const Dashboard = ({ stats, locations, elements }) => {
                                         e.target.value,
                                     )
                                 }
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base"
+                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
                             >
                                 <option value="">Todos los elementos</option>
                                 {elements.map((element) => (
