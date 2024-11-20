@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, usePage } from "@inertiajs/react";
-import { Inertia } from "@inertiajs/inertia";
 import { router } from "@inertiajs/react";
 import Layout from "@/Layouts/AuthenticatedLayout";
 
@@ -115,21 +114,33 @@ const ReportList = ({ reports }) => {
     );
 };
 
-const Dashboard = ({ stats, locations, elements }) => {
+const Dashboard = ({ stats, locations, elements, filters }) => {
     const { props } = usePage();
-    const reports = props.reports;
-    const initialFilters = props.filters || {}; // Inicializa filters si no existe
+    const initialStats = props.stats;
+    const initialReports = props.reports;
+    const initialFilters = props.filters || {};
 
-    const [currentFilters, setCurrentFilters] = useState(initialFilters);
+    const [reports, setReports] = useState(initialReports);
+    const [currentStats, setCurrentStats] = useState(initialStats); // Estado para las estadísticas
+    const [currentFilters, setCurrentFilters] = useState({
+        location_id: filters.location_id || "",
+        element_id: filters.element_id || "",
+    });
 
     const handleFilterChange = (filterName, value) => {
         const newFilters = { ...currentFilters, [filterName]: value };
-        setCurrentFilters(newFilters);
 
-        Inertia.get(route("reports.dashboard"), newFilters, {
-            preserveState: true, // Preserva el estado, incluyendo la paginación
-            replace: true, // Reemplaza la URL actual en el historial
+        router.get(route("reports.dashboard"), newFilters, {
+            preserveState: true,
+            replace: true,
+            onSuccess: (page) => {
+                // Actualizar los datos de los reportes y estadísticas
+                setReports(page.props.reports);
+                setCurrentStats(page.props.stats);
+            },
         });
+
+        setCurrentFilters(newFilters);
     };
 
     return (
@@ -143,7 +154,7 @@ const Dashboard = ({ stats, locations, elements }) => {
                                 Total Evaluaciones
                             </h3>
                             <p className="text-4xl font-bold text-blue-600">
-                                {stats.total_assessments}
+                                {currentStats.total_assessments}
                             </p>
                         </div>
                         <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-300">
@@ -163,7 +174,7 @@ const Dashboard = ({ stats, locations, elements }) => {
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <select
-                                value={currentFilters.location_id || ""} // Usar currentFilters aquí
+                                value={currentFilters.location_id || ""}
                                 onChange={(e) =>
                                     handleFilterChange(
                                         "location_id",
@@ -184,10 +195,10 @@ const Dashboard = ({ stats, locations, elements }) => {
                             </select>
 
                             <select
-                                value={currentFilters.element_id || ""} // Usar currentFilters aquí
+                                value={currentFilters.element_id || ""}
                                 onChange={(e) =>
                                     handleFilterChange(
-                                        "element_id",
+                                        "element_id", // <-- Corregido a element_id
                                         e.target.value,
                                     )
                                 }
