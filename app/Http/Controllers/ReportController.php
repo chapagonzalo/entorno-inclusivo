@@ -157,13 +157,10 @@ class ReportController extends Controller
         }
 
         // Obtener los reportes paginados
-        $reports = $reportsQuery->paginate(10)->through(function ($assessment) {
-            $assessment->has_report = $assessment->report !== null;
-            $assessment->report_id = $assessment->report
-                ? $assessment->report->id
-                : null;
-            return $assessment;
-        });
+        $reports = $reportsQuery->paginate(10)->appends([
+            "location_id" => $locationId,
+            "element_id" => $elementId,
+        ]);
 
         // Obtener las ubicaciones y elementos para los filtros
         $locations = Location::query()->orderBy("name")->get();
