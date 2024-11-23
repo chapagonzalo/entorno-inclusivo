@@ -5,19 +5,23 @@ import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/24/solid";
 
 const MetricCard = ({ name, score, description, questions, weight }) => (
-    <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-200">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">{name}</h3>
+    <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+        <h3 className="text-gray-600 text-xl font-semibold">{name}</h3>
         <div className="mt-2">
             <div className="flex items-center space-x-2">
                 <div className="flex-grow">
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                         <div
                             className={`h-2.5 rounded-full transition-all duration-300 ${
-                                score >= 70
-                                    ? "bg-green-600"
-                                    : score >= 50
-                                      ? "bg-yellow-400"
-                                      : "bg-red-600"
+                                score >= 90
+                                    ? "bg-hazul text-white"
+                                    : score >= 75
+                                      ? "bg-celeste text-white"
+                                      : score >= 60
+                                        ? "bg-verde text-white"
+                                        : score >= 40
+                                          ? "bg-naranja text-white"
+                                          : "bg-rojo text-white"
                             }`}
                             style={{ width: `${score}%` }}
                         ></div>
@@ -33,12 +37,12 @@ const MetricCard = ({ name, score, description, questions, weight }) => (
         <Disclosure>
             {({ open }) => (
                 <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-lg font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75 mt-4">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-lg font-medium text-left text-white bg-celeste rounded-lg hover:bg-hceleste focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75 mt-4">
                         <span>Preguntas y Respuestas</span>
                         <ChevronUpIcon
                             className={`${
                                 open ? "transform rotate-180" : ""
-                            } w-5 h-5 text-purple-500`}
+                            } w-5 h-5 text-white`}
                         />
                     </Disclosure.Button>
                     <Disclosure.Panel className="px-4 pt-4 pb-2 text-lg text-gray-500">
@@ -89,7 +93,7 @@ const MetricCard = ({ name, score, description, questions, weight }) => (
 );
 
 const RecommendationCard = ({ recommendation }) => (
-    <div className="bg-white rounded-lg shadow p-6 border-l-4 border-yellow-400">
+    <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
         <div className="flex items-start">
             <div className="flex-shrink-0">
                 <svg
@@ -107,10 +111,10 @@ const RecommendationCard = ({ recommendation }) => (
                 </svg>
             </div>
             <div className="ml-4">
-                <h4 className="text-xl font-semibold text-gray-900">
+                <h4 className="text-gray-600 text-xl font-semibold">
                     {recommendation.area}
                 </h4>
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="text-lg text-gray-900">
                     {recommendation.suggestion}
                 </p>
             </div>
@@ -144,19 +148,12 @@ export default function Show({ report, metrics, recommendations }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     {/* Encabezado y Botón de Exportación */}
-                    <div className="bg-white rounded-lg shadow mb-6">
-                        <div className="p-6 border-b border-gray-200">
-                            <div className="flex justify-between items-center">
-                                <h1 className="text-2xl font-bold text-gray-900">
+                    <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6 ">
+                        <div className="gap-6  bg-azul">
+                            <div className="bg-azul p-4">
+                                <h1 className="text-3xl font-semibold text-white">
                                     Informe de Evaluación
                                 </h1>
-                                <a
-                                    href={route("reports.export", report.id)}
-                                    className="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-lg text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
-                                    target="_blank"
-                                >
-                                    Exportar PDF
-                                </a>
                             </div>
                         </div>
 
@@ -164,7 +161,7 @@ export default function Show({ report, metrics, recommendations }) {
                         <div className="p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <h2 className="text-lg font-medium text-gray-500">
+                                    <h2 className="text-xl font-medium text-gray-500">
                                         Ubicación
                                     </h2>
                                     <p className="mt-1 text-xl text-gray-900">
@@ -175,7 +172,7 @@ export default function Show({ report, metrics, recommendations }) {
                                     </p>
                                 </div>
                                 <div>
-                                    <h2 className="text-lg font-medium text-gray-500">
+                                    <h2 className="text-xl font-medium text-gray-500">
                                         Elemento Evaluado
                                     </h2>
                                     <p className="mt-1 text-xl text-gray-900">
@@ -190,20 +187,24 @@ export default function Show({ report, metrics, recommendations }) {
                     </div>
 
                     {/* Puntuación Global */}
-                    <div className="bg-white rounded-lg shadow mb-6">
+                    <div className="bg-azul rounded-lg shadow mb-6">
                         <div className="p-6">
-                            <div className="text-center">
-                                <h2 className="text-3xl font-bold text-gray-900">
+                            <div className="text-center ">
+                                <h2 className="text-3xl font-semibold text-white">
                                     Puntuación Global
                                 </h2>
                                 <div className="mt-4 flex justify-center items-center">
                                     <div
-                                        className={`text-5xl font-bold ${
-                                            finalScore >= 70
-                                                ? "text-green-600"
-                                                : finalScore >= 50
-                                                  ? "text-yellow-600"
-                                                  : "text-red-600"
+                                        className={`text-5xl font-bold rounded-lg p-2 ${
+                                            finalScore >= 90
+                                                ? "bg-hazul text-white"
+                                                : finalScore >= 75
+                                                  ? "bg-celeste text-white"
+                                                  : finalScore >= 60
+                                                    ? "bg-verde text-white"
+                                                    : finalScore >= 40
+                                                      ? "bg-naranja text-white"
+                                                      : "bg-rojo text-white"
                                         }`}
                                     >
                                         {finalScore.toFixed(1)}%
@@ -211,17 +212,20 @@ export default function Show({ report, metrics, recommendations }) {
                                 </div>
                                 <div className="mt-4">
                                     <span
-                                        className={`inline-flex items-center px-3 py-1 rounded-full text-lg font-medium ${
+                                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-lg font-medium ${
                                             report.accessibility_level ===
                                             "Excelente"
-                                                ? "bg-green-100 text-green-800"
+                                                ? "bg-azul text-white"
                                                 : report.accessibility_level ===
                                                     "Bueno"
-                                                  ? "bg-blue-100 text-blue-800"
+                                                  ? "bg-celeste text-white"
                                                   : report.accessibility_level ===
                                                       "Aceptable"
-                                                    ? "bg-yellow-100 text-yellow-800"
-                                                    : "bg-red-100 text-red-800"
+                                                    ? "bg-verde text-white"
+                                                    : report.accessibility_level ===
+                                                        "Necesita Mejoras"
+                                                      ? "bg-naranja text-white"
+                                                      : "bg-rojo text-white"
                                         }`}
                                     >
                                         {report.accessibility_level}
@@ -233,11 +237,15 @@ export default function Show({ report, metrics, recommendations }) {
 
                     {/* Métricas Detalladas */}
                     <div className="bg-white rounded-lg shadow mb-6">
-                        <div className="p-6">
-                            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                                Métricas Detalladas
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6">
+                            <div className="gap-6  bg-azul">
+                                <div className="bg-azul p-4">
+                                    <h1 className="text-3xl font-semibold text-white">
+                                        Métricas Detalladas
+                                    </h1>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
                                 {Array.isArray(metrics) &&
                                     metrics.map((metric, index) => (
                                         <MetricCard
@@ -260,22 +268,40 @@ export default function Show({ report, metrics, recommendations }) {
                     {/* Recomendaciones */}
                     {Array.isArray(recommendations) &&
                         recommendations.length > 0 && (
-                            <div className="bg-white rounded-lg shadow">
-                                <div className="p-6">
-                                    <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                                        Recomendaciones
-                                    </h2>
-                                    <div className="space-y-4">
-                                        {recommendations.map((rec, index) => (
-                                            <RecommendationCard
-                                                key={index}
-                                                recommendation={rec}
-                                            />
-                                        ))}
+                            <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6">
+                                <div className="gap-6  bg-azul">
+                                    <div className="bg-azul p-4">
+                                        <h1 className="text-3xl font-semibold text-white">
+                                            Métricas Detalladas
+                                        </h1>
                                     </div>
+                                </div>
+                                <div className="space-y-4 p-6">
+                                    {recommendations.map((rec, index) => (
+                                        <RecommendationCard
+                                            key={index}
+                                            recommendation={rec}
+                                        />
+                                    ))}
                                 </div>
                             </div>
                         )}
+
+                    {/* Botón Volver al Dashboard */}
+
+                    <button
+                        onClick={() => window.history.back()}
+                        className="inline-flex items-center px-4 mr-2 py-2 bg-azul border border-transparent rounded-md font-semibold text-lg text-white uppercase tracking-widest hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
+                    >
+                        Volver
+                    </button>
+                    <a
+                        href={route("reports.export", report.id)}
+                        className="inline-flex items-center px-4 py-2 bg-azul border border-transparent rounded-md font-semibold text-lg text-white uppercase tracking-widest hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
+                        target="_blank"
+                    >
+                        Exportar PDF
+                    </a>
 
                     {/* Fecha de Evaluación */}
                     <div className="mt-4 text-lg text-gray-500 text-right">

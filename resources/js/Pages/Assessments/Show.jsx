@@ -56,7 +56,7 @@ const ShowAnswer = ({ answer }) => {
     };
 
     return (
-        <div className="bg-white border-l-4 border-blue-500 shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+        <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
             <p className="text-xl font-semibold text-gray-900 mb-3">
                 {answer.question.content}
             </p>
@@ -66,30 +66,40 @@ const ShowAnswer = ({ answer }) => {
 };
 
 const AssessmentDetails = ({ assessment }) => (
-    <div className="bg-white border border-gray-200 shadow-lg rounded-lg p-6 mb-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-6 border-b pb-2">
-            Detalles de la Evaluación
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-gray-50 p-4 rounded-lg">
+    <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 py-4 border-b border-gray-300 bg-azul">
+            <div className="bg-azul p-4">
+                <h2 className="text-xl font-bold text-white">
+                    Detalles de la Evaluación
+                </h2>
+            </div>
+            <div className="bg-azul p-4">
+                <p className="text-white">
+                    Evaluación realizada el:{" "}
+                    {new Date(assessment.created_at).toLocaleDateString()}
+                </p>
+            </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+            <div className="bg-blancoSuave p-4 rounded-lg border border-gray-300">
                 <p className="text-gray-600 text-lg">Ubicación</p>
                 <p className="font-semibold text-gray-900">
                     {assessment.element_instance.location.name}
                 </p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="bg-blancoSuave p-4 rounded-lg border border-gray-300">
                 <p className="text-gray-600 text-lg">Elemento</p>
                 <p className="font-semibold text-gray-900">
                     {assessment.element_instance.element.name}
                 </p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="bg-blancoSuave p-4 rounded-lg border border-gray-300">
                 <p className="text-gray-600 text-lg">Evaluador</p>
                 <p className="font-semibold text-gray-900">
                     {assessment.user.name}
                 </p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="bg-blancoSuave p-4 rounded-lg border border-gray-300">
                 <p className="text-gray-600 text-lg">Estado</p>
                 <p
                     className={`font-semibold ${
@@ -104,7 +114,7 @@ const AssessmentDetails = ({ assessment }) => (
                 </p>
             </div>
             {assessment.element_instance.description && (
-                <div className="col-span-2 bg-gray-50 p-4 rounded-lg">
+                <div className="col-span-2 bg-blancoSuave p-4 rounded-lg border border-gray-300">
                     <p className="text-gray-600 text-lg">
                         Descripción del elemento
                     </p>
@@ -121,61 +131,52 @@ export default function Show({ assessment, questions }) {
     return (
         <AuthenticatedLayout>
             <Head title="Detalles de la Evaluación" />
+            <main className="relative flex min-h-screen flex-col items-center justify-center">
+                <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl bg-gray-100 rounded-lg mt-4">
+                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        {/* Detalles de la evaluación */}
+                        <AssessmentDetails assessment={assessment} />
 
-            <div className="py-12 bg-gray-50">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="mb-6">
-                        <h1 className="text-3xl font-bold text-gray-900">
-                            Detalles de la Evaluación
-                        </h1>
-                        <p className="text-gray-600 mt-2">
-                            Evaluación realizada el:{" "}
-                            {new Date(
-                                assessment.created_at,
-                            ).toLocaleDateString()}
-                        </p>
-                    </div>
-
-                    {/* Detalles de la evaluación */}
-                    <AssessmentDetails assessment={assessment} />
-
-                    {/* Sección de respuestas */}
-                    <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden">
-                        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                            <h2 className="text-xl font-bold text-gray-900">
-                                Respuestas de la Evaluación
-                            </h2>
-                        </div>
-                        <div className="p-6">
-                            {assessment.answers.length > 0 ? (
-                                <div className="space-y-4">
-                                    {questions.map((question) => {
-                                        const answer = assessment.answers.find(
-                                            (a) =>
-                                                a.question.id === question.id,
-                                        );
-                                        return (
-                                            <ShowAnswer
-                                                key={question.id}
-                                                answer={
-                                                    answer
-                                                        ? answer
-                                                        : { question }
-                                                }
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            ) : (
-                                <div className="text-center py-8 text-gray-500">
-                                    No hay respuestas registradas para esta
-                                    evaluación.
-                                </div>
-                            )}
+                        {/* Sección de respuestas */}
+                        <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6">
+                            <div className="px-6 py-4 border-b border-gray-300 bg-azul">
+                                <h2 className="text-xl font-bold text-white">
+                                    Respuestas de la Evaluación
+                                </h2>
+                            </div>
+                            <div className="p-6">
+                                {assessment.answers.length > 0 ? (
+                                    <div className="space-y-4">
+                                        {questions.map((question) => {
+                                            const answer =
+                                                assessment.answers.find(
+                                                    (a) =>
+                                                        a.question.id ===
+                                                        question.id,
+                                                );
+                                            return (
+                                                <ShowAnswer
+                                                    key={question.id}
+                                                    answer={
+                                                        answer
+                                                            ? answer
+                                                            : { question }
+                                                    }
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-8 text-gray-500">
+                                        No hay respuestas registradas para esta
+                                        evaluación.
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </main>
         </AuthenticatedLayout>
     );
 }

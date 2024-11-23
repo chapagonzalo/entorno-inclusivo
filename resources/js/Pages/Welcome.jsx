@@ -1,5 +1,6 @@
 import { Head, Link } from "@inertiajs/react";
 import Logo from "../assets/Logo.svg";
+import Inicio from "../assets/inicio.png";
 import Modal from "../Components/Modal";
 import { useState } from "react";
 
@@ -18,7 +19,7 @@ export default function Welcome({ auth }) {
                                 {auth.user ? (
                                     <Link
                                         href={route("dashboard")}
-                                        className="rounded-md bg-celeste text-white px-4 py-2 transition duration-200 ease-in-out ring-1 ring-transparent hover:bg-celeste/80 hover:ring-azul focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20]"
+                                        className="rounded-md bg-azul text-white px-4 py-2 transition duration-200 ease-in-out ring-1 ring-transparent hover:bg-hazul hover:ring-azul focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20]"
                                     >
                                         Inicio
                                     </Link>
@@ -26,13 +27,13 @@ export default function Welcome({ auth }) {
                                     <div className="flex flex-col lg:flex-row">
                                         <Link
                                             href={route("login")}
-                                            className="rounded-md bg-celeste text-white px-4 py-2 transition duration-200 ease-in-out ring-1 ring-transparent hover:bg-celeste/80 hover:ring-azul focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20] mb-2 lg:mb-0 lg:mr-2"
+                                            className="rounded-md bg-azul text-white px-4 py-2 transition duration-200 ease-in-out ring-1 ring-transparent hover:bg-hazul hover:ring-azul focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20] mb-2 lg:mb-0 lg:mr-2"
                                         >
                                             Ingresar
                                         </Link>
                                         <Link
                                             href={route("register")}
-                                            className="rounded-md bg-celeste text-white px-4 py-2 transition duration-200 ease-in-out ring-1 ring-transparent hover:bg-celeste/80 hover:ring-azul focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20]"
+                                            className="rounded-md bg-azul text-white px-4 py-2 transition duration-200 ease-in-out ring-1 ring-transparent hover:bg-hazul hover:ring-azul focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20]"
                                         >
                                             Registrarse
                                         </Link>
@@ -42,103 +43,64 @@ export default function Welcome({ auth }) {
                         </header>
 
                         <main className="mt-6">
-                            <div className="py-12">
+                            <div className="py-12 rounded-lg">
                                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                                    {/* Sección de Introducción */}
-                                    <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-                                        <h3 className="text-xl font-bold text-azul mb-4">
-                                            Objetivo del Proyecto
-                                        </h3>
-                                        <p className="text-gray-700 leading-relaxed">
-                                            Promover la accesibilidad y la
-                                            eliminación de barreras en entornos
-                                            públicos, facilitando la movilidad,
-                                            comunicación y uso de espacios para
-                                            personas con discapacidades y
-                                            necesidades de asistencia.
+                                    <div className="mb-6">
+                                        <h1 className="text-3xl font-bold text-gray-900">
+                                            Entorno Inclusivo
+                                        </h1>
+                                        <p className="text-gray-700 mt-2">
+                                            Construyendo espacios accesibles
+                                            para todos.
                                         </p>
                                     </div>
 
-                                    {/* Nueva Sección: Herramienta de Evaluación */}
-                                    <div className="grid md:grid-cols-2 gap-6 mb-8">
-                                        {/* Propósito de la Herramienta */}
-                                        <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-celeste">
-                                            <h3 className="text-xl font-bold text-azul mb-4">
-                                                Herramienta de Evaluación de
-                                                Accesibilidad
-                                            </h3>
-                                            <div className="space-y-4">
-                                                <div>
-                                                    <h4 className="font-semibold text-azul mb-2">
-                                                        Propósito
-                                                    </h4>
-                                                    <p className="text-gray-700 leading-relaxed">
-                                                        La herramienta de
-                                                        evaluación de
-                                                        accesibilidad permite
-                                                        identificar, analizar y
-                                                        registrar las barreras
-                                                        físicas y sensoriales en
-                                                        entornos públicos.
-                                                        Desarrollada para
-                                                        facilitar el diagnóstico
-                                                        y mejora de espacios
-                                                        inclusivos, esta
-                                                        herramienta promueve la
-                                                        adecuación de
-                                                        infraestructura y
-                                                        servicios a las
-                                                        necesidades de personas
-                                                        con discapacidades.
-                                                    </p>
-                                                </div>
-                                            </div>
+                                    {/* Sección de introducción */}
+                                    <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden">
+                                        <div className="px-6 py-4 border-b border-gray-300 bg-azul">
+                                            <h2 className="text-xl font-bold text-white">
+                                                Introducción
+                                            </h2>
                                         </div>
-
-                                        {/* Impacto de la Herramienta */}
-                                        <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-verde">
-                                            <h3 className="text-xl font-bold text-azul mb-4">
-                                                Impacto de la Herramienta
-                                            </h3>
-                                            <div className="space-y-4">
-                                                <p className="text-gray-700 leading-relaxed">
-                                                    La herramienta de evaluación
-                                                    de accesibilidad no solo
-                                                    ayuda a identificar
-                                                    barreras, sino que también
-                                                    fomenta un cambio cultural
-                                                    hacia la inclusión.
-                                                    Proporciona una base para
-                                                    que instituciones, empresas
-                                                    y organizaciones adapten sus
-                                                    espacios y servicios,
-                                                    asegurando que todas las
-                                                    personas puedan disfrutar de
-                                                    un entorno inclusivo, seguro
-                                                    y accesible.
+                                        <div className="p-6">
+                                            <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                                <p className="text-gray-800 font-medium">
+                                                    Una persona con discapacidad
+                                                    enfrenta limitaciones
+                                                    físicas, mentales,
+                                                    sensoriales o intelectuales
+                                                    que, al interactuar con
+                                                    barreras sociales, pueden
+                                                    dificultar su plena
+                                                    participación en igualdad de
+                                                    condiciones. Esto incluye
+                                                    desafíos para moverse,
+                                                    comunicarse o desarrollarse
+                                                    en entornos sin los apoyos
+                                                    necesarios.
+                                                </p>
+                                                <p className="text-gray-800 font-medium mt-4">
+                                                    La inclusión real exige
+                                                    reconocer y eliminar estas
+                                                    barreras, muchas veces
+                                                    basadas en prejuicios o
+                                                    concepciones desactualizadas
+                                                    que perpetúan prácticas
+                                                    discriminatorias.
+                                                </p>
+                                                <p className="text-gray-800 font-medium mt-4">
+                                                    Estas actitudes limitan la
+                                                    autonomía y el desarrollo de
+                                                    las personas con
+                                                    discapacidad. Es fundamental
+                                                    promover un cambio cultural
+                                                    que valore la diversidad
+                                                    como una riqueza y garantice
+                                                    la igualdad de derechos para
+                                                    todos.
                                                 </p>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    {/* Sección de Importancia */}
-                                    <div className="bg-white text-white rounded-lg shadow-md p-6">
-                                        <h3 className="text-xl font-bold text-azul mb-4">
-                                            Importancia de la Inclusión
-                                        </h3>
-                                        <p className="text-gray-700 leading-relaxed">
-                                            Promover entornos accesibles no solo
-                                            cumple con normativas legales, sino
-                                            que también fomenta una sociedad más
-                                            justa e inclusiva, donde todos
-                                            puedan participar y desarrollar sus
-                                            actividades en igualdad de
-                                            condiciones. La diversidad y
-                                            accesibilidad enriquecen las
-                                            interacciones y potencian la
-                                            autonomía de cada persona en el
-                                            espacio público.
-                                        </p>
                                     </div>
                                 </div>
                             </div>
