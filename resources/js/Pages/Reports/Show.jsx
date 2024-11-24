@@ -145,7 +145,7 @@ export default function Show({ report, metrics, recommendations }) {
         <AuthenticatedLayout>
             <Head title="Informe de Evaluación" />
 
-            <div className="py-12">
+            <div className="py-12 mt-16">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     {/* Encabezado y Botón de Exportación */}
                     <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6 ">
@@ -287,26 +287,26 @@ export default function Show({ report, metrics, recommendations }) {
                             </div>
                         )}
 
-                    {/* Botón Volver al Dashboard */}
-
-                    <button
-                        onClick={() => window.history.back()}
-                        className="inline-flex items-center px-4 mr-2 py-2 bg-azul border border-transparent rounded-md font-semibold text-lg text-white uppercase tracking-widest hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
-                    >
-                        Volver
-                    </button>
-                    <a
-                        href={route("reports.export", report.id)}
-                        className="inline-flex items-center px-4 py-2 bg-azul border border-transparent rounded-md font-semibold text-lg text-white uppercase tracking-widest hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
-                        target="_blank"
-                    >
-                        Exportar PDF
-                    </a>
-
                     {/* Fecha de Evaluación */}
-                    <div className="mt-4 text-lg text-gray-500 text-right">
+                    <div className="mt-4 text-lg text-black text-right">
                         Evaluación realizada el:{" "}
                         {new Date(report.created_at).toLocaleDateString()}
+                    </div>
+
+                    <div className="flex justify-end mt-10">
+                        <button
+                            onClick={() => window.history.back()}
+                            className="inline-flex items-center px-4 mr-2 py-2 bg-azul border border-transparent rounded-md font-semibold text-lg text-white uppercase tracking-widest hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
+                        >
+                            Volver
+                        </button>
+                        <a
+                            href={route("reports.export", report.id)}
+                            className="inline-flex items-center px-4 py-2 bg-azul border border-transparent rounded-md font-semibold text-lg text-white uppercase tracking-widest hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
+                            target="_blank"
+                        >
+                            Exportar PDF
+                        </a>
                     </div>
                 </div>
             </div>

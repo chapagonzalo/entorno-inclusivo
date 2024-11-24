@@ -131,7 +131,7 @@ export default function Show({ assessment, questions }) {
     return (
         <AuthenticatedLayout>
             <Head title="Detalles de la Evaluación" />
-            <main className="relative flex min-h-screen flex-col items-center justify-center">
+            <main className="relative flex min-h-screen flex-col items-center justify-center mt-16">
                 <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl bg-gray-100 rounded-lg mt-4">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         {/* Detalles de la evaluación */}
@@ -173,6 +173,14 @@ export default function Show({ assessment, questions }) {
                                     </div>
                                 )}
                             </div>
+                        </div>
+                        <div className="flex justify-end mt-10">
+                            <button
+                                onClick={() => window.history.back()}
+                                className="inline-flex items-center px-4 mr-2 py-2 bg-azul border border-transparent rounded-md font-semibold text-lg text-white uppercase tracking-widest hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
+                            >
+                                Volver
+                            </button>
                         </div>
                     </div>
                 </div>

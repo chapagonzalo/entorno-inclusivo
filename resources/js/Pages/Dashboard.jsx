@@ -3,146 +3,207 @@ import { Head } from "@inertiajs/react";
 
 export default function Dashboard() {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-2xl font-bold text-azul">
-                    Panel de Accesibilidad e Inclusión
-                </h2>
-            }
-        >
+        <AuthenticatedLayout>
             <Head title="Panel Principal" />
 
-            <div className="py-12">
+            <div className="py-6 mt-16">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    {/* Grid de Elementos Clave */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                        {/* Señalética */}
-                        <div className="bg-white rounded-lg shadow-md p-6 border-t-4 border-celeste">
-                            <h3 className="text-lg font-bold text-azul mb-3">
-                                Señalética Accesible
-                            </h3>
-                            <p className="text-gray-700 leading-relaxed">
-                                La señalética debe utilizar símbolos claros,
-                                tipografía legible y ubicarse en lugares
-                                visibles y bien iluminados. Puede incluir el
-                                símbolo internacional de accesibilidad,
-                                información en Braille y señalización táctil y
-                                sonora. Estas características son fundamentales
-                                para orientar a personas con discapacidad visual
-                                o auditiva.
-                            </p>
+                    {/* Sección de tipos de usuarios */}
+                    <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden">
+                        <div className="px-6 py-4 border-b border-gray-300 bg-azul">
+                            <h2 className="text-3xl font-bold text-white">
+                                Tipos de Usuarios
+                            </h2>
                         </div>
-
-                        {/* Rampas */}
-                        <div className="bg-white rounded-lg shadow-md p-6 border-t-4 border-verde">
-                            <h3 className="text-lg font-bold text-azul mb-3">
-                                Rampas de Acceso
-                            </h3>
-                            <p className="text-gray-700 leading-relaxed">
-                                Las rampas permiten el desplazamiento seguro de
-                                personas con movilidad reducida. Deben cumplir
-                                con una pendiente máxima del 8% y estar
-                                equipadas con pasamanos dobles a ambos lados,
-                                solado de prevención con colores contrastantes,
-                                y descansos en recorridos largos.
-                            </p>
+                        <div className="p-6">
+                            <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
+                                <p className="mt-4 text-lg text-gray-700 leading-relaxed">
+                                    La heterogeneidad de limitaciones entre las
+                                    diversas personas es una de las principales
+                                    dificultades para proponer soluciones
+                                    arquitectónicas accesibles para toda la
+                                    población. Podríamos decir que el entorno
+                                    accesible universal sería la suma de los
+                                    entornos accesibles para cada uno de los
+                                    individuos, y si bien esta universalidad es
+                                    prácticamente imposible de conseguir, sí que
+                                    resulta viable aproximarse al objetivo.
+                                    Existe un mínimo de características comunes
+                                    que permiten llegar a definir tres grandes
+                                    grupos de población con necesidades de
+                                    accesibilidad parecidas:
+                                </p>
+                            </div>
                         </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-6">
+                        {/* Sección de ambulantes */}
+                        <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden ">
+                            <div className="px-6 py-4 border-b border-gray-300 bg-azul">
+                                <h2 className="text-3xl font-bold text-white">
+                                    Ambulantes
+                                </h2>
+                            </div>
+                            <div className="p-6">
+                                <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed">
+                                        Aquellos que ejecutan determinados
+                                        movimientos con dificultad, sea con la
+                                        ayuda o no de aparatos ortopédicos. Los
+                                        principales problemas que afectan a este
+                                        colectivo son:
+                                    </p>
 
-                        {/* Escaleras */}
-                        <div className="bg-white rounded-lg shadow-md p-6 border-t-4 border-naranja">
-                            <h3 className="text-lg font-bold text-azul mb-3">
-                                Escaleras Accesibles
-                            </h3>
-                            <p className="text-gray-700 leading-relaxed">
-                                Las escaleras deben tener un ancho mínimo de
-                                1.20 metros, pasamanos a ambos lados, y
-                                descansos cada 12 escalones. Para personas con
-                                discapacidad visual, se recomienda incluir
-                                solado de prevención y señalización que advierta
-                                sobre su presencia.
-                            </p>
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed bg-white border-l-4 border-hazul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                        Dificultades de desplazamiento:
+                                        Dificultad en salvar pendientes
+                                        pronunciadas, desniveles aislados y
+                                        escaleras, tanto por problemas de fuerza
+                                        como de equilibrio. Dificultad en pasar
+                                        por espacios estrechos. Dificultad en
+                                        recorrer trayectos largos sin descansar.
+                                        Mayor peligro de caídas por resbalones o
+                                        tropiezos de los pies o los bastones.
+                                    </p>
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed bg-white border-l-4 border-hazul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                        Dificultades de uso: Dificultad en abrir
+                                        y cerrar puertas, especialmente si
+                                        tienen mecanismos de retorno, dificultad
+                                        para mantener el equilibrio, dificultad
+                                        para sentarse y levantarse, dificultad
+                                        para accionar mecanismos que precisan de
+                                        ambas manos a la vez.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
+                        {/* Sección de USUARIOS DE SILLA DE RUEDAS */}
+                        <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden">
+                            <div className="px-6 py-4 border-b border-gray-300 bg-azul">
+                                <h2 className="text-3xl font-bold text-white">
+                                    Usuarios en Silla de Ruedas
+                                </h2>
+                            </div>
+                            <div className="p-6">
+                                <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed">
+                                        Aquellos que precisan de una silla de
+                                        ruedas para llevar a cabo sus
+                                        actividades, bien de forma autónoma o
+                                        con ayuda de terceras personas. Los
+                                        principales problemas que afectan a este
+                                        colectivo son:
+                                    </p>
 
-                        {/* Puertas */}
-                        <div className="bg-white rounded-lg shadow-md p-6 border-t-4 border-amarillo">
-                            <h3 className="text-lg font-bold text-azul mb-3">
-                                Puertas Accesibles
-                            </h3>
-                            <p className="text-gray-700 leading-relaxed">
-                                Las puertas deben ser lo suficientemente anchas
-                                para el paso de sillas de ruedas (mínimo de 0.80
-                                metros) y contar con mecanismos de apertura
-                                sencillos y accesibles, como manijas a una
-                                altura estándar. Los cerrojos deben ser de fácil
-                                uso en emergencias, y las puertas corredizas
-                                automáticas deben ser preferidas en áreas de
-                                alto tráfico.
-                            </p>
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed bg-white border-l-4 border-hazul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                        Dificultades de desplazamiento:
+                                        Imposibilidad de superar desniveles
+                                        aislados, escaleras y Página 6pendientes
+                                        pronunciadas. Peligro de volcar (en
+                                        escaleras, travesaños, etc.).
+                                        Imposibilidad de pasar por lugares
+                                        estrechos. Necesidad de espacios amplios
+                                        para girar, abrir puertas, etc.
+                                    </p>
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed bg-white border-l-4 border-hazul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                        Dificultades de uso: Limitación de sus
+                                        posibilidades de alcanzar objetos.
+                                        Limitación de sus áreas de visión.
+                                        Dificultades por el obstáculo que
+                                        representan sus propias piernas.
+                                        Problemas de compatibilidad entre su
+                                        silla de ruedas y otros elementos de
+                                        mobiliario.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-
-                        {/* Sanitarios */}
-                        <div className="bg-white rounded-lg shadow-md p-6 border-t-4 border-celeste">
-                            <h3 className="text-lg font-bold text-azul mb-3">
-                                Sanitarios Adaptados
-                            </h3>
-                            <p className="text-gray-700 leading-relaxed">
-                                Los sanitarios accesibles incluyen inodoros y
-                                lavabos a una altura adecuada para sillas de
-                                ruedas, barras de apoyo, y pulsadores de
-                                emergencia. Los espejos inclinados y la grifería
-                                de fácil accionamiento facilitan su uso por
-                                personas con movilidad reducida.
-                            </p>
+                    </div>
+                    {/* Sección de sensoriales */}
+                    <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden mt-6">
+                        <div className="px-6 py-4 border-b border-gray-300 bg-azul">
+                            <h2 className="text-3xl font-bold text-white">
+                                Sensoriales
+                            </h2>
                         </div>
-
-                        {/* Formatos Audiovisuales */}
-                        <div className="bg-white rounded-lg shadow-md p-6 border-t-4 border-verde">
-                            <h3 className="text-lg font-bold text-azul mb-3">
-                                Formatos Audiovisuales
-                            </h3>
-                            <p className="text-gray-700 leading-relaxed">
-                                Los contenidos audiovisuales accesibles deben
-                                contar con subtítulos, interpretación en lengua
-                                de señas y audio descripción. Las señales
-                                audibles permiten a personas con discapacidad
-                                visual orientarse o recibir información de
-                                manera efectiva.
-                            </p>
+                        <div className="p-6">
+                            <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
+                                <p className="mt-4 text-lg text-gray-700 leading-relaxed">
+                                    Aquellos que tienen dificultades de
+                                    percepción, debido a limitaciones en sus
+                                    capacidades sensitivas, principalmente las
+                                    auditivas y las visuales.
+                                </p>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Recursos Complementarios */}
-                    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                        <h3 className="text-xl font-bold text-azul mb-4">
-                            Recursos Complementarios
-                        </h3>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div className="p-4 bg-blancoSuave rounded-lg">
-                                <h4 className="font-bold text-azul mb-2">
-                                    Asistencia Humana
-                                </h4>
-                                <p className="text-gray-700">
-                                    Guías e intérpretes disponibles para
-                                    facilitar el acceso y la comunicación.
-                                </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-6">
+                        {/* Sección de DEFICIENCIA VISUAL */}
+                        <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden ">
+                            <div className="px-6 py-4 border-b border-gray-300 bg-azul">
+                                <h2 className="text-3xl font-bold text-white">
+                                    Deficiencia Visual
+                                </h2>
                             </div>
-                            <div className="p-4 bg-blancoSuave rounded-lg">
-                                <h4 className="font-bold text-azul mb-2">
-                                    Aro Magnético
-                                </h4>
-                                <p className="text-gray-700">
-                                    Sistema de amplificación de sonido para
-                                    usuarios de audífonos.
-                                </p>
+                            <div className="p-6">
+                                <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed">
+                                        Las personas con algún tipo de
+                                        deficiencia en el sentido de la vista
+                                        encuentran limitada su autonomía en base
+                                        a:
+                                    </p>
+
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed bg-white border-l-4 border-hazul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                        Dificultades de desplazamiento:
+                                        Problemas para detectar obstáculos
+                                        (desniveles, elementos salientes,
+                                        agujeros, etc.). Dificultades para
+                                        determinar direcciones y para el
+                                        seguimiento de itinerarios.
+                                    </p>
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed bg-white border-l-4 border-hazul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                        Dificultades de uso: Limitaciones en la
+                                        obtención de información gráfica
+                                        (escritos, imágenes gráficas, colores,
+                                        etc.). Dificultad para localizar objetos
+                                        plurales (botoneras, tiradores,
+                                        elementos de mando en general, etc.)
+                                    </p>
+                                </div>
                             </div>
-                            <div className="p-4 bg-blancoSuave rounded-lg">
-                                <h4 className="font-bold text-azul mb-2">
-                                    Plano Háptico
-                                </h4>
-                                <p className="text-gray-700">
-                                    Planos en relieve para exploración táctil
-                                    del espacio.
-                                </p>
+                        </div>
+                        {/* Sección de DEFICIENCIA AUDITIVA */}
+                        <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden">
+                            <div className="px-6 py-4 border-b border-gray-300 bg-azul">
+                                <h2 className="text-3xl font-bold text-white">
+                                    Deficiencia Auditiva
+                                </h2>
+                            </div>
+                            <div className="p-6">
+                                <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed">
+                                        Cuyo principal problema es de
+                                        comunicación que genera también:
+                                    </p>
+
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed bg-white border-l-4 border-hazul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                        Dificultades de desplazamiento:
+                                        Sensación de aislamiento respecto al
+                                        entorno. Limitaciones en la captación de
+                                        señales o advertencias acústicas.
+                                    </p>
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed bg-white border-l-4 border-hazul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
+                                        Dificultades de uso: Problemas para
+                                        obtener la información ofrecida mediante
+                                        señales acústicas (voz, alarmas,
+                                        timbres, etc.). Limitación de la
+                                        capacidad de relación e intercambio con
+                                        las demás personas. Sensación de
+                                        aislamiento respecto al entorno.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>

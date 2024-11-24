@@ -44,7 +44,7 @@ class AssessmentController extends Controller
         $validatedData = $request->validate([
             "location_id" => "required|exists:locations,id",
             "element_id" => "required|exists:elements,id",
-            "element_instance_description" => "nullable|string|max:255",
+            "element_instance_description" => "required|string|max:255",
         ]);
 
         $elementInstance = new ElementInstance([

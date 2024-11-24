@@ -118,7 +118,7 @@ const ReportsList = ({ reports }) => {
 const Index = ({ reports, locations, elements, filters }) => {
     return (
         <Layout>
-            <div className="py-12">
+            <div className="py-6 mt-16">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
                     <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6 ">
                         <div className="gap-6  bg-azul">
