@@ -17,7 +17,7 @@ export default function Authenticated({ header, children }) {
 
     return (
         <div className="min-h-screen bg-gray-100 text-xl">
-            <nav className="border-b border-gray-100 bg-white">
+            <nav className="border-b border-gray-100 bg-white w-full fixed top-0">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
@@ -68,6 +68,14 @@ export default function Authenticated({ header, children }) {
                                 )}
                                 {isTechnical && (
                                     <>
+                                        <NavLink
+                                            href={route("assessments.create")}
+                                            active={route().current(
+                                                "assessments.create",
+                                            )}
+                                        >
+                                            Nueva Evaluación
+                                        </NavLink>
                                         <NavLink
                                             href={route("assessments.index")}
                                             active={route().current(
@@ -213,6 +221,14 @@ export default function Authenticated({ header, children }) {
                         {isTechnical && (
                             <>
                                 <ResponsiveNavLink
+                                    href={route("assessments.create")}
+                                    active={route().current(
+                                        "assessments.create",
+                                    )}
+                                >
+                                    Nueva Evaluación
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
                                     href={route("assessments.index")}
                                     active={route().current(
                                         "assessments.index",
@@ -260,37 +276,25 @@ export default function Authenticated({ header, children }) {
 
             <main className="min-h-screen pb-24">{children}</main>
 
-            <footer className="bg-white text-gray-800 py-8 shadow-md border-t border-gray-200 bottom-0 w-full">
-                {" "}
-                {/* Fondo blanco y borde superior */}
-                <div className="container mx-auto px-4">
-                    <div className="flex flex-col md:flex-row justify-between items-center">
-                        <div className="mb-4 md:mb-0">
-                            <a
-                                href="https://universidadydiscapacidad.unsl.edu.ar/"
-                                className="text-2xl font-bold text-gray-900 hover:text-[#427898]" // Hover azul oscuro
-                            >
-                                Universidad y Discapacidad
-                            </a>
-                        </div>
-                        <div className="flex space-x-6">
-                            <a
-                                href="/"
-                                className="text-gray-700 hover:text-[#6aced3] transition-colors duration-150" // Hover celeste
-                            >
-                                Inicio
-                            </a>
-                            <a
-                                href="/contact"
-                                className="text-gray-700 hover:text-[#6aced3] transition-colors duration-150"
-                            >
-                                Contacto
-                            </a>
-                        </div>
-                    </div>
-                    <div className="mt-4 text-center text-lg text-gray-500">
-                        &copy; 2024 Universidad y Discapacidad. Todos los
-                        derechos reservados.
+            <footer className="bg-white text-gray-800 py-4 shadow-md border-t border-gray-200 bottom-0 w-full">
+                <div className="max-w-7xl mx-auto px-4 flex justify-between items-center text-sm">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                        <a
+                            href="https://universidadydiscapacidad.unsl.edu.ar/"
+                            className="text-xl font-semibold text-azul hover:text-hazul"
+                        >
+                            Universidad y Discapacidad
+                        </a>
+                        <span>
+                            &copy; 2024 Universidad y Discapacidad. Todos los
+                            derechos reservados.
+                        </span>
+                        <a
+                            href="https://www.unsl.edu.ar/#gsc.tab=0"
+                            className="text-xl font-semibold text-azul hover:text-hazul"
+                        >
+                            UNSL
+                        </a>
                     </div>
                 </div>
             </footer>

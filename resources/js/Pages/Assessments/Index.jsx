@@ -4,9 +4,7 @@ import Layout from "@/Layouts/AuthenticatedLayout";
 
 const AssessmentCard = ({ assessment }) => {
     const getStatusColor = (status) => {
-        return status === "complete"
-            ? "bg-green-100 text-green-800"
-            : "bg-yellow-100 text-yellow-800";
+        return status === "complete" ? "text-green-700" : "text-yellow-700";
     };
 
     const getStatusText = (status) => {
@@ -14,103 +12,60 @@ const AssessmentCard = ({ assessment }) => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
-            <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                    <div>
-                        <h3 className="text-xl font-semibold text-gray-900">
-                            {assessment.element_instance?.element?.name}
-                        </h3>
-                        <p className="text-lg text-gray-500">
-                            {new Date(
-                                assessment.created_at,
-                            ).toLocaleDateString()}
-                        </p>
-                    </div>
-                    <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-base font-medium ${getStatusColor(
-                            assessment.status,
-                        )}`}
+        <div className="bg-blancoSuave shadow-lg rounded-lg p-6 mb-6 hover:shadow-xl transition-shadow border-l-4 border-azul">
+            <h3 className="text-2xl font-bold text-gray-700 border-b border-gray-300 pb-2 mb-4">
+                Detalles de Evaluación
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p className="text-gray-600 text-base font-semibold mb-1">
+                        Elemento
+                    </p>
+                    <p className="text-gray-800 text-lg font-medium">
+                        {assessment.element_instance?.element?.name}
+                    </p>
+                </div>
+                <div>
+                    <p className="text-gray-600 text-base font-semibold mb-1">
+                        Ubicación
+                    </p>
+                    <p className="text-gray-800 text-lg font-medium">
+                        {assessment.element_instance?.location?.name}
+                    </p>
+                </div>
+                <div>
+                    <p className="text-gray-600 text-base font-semibold mb-1">
+                        Estado
+                    </p>
+                    <p
+                        className={`text-lg font-medium ${getStatusColor(assessment.status)}`}
                     >
                         {getStatusText(assessment.status)}
-                    </span>
+                    </p>
                 </div>
-
-                <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-gray-700">
-                        <svg
-                            className="h-5 w-5 mr-2"
-                            fill="none"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <span>
-                            {assessment.element_instance?.location?.name}
-                        </span>
-                    </div>
-
-                    {assessment.element_instance?.description && (
-                        <div className="flex items-center text-gray-700">
-                            <svg
-                                className="h-5 w-5 mr-2"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <span className="text-base">
-                                {assessment.element_instance.description}
-                            </span>
-                        </div>
-                    )}
+                <div>
+                    <p className="text-gray-600 text-base font-semibold mb-1">
+                        Fecha de creación
+                    </p>
+                    <p className="text-gray-800 text-lg font-medium">
+                        {new Date(assessment.created_at).toLocaleDateString(
+                            "es-ES",
+                        )}
+                    </p>
                 </div>
-
-                <div className="flex justify-end space-x-4 pt-4 border-t border-gray-100">
+                <div className="flex items-center justify-end mt-4">
                     {assessment.status === "incomplete" ? (
                         <Link
                             href={route("assessments.questions", assessment.id)}
-                            className="inline-flex items-center px-4 py-2 border border-indigo-600 rounded-md text-base font-medium text-indigo-600 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className="text-lg inline-flex items-center px-4 py-2 bg-azul text-white font-medium rounded-md hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                         >
-                            <svg
-                                className="h-5 w-5 mr-2"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                            Continuar Evaluación
+                            Continuar
                         </Link>
                     ) : (
                         <Link
                             href={route("assessments.show", assessment.id)}
-                            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className="text-lg inline-flex items-center px-4 py-2 bg-celeste text-white font-medium rounded-md hover:bg-hceleste focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
                         >
-                            <svg
-                                className="h-5 w-5 mr-2"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
                             Ver Detalles
                         </Link>
                     )}
@@ -123,132 +78,108 @@ const AssessmentCard = ({ assessment }) => {
 const Index = ({ auth, assessments }) => {
     return (
         <Layout user={auth.user}>
-            <div className="py-12">
+            <div className="py-6 mt-16">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    {/* Header section */}
-                    <div className="mb-8">
-                        <div className="flex justify-between items-center">
-                            <div>
-                                <h1 className="text-2xl font-semibold text-gray-900">
+                    <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6">
+                        {/* Header section */}
+                        <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6">
+                            <div className="bg-azul p-4">
+                                <h1 className="text-3xl font-semibold text-white">
                                     Evaluaciones
                                 </h1>
-                                <p className="mt-1 text-lg text-gray-600">
+                                <p className="text-white text-lg">
                                     Gestiona y visualiza todas tus evaluaciones
                                     de accesibilidad
                                 </p>
                             </div>
-                            <Link
-                                href={route("assessments.create")}
-                                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                <svg
-                                    className="-ml-1 mr-2 h-5 w-5"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                    />
-                                </svg>
-                                Nueva Evaluación
-                            </Link>
                         </div>
-                    </div>
 
-                    {/* Main content */}
-                    {assessments.data.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {assessments.data.map(
-                                (
-                                    assessment, // <-  Iterar sobre assessments.data
-                                ) => (
+                        {/* Main content */}
+                        {assessments.data.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                                {assessments.data.map((assessment) => (
                                     <AssessmentCard
                                         key={assessment.id}
                                         assessment={assessment}
                                     />
-                                ),
-                            )}
-                        </div>
-                    ) : (
-                        <div className="bg-white rounded-lg shadow-sm p-6 text-center">
-                            <svg
-                                className="mx-auto h-12 w-12 text-gray-400"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="1"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                            </svg>
-                            <h3 className="mt-2 text-lg font-medium text-gray-900">
-                                No hay evaluaciones
-                            </h3>
-                            <p className="mt-1 text-lg text-gray-500">
-                                Comienza creando una nueva evaluación de
-                                accesibilidad.
-                            </p>
-                            <div className="mt-6">
-                                <Link
-                                    href={route("assessments.create")}
-                                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                >
-                                    <svg
-                                        className="-ml-1 mr-2 h-5 w-5"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                        />
-                                    </svg>
-                                    Nueva Evaluación
-                                </Link>
+                                ))}
                             </div>
-                        </div>
-                    )}
-
-                    {/* Paginación */}
-                    <div className="mt-6">
-                        <div className="flex items-center justify-center space-x-2">
-                            {assessments.links.map((link, index) => {
-                                const getLabel = (label) => {
-                                    if (label.includes("&laquo;"))
-                                        return "Anterior";
-                                    if (label.includes("&raquo;"))
-                                        return "Siguiente";
-                                    return label;
-                                };
-
-                                return (
+                        ) : (
+                            <div className="bg-white rounded-lg shadow-sm p-6 text-center">
+                                <svg
+                                    className="mx-auto h-12 w-12 text-gray-400"
+                                    fill="none"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="1"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                </svg>
+                                <h3 className="mt-2 text-lg font-medium text-gray-900">
+                                    No hay evaluaciones
+                                </h3>
+                                <p className="mt-1 text-lg text-gray-500">
+                                    Comienza creando una nueva evaluación de
+                                    accesibilidad.
+                                </p>
+                                <div className="mt-6">
                                     <Link
-                                        key={index}
-                                        href={link.url}
-                                        className={`px-4 py-2 rounded-full font-medium border transition-all ${
-                                            link.active
-                                                ? "bg-[#427898] text-white border-[#427898]" // Botón activo
-                                                : link.url === null
-                                                  ? "bg-gray-200 text-gray-500 border-gray-200 cursor-not-allowed" // Botón deshabilitado
-                                                  : "bg-white text-[#427898] border-[#427898] hover:bg-[#6aced3] hover:text-white" // Botón normal
-                                        }`}
-                                        disabled={link.url === null}
-                                        preserveState={true}
+                                        href={route("assessments.create")}
+                                        className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                     >
-                                        {getLabel(link.label)}
+                                        <svg
+                                            className="-ml-1 mr-2 h-5 w-5"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                            />
+                                        </svg>
+                                        Nueva Evaluación
                                     </Link>
-                                );
-                            })}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Paginación */}
+                        <div className="mt-6">
+                            <div className="flex items-center justify-center space-x-2">
+                                {assessments.links.map((link, index) => {
+                                    const getLabel = (label) => {
+                                        if (label.includes("&laquo;"))
+                                            return "Anterior";
+                                        if (label.includes("&raquo;"))
+                                            return "Siguiente";
+                                        return label;
+                                    };
+
+                                    return (
+                                        <Link
+                                            key={index}
+                                            href={link.url}
+                                            className={`px-4 py-2 rounded-full font-medium border transition-all ${
+                                                link.active
+                                                    ? "bg-[#427898] text-white border-[#427898]"
+                                                    : link.url === null
+                                                      ? "bg-gray-200 text-gray-500 border-gray-200 cursor-not-allowed" // Botón deshabilitado
+                                                      : "bg-white text-[#427898] border-[#427898] hover:bg-[#6aced3] hover:text-white" // Botón normal
+                                            }`}
+                                            disabled={link.url === null}
+                                            preserveState={true}
+                                        >
+                                            {getLabel(link.label)}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
                         </div>
                     </div>
                 </div>

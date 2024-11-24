@@ -155,17 +155,6 @@ class ReportController extends Controller
                 $query->where("element_id", $elementId);
             });
         }
-
-        // Obtener los reportes paginados
-        $reports = $reportsQuery->paginate(10)->appends([
-            "location_id" => $locationId,
-            "element_id" => $elementId,
-        ]);
-
-        // Obtener las ubicaciones y elementos para los filtros
-        $locations = Location::query()->orderBy("name")->get();
-        $elements = Element::query()->orderBy("name")->get();
-
         // Estadísticas generales
         $stats = [
             "total_assessments" => $reportsQuery->count(),
@@ -180,6 +169,19 @@ class ReportController extends Controller
                 $elementId
             ),
         ];
+
+        // Obtener los reportes paginados
+        $reports = $reportsQuery->paginate(10)->through(function ($assessment) {
+            $assessment->has_report = $assessment->report !== null;
+            $assessment->report_id = $assessment->report
+                ? $assessment->report->id
+                : null;
+            return $assessment;
+        });
+
+        // Obtener las ubicaciones y elementos para los filtros
+        $locations = Location::query()->orderBy("name")->get();
+        $elements = Element::query()->orderBy("name")->get();
 
         return Inertia::render("Reports/Dashboard", [
             "stats" => $stats,

@@ -15,79 +15,86 @@ const ReportsList = ({ reports }) => {
     const reportsData = reports.data || reports;
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 p-6">
             {reportsData.map((report) => (
                 <div
                     key={report.id}
-                    className="bg-white rounded-lg shadow-lg p-6 border border-gray-300"
+                    className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow"
                 >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
                         <div>
-                            <p className="text-gray-600 text-lg font-semibold">
+                            <p className="text-gray-600 text-xl font-semibold">
                                 Ubicación
                             </p>
-                            <p className="text-base text-gray-900">
+                            <p className="text-lg text-gray-900">
                                 {report.assessment?.element_instance?.location
                                     ?.name || "N/A"}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-600 text-lg font-semibold">
+                            <p className="text-gray-600 text-xl font-semibold">
                                 Elemento
                             </p>
-                            <p className="text-base text-gray-900">
+                            <p className="text-lg text-gray-900">
                                 {report.assessment?.element_instance?.element
                                     ?.name || "N/A"}
                             </p>
                         </div>
                         <div>
-                            <p className="text-gray-600 text-lg font-semibold">
+                            <p className="text-gray-600 text-xl font-semibold">
                                 Puntuación
                             </p>
                             <div className="flex items-center">
                                 <div className="w-full bg-gray-200 rounded-full h-2.5 mr-2">
                                     <div
                                         className={`h-2.5 rounded-full ${
-                                            report.final_score >= 70
-                                                ? "bg-green-600"
-                                                : report.final_score >= 50
-                                                  ? "bg-yellow-400"
-                                                  : "bg-red-600"
+                                            report.final_score >= 90
+                                                ? "bg-hazul"
+                                                : report.final_score >= 75
+                                                  ? "bg-celeste"
+                                                  : report.final_score >= 60
+                                                    ? "bg-verde"
+                                                    : report.final_score >= 40
+                                                      ? "bg-naranja"
+                                                      : "bg-rojo"
                                         }`}
                                         style={{
                                             width: `${report.final_score}%`,
                                         }}
                                     ></div>
                                 </div>
-                                <span className="text-base  text-gray-900">
+                                <span className="text-lg  text-hazul">
                                     {report.final_score}%
                                 </span>
                             </div>
                         </div>
                         <div>
-                            <p className="text-gray-600 text-lg font-semibold">
+                            <p className="text-gray-600 text-xl font-semibold">
                                 Nivel de Accesibilidad
                             </p>
                             <span
                                 className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-lg font-medium ${
                                     report.accessibility_level === "Excelente"
-                                        ? "bg-green-100 text-green-800"
+                                        ? "bg-azul text-white"
                                         : report.accessibility_level === "Bueno"
-                                          ? "bg-blue-100 text-blue-800"
+                                          ? "bg-celeste text-white"
                                           : report.accessibility_level ===
                                               "Aceptable"
-                                            ? "bg-yellow-100 text-yellow-800"
-                                            : "bg-red-100 text-red-800"
+                                            ? "bg-verde text-white"
+                                            : report.accessibility_level ===
+                                                "Necesita Mejoras"
+                                              ? "bg-naranja text-white"
+                                              : "bg-rojo text-white"
                                 }`}
                             >
                                 {report.accessibility_level}
                             </span>
                         </div>
                         <div>
-                            <p className="text-gray-600 text-lg font-semibold">
+                            <p className="text-gray-600 text-xl font-semibold">
                                 Fecha
                             </p>
-                            <p className="text-base  text-gray-900">
+                            <p className="text-lg text-gray-900">
                                 {new Date(
                                     report.created_at,
                                 ).toLocaleDateString()}
@@ -96,7 +103,7 @@ const ReportsList = ({ reports }) => {
                         <div className="flex items-end justify-end mt-4">
                             <Link
                                 href={route("reports.show", report.id)}
-                                className="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                className="inline-flex items-center px-4 py-2 bg-celeste border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-hceleste focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150"
                             >
                                 Ver Detalles
                             </Link>
@@ -111,21 +118,22 @@ const ReportsList = ({ reports }) => {
 const Index = ({ reports, locations, elements, filters }) => {
     return (
         <Layout>
-            <div className="py-12">
+            <div className="py-6 mt-16">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6 border border-gray-300">
-                        <div className="flex justify-between items-center mb-6">
-                            <h1 className="text-3xl font-semibold text-gray-900">
-                                Informes de Accesibilidad
-                            </h1>
+                    <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6 ">
+                        <div className="gap-6  bg-azul">
+                            <div className="bg-azul p-4">
+                                <h1 className="text-3xl font-semibold text-white">
+                                    Informes de Accesibilidad
+                                </h1>
+                            </div>
                         </div>
-
                         {/* Filtros */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-azul p-4">
                             <div className="space-y-2">
                                 <label
                                     htmlFor="location"
-                                    className="text-lg font-medium text-gray-700"
+                                    className="text-xl font-medium text-white"
                                 >
                                     Ubicación
                                 </label>
@@ -157,7 +165,7 @@ const Index = ({ reports, locations, elements, filters }) => {
                             <div className="space-y-2">
                                 <label
                                     htmlFor="element"
-                                    className="text-lg font-medium text-gray-700"
+                                    className="text-xl font-medium text-white"
                                 >
                                     Elemento
                                 </label>
@@ -189,7 +197,7 @@ const Index = ({ reports, locations, elements, filters }) => {
                             <div className="space-y-2">
                                 <label
                                     htmlFor="accessibility_level"
-                                    className="text-lg font-medium text-gray-700"
+                                    className="text-xl font-medium text-white"
                                 >
                                     Nivel de Accesibilidad
                                 </label>
@@ -220,7 +228,7 @@ const Index = ({ reports, locations, elements, filters }) => {
                         <ReportsList reports={reports} />
 
                         {/* Paginación */}
-                        <div className="mt-6">
+                        <div className="mt-6 mb-6">
                             <div className="flex items-center justify-center space-x-2">
                                 {reports.links.map((link, index) => {
                                     const getLabel = (label) => {

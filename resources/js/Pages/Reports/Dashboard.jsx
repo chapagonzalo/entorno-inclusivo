@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, usePage } from "@inertiajs/react";
 import { router } from "@inertiajs/react";
 import Layout from "@/Layouts/AuthenticatedLayout";
@@ -20,11 +20,11 @@ const ReportList = ({ reports }) => {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 p-6">
             {reports.data.map((assessment) => (
                 <div
                     key={assessment.id}
-                    className="bg-white rounded-lg shadow-lg border border-gray-300 p-6 hover:shadow-xl transition-shadow focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow"
                 >
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div>
@@ -78,7 +78,7 @@ const ReportList = ({ reports }) => {
                         <div className="flex items-center space-x-4">
                             <Link
                                 href={route("assessments.show", assessment.id)}
-                                className="text-lg inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                className="text-lg inline-flex items-center px-4 py-2 bg-azul text-white font-medium rounded-md hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                             >
                                 Ver Evaluación
                             </Link>
@@ -89,7 +89,7 @@ const ReportList = ({ reports }) => {
                                     onClick={() =>
                                         handleGenerateReport(assessment)
                                     }
-                                    className="text-lg inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                                    className="text-lg inline-flex items-center px-4 py-2 bg-verde text-white font-medium rounded-md hover:bg-hverde focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
                                 >
                                     Generar Informe
                                 </button>
@@ -100,7 +100,7 @@ const ReportList = ({ reports }) => {
                                             "reports.show",
                                             assessment.report_id,
                                         )}
-                                        className="text-lg inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
+                                        className="text-lg inline-flex items-center px-4 py-2 bg-celeste text-white font-medium rounded-md hover:bg-hceleste focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
                                     >
                                         Ver Informe
                                     </Link>
@@ -116,12 +116,11 @@ const ReportList = ({ reports }) => {
 
 const Dashboard = ({ stats, locations, elements, filters }) => {
     const { props } = usePage();
-    const initialStats = props.stats;
     const initialReports = props.reports;
     const initialFilters = props.filters || {};
 
+    const [currentStats, setCurrentStats] = useState(stats);
     const [reports, setReports] = useState(initialReports);
-    const [currentStats, setCurrentStats] = useState(initialStats); // Estado para las estadísticas
     const [currentFilters, setCurrentFilters] = useState({
         location_id: filters.location_id || "",
         element_id: filters.element_id || "",
@@ -129,12 +128,10 @@ const Dashboard = ({ stats, locations, elements, filters }) => {
 
     const handleFilterChange = (filterName, value) => {
         const newFilters = { ...currentFilters, [filterName]: value };
-
+        setCurrentFilters(newFilters);
         router.get(route("reports.dashboard"), newFilters, {
-            preserveState: true,
             replace: true,
             onSuccess: (page) => {
-                // Actualizar los datos de los reportes y estadísticas
                 setReports(page.props.reports);
                 setCurrentStats(page.props.stats);
             },
@@ -145,82 +142,108 @@ const Dashboard = ({ stats, locations, elements, filters }) => {
 
     return (
         <Layout>
-            <div className="py-12 bg-gray-50">
+            <div className="py-6  mt-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6  lg:px-8">
-                    {/* Estadísticas simplificadas */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-300">
-                            <h3 className="text-xl font-bold text-gray-900 mb-2">
-                                Total Evaluaciones
-                            </h3>
-                            <p className="text-4xl font-bold text-blue-600">
-                                {currentStats.total_assessments}
-                            </p>
+                    <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-azul">
+                            <div className="bg-azul p-4">
+                                <h1 className="text-3xl font-semibold text-white">
+                                    Evaluaciones
+                                </h1>
+                            </div>
                         </div>
-                        <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-300">
-                            <h3 className="text-xl font-bold text-gray-900 mb-2">
-                                Ubicaciones Evaluadas
-                            </h3>
-                            <p className="text-4xl font-bold text-blue-600">
-                                {stats.locations_assessed}
-                            </p>
+                        {/* Estadísticas simplificadas */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-azul p-4">
+                            <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-300">
+                                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                    Total
+                                </h3>
+                                <p className="text-4xl font-bold text-azul">
+                                    {currentStats.total_assessments}
+                                </p>
+                            </div>
+                            <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-300">
+                                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                    Ubicaciones Evaluadas
+                                </h3>
+                                <p className="text-4xl font-bold text-azul">
+                                    {stats.locations_assessed}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-
-                    {/* Filtros */}
-                    <div className="bg-white rounded-lg shadow-lg p-6 mb-8 border border-gray-300">
-                        <h2 className="text-xl font-bold text-gray-900 mb-4">
-                            Filtros
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <select
-                                value={currentFilters.location_id || ""}
-                                onChange={(e) =>
-                                    handleFilterChange(
-                                        "location_id",
-                                        e.target.value,
-                                    )
-                                }
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
-                            >
-                                <option value="">Todas las ubicaciones</option>
-                                {locations.map((location) => (
-                                    <option
-                                        key={location.id}
-                                        value={location.id}
+                        {/* Filtros */}
+                        <div className="gap-6 bg-azul p-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-azul p-4">
+                                <div className="space-y-2">
+                                    <label
+                                        htmlFor="location"
+                                        className="text-xl font-medium text-white"
                                     >
-                                        {location.name}
-                                    </option>
-                                ))}
-                            </select>
+                                        Ubicación
+                                    </label>
+                                    <select
+                                        value={currentFilters.location_id || ""}
+                                        onChange={(e) =>
+                                            handleFilterChange(
+                                                "location_id",
+                                                e.target.value,
+                                            )
+                                        }
+                                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
+                                    >
+                                        <option value="">
+                                            Todas las ubicaciones
+                                        </option>
+                                        {locations.map((location) => (
+                                            <option
+                                                key={location.id}
+                                                value={location.id}
+                                            >
+                                                {location.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label
+                                        htmlFor="element"
+                                        className="text-xl font-medium text-white"
+                                    >
+                                        Elemento
+                                    </label>
 
-                            <select
-                                value={currentFilters.element_id || ""}
-                                onChange={(e) =>
-                                    handleFilterChange(
-                                        "element_id", // <-- Corregido a element_id
-                                        e.target.value,
-                                    )
-                                }
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
-                            >
-                                <option value="">Todos los elementos</option>
-                                {elements.map((element) => (
-                                    <option key={element.id} value={element.id}>
-                                        {element.name}
-                                    </option>
-                                ))}
-                            </select>
+                                    <select
+                                        value={currentFilters.element_id || ""}
+                                        onChange={(e) =>
+                                            handleFilterChange(
+                                                "element_id",
+                                                e.target.value,
+                                            )
+                                        }
+                                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
+                                    >
+                                        <option value="">
+                                            Todos los elementos
+                                        </option>
+                                        {elements.map((element) => (
+                                            <option
+                                                key={element.id}
+                                                value={element.id}
+                                            >
+                                                {element.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        {/* Lista de Evaluaciones */}
 
-                    {/* Lista de Evaluaciones */}
-                    <div className="bg-white rounded-lg shadow-lg p-6 mb-8 border border-gray-300">
                         {/* ... */}
                         <ReportList reports={reports} />
 
                         {/* Paginación */}
-                        <div className="mt-6">
+                        <div className="mt-6 mb-6">
                             <div className="flex items-center justify-center space-x-2">
                                 {reports.links.map((link, index) => {
                                     const getLabel = (label) => {
@@ -243,7 +266,6 @@ const Dashboard = ({ stats, locations, elements, filters }) => {
                                                       : "bg-white text-[#427898] border-[#427898] hover:bg-[#6aced3] hover:text-white" // Botón normal
                                             }`}
                                             disabled={link.url === null}
-                                            preserveState={true}
                                         >
                                             {getLabel(link.label)}
                                         </Link>
