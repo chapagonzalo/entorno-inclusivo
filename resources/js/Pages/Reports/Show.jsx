@@ -295,10 +295,12 @@ export default function Show({ report, metrics, recommendations }) {
 
                     <div className="flex justify-end mt-10">
                         <button
-                            onClick={() => window.history.back()}
+                            onClick={() => {
+                                window.location.href = "/admin/reports";
+                            }}
                             className="inline-flex items-center px-4 mr-2 py-2 bg-azul border border-transparent rounded-md font-semibold text-lg text-white uppercase tracking-widest hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
                         >
-                            Volver
+                            Volver a Informes
                         </button>
                         <a
                             href={route("reports.export", report.id)}

@@ -78,7 +78,7 @@ const ReportList = ({ reports }) => {
                         <div className="flex items-center space-x-4">
                             <Link
                                 href={route("assessments.show", assessment.id)}
-                                className="text-lg inline-flex items-center px-4 py-2 bg-azul text-white font-medium rounded-md hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                className="text-base inline-flex items-center px-4 py-2 bg-azul text-white font-medium rounded-md hover:bg-hazul focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                             >
                                 Ver Evaluación
                             </Link>
@@ -89,7 +89,7 @@ const ReportList = ({ reports }) => {
                                     onClick={() =>
                                         handleGenerateReport(assessment)
                                     }
-                                    className="text-lg inline-flex items-center px-4 py-2 bg-verde text-white font-medium rounded-md hover:bg-hverde focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                                    className="text-base inline-flex items-center px-4 py-2 bg-verde text-white font-medium rounded-md hover:bg-hverde focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
                                 >
                                     Generar Informe
                                 </button>
@@ -100,7 +100,7 @@ const ReportList = ({ reports }) => {
                                             "reports.show",
                                             assessment.report_id,
                                         )}
-                                        className="text-lg inline-flex items-center px-4 py-2 bg-celeste text-white font-medium rounded-md hover:bg-hceleste focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
+                                        className="text-base inline-flex items-center px-4 py-2 bg-celeste text-white font-medium rounded-md hover:bg-hceleste focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
                                     >
                                         Ver Informe
                                     </Link>

@@ -14,19 +14,19 @@ class ElementSeeder extends Seeder
     public function run(): void
     {
         $element = new Element();
-        $element->name = 'Escalera';
+        $element->name = "Escalera";
         $element->save();
         $element = new Element();
-        $element->name = 'Rampa';
+        $element->name = "Rampa";
         $element->save();
         $element = new Element();
-        $element->name = 'Señaletica';
+        $element->name = "Señalética";
         $element->save();
         $element = new Element();
-        $element->name = 'Puerta';
+        $element->name = "Puerta";
         $element->save();
         $element = new Element();
-        $element->name = 'Sanitario';
+        $element->name = "Sanitario";
         $element->save();
     }
 }
