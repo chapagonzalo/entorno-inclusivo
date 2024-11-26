@@ -17,10 +17,9 @@ class AdministradorMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user() && (Auth::user()->role == User::ROLE_ADMIN)) {
+        if (Auth::user() && Auth::user()->role == User::ROLE_ADMIN) {
             return $next($request);
         }
-        return redirect('/');
-        
+        return redirect("/");
     }
 }
