@@ -22,8 +22,6 @@ class DatabaseSeeder extends Seeder
             QuestionSeeder::class,
             ExpectedAnswerSeeder::class,
             MetricSeeder::class,
-            AssessmentCompleteSeeder::class,
-            AssessmentSeeder::class,
         ]);
     }
 }

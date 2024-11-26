@@ -66,7 +66,7 @@ const ShowAnswer = ({ answer }) => {
 };
 
 const AssessmentDetails = ({ assessment }) => (
-    <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6">
+    <div className="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidde mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 py-4 border-b border-gray-300 bg-azul">
             <div className="bg-azul p-4">
                 <h2 className="text-xl font-bold text-white">
@@ -131,8 +131,8 @@ export default function Show({ assessment, questions }) {
     return (
         <AuthenticatedLayout>
             <Head title="Detalles de la Evaluación" />
-            <main className="relative flex min-h-screen flex-col items-center justify-center mt-16">
-                <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl bg-gray-100 rounded-lg mt-4">
+            <main className="flex min-h-screen flex-col items-center justify-center mt-16">
+                <div className=" w-full max-w-2xl px-6 lg:max-w-7xl bg-gray-100 rounded-lg mt-4">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         {/* Detalles de la evaluación */}
                         <AssessmentDetails assessment={assessment} />
