@@ -160,25 +160,46 @@ export default function Show({ report, metrics, recommendations }) {
                         {/* Información General */}
                         <div className="p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <h2 className="text-xl font-medium text-gray-500">
+                                <div className="bg-blancoSuave p-4 rounded-lg border border-gray-300">
+                                    <p className="text-gray-600 text-lg">
                                         Ubicación
-                                    </h2>
-                                    <p className="mt-1 text-xl text-gray-900">
+                                    </p>
+                                    <p className="font-semibold text-gray-900">
                                         {
                                             report.assessment?.element_instance
                                                 ?.location?.name
                                         }
                                     </p>
                                 </div>
-                                <div>
-                                    <h2 className="text-xl font-medium text-gray-500">
+
+                                <div className="bg-blancoSuave p-4 rounded-lg border border-gray-300">
+                                    <p className="text-gray-600 text-lg">
                                         Elemento Evaluado
-                                    </h2>
-                                    <p className="mt-1 text-xl text-gray-900">
+                                    </p>
+                                    <p className="font-semibold text-gray-900">
                                         {
                                             report.assessment?.element_instance
                                                 ?.element?.name
+                                        }
+                                    </p>
+                                </div>
+                                <div className="bg-blancoSuave p-4 rounded-lg border border-gray-300">
+                                    <p className="text-gray-600 text-lg">
+                                        Evaluador
+                                    </p>
+                                    <p className="font-semibold text-gray-900">
+                                        {report.assessment?.user.name}
+                                    </p>
+                                </div>
+
+                                <div className="bg-blancoSuave p-4 rounded-lg border border-gray-300">
+                                    <p className="text-gray-600 text-lg">
+                                        Descripción del elemento
+                                    </p>
+                                    <p className="font-semibold text-gray-900 mt-1">
+                                        {
+                                            report.assessment?.element_instance
+                                                .description
                                         }
                                     </p>
                                 </div>

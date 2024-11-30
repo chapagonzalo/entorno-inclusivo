@@ -144,6 +144,10 @@
                 <td>{{ $report->assessment->elementInstance->element->name }}</td>
             </tr>
             <tr>
+                <th>Descripción de elemento</th>
+                <td>{{ $report->assessment->elementInstance->description}}</td>
+            </tr>
+            <tr>
                 <th>Evaluador</th>
                 <td>{{ $report->assessment->user->name }}</td>
             </tr>

@@ -300,19 +300,13 @@ class ReportController extends Controller
                 ->where("question_id", $question->id)
                 ->first();
 
-            // Si hay respuesta, se calcula el score
-            if ($answer) {
-                $score = $this->evaluateAnswer(
-                    $answer,
-                    $question->expectedAnswer
-                );
-                $totalScore += $score * $questionWeight;
-                $totalWeight += $questionWeight;
-            } else {
-                // Si no hay respuesta, se considera 0
-                $totalScore += 0 * $questionWeight;
-                $totalWeight += $questionWeight;
-            }
+            // Si hay respuesta, se calcula el score (0 a 1)
+            $score = $answer
+                ? $this->evaluateAnswer($answer, $question->expectedAnswer)
+                : 0; // 0 si no hay respuesta
+
+            $totalScore += $score * $questionWeight; // Usar el score (0 a 1)
+            $totalWeight += $questionWeight;
         }
 
         return $totalWeight > 0 ? ($totalScore / $totalWeight) * 100 : 0;
@@ -333,19 +327,6 @@ class ReportController extends Controller
                 $expectedAnswer->expected_answer_enum
                 ? 1
                 : 0;
-        }
-
-        // Para respuestas de calidad (Bueno, Regular, Malo)
-        if (
-            $answer->answer_enum &&
-            in_array($answer->answer_enum, ["Bueno", "Regular", "Malo"])
-        ) {
-            $qualityScores = [
-                "Bueno" => 1,
-                "Regular" => 0.5,
-                "Malo" => 0,
-            ];
-            return $qualityScores[$answer->answer_enum] ?? 0;
         }
     }
     private function getMetricDetails(Metric $metric, Assessment $assessment)
