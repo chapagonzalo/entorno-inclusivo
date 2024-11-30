@@ -95,18 +95,46 @@ class ReportController extends Controller
                     )
                     ->first();
 
+                // Calcular la suma de las ponderaciones originales
+                $sumaOriginal = array_sum(
+                    array_column($metric["questions"], "weight")
+                );
+
+                // Inicializar el factor de escala
+                $factorEscala = 0;
+                if ($sumaOriginal > 0) {
+                    // Calcular el factor de escala si la suma de ponderaciones no es 0
+                    $factorEscala = $metric["weight"] / $sumaOriginal;
+                }
+
+                // Ajustar las ponderaciones de las preguntas
+                $adjustedQuestions = $metricModel
+                    ? $this->getMetricQuestionsAndAnswers(
+                        $metricModel,
+                        $report->assessment
+                    )
+                    : [];
+
+                // Ajustar las ponderaciones de las preguntas dentro de la métrica
+                if ($adjustedQuestions) {
+                    foreach ($adjustedQuestions as &$question) {
+                        // Calcular la ponderación ajustada y agregarla al array
+                        $question["adjusted_weight"] = round(
+                            $question["weight"] * $factorEscala,
+                            2
+                        );
+                    }
+                }
+
+                // Retornar las métricas con las ponderaciones ajustadas
                 return [
                     ...$metric,
                     "score" => (float) $metric["score"],
-                    "questions" => $metricModel
-                        ? $this->getMetricQuestionsAndAnswers(
-                            $metricModel,
-                            $report->assessment
-                        )
-                        : [],
+                    "questions" => $adjustedQuestions, // Incluir las preguntas con ponderación ajustada
                 ];
             })
             ->toArray();
+
         return Inertia::render("Reports/Show", [
             "report" => [
                 ...$report
@@ -300,19 +328,13 @@ class ReportController extends Controller
                 ->where("question_id", $question->id)
                 ->first();
 
-            // Si hay respuesta, se calcula el score
-            if ($answer) {
-                $score = $this->evaluateAnswer(
-                    $answer,
-                    $question->expectedAnswer
-                );
-                $totalScore += $score * $questionWeight;
-                $totalWeight += $questionWeight;
-            } else {
-                // Si no hay respuesta, se considera 0
-                $totalScore += 0 * $questionWeight;
-                $totalWeight += $questionWeight;
-            }
+            // Si hay respuesta, se calcula el score (0 a 1)
+            $score = $answer
+                ? $this->evaluateAnswer($answer, $question->expectedAnswer)
+                : 0; // 0 si no hay respuesta
+
+            $totalScore += $score * $questionWeight; // Usar el score (0 a 1)
+            $totalWeight += $questionWeight;
         }
 
         return $totalWeight > 0 ? ($totalScore / $totalWeight) * 100 : 0;
@@ -333,19 +355,6 @@ class ReportController extends Controller
                 $expectedAnswer->expected_answer_enum
                 ? 1
                 : 0;
-        }
-
-        // Para respuestas de calidad (Bueno, Regular, Malo)
-        if (
-            $answer->answer_enum &&
-            in_array($answer->answer_enum, ["Bueno", "Regular", "Malo"])
-        ) {
-            $qualityScores = [
-                "Bueno" => 1,
-                "Regular" => 0.5,
-                "Malo" => 0,
-            ];
-            return $qualityScores[$answer->answer_enum] ?? 0;
         }
     }
     private function getMetricDetails(Metric $metric, Assessment $assessment)
@@ -388,12 +397,12 @@ class ReportController extends Controller
                 $questionAndAnswers[] = [
                     "question" => $question->content,
                     "answer" => $answer->content,
-                    "expected_answer" => $expectedAnswer?->expected_answer, // Mostrar la respuesta esperada
+                    "expected_answer" => $expectedAnswer?->expected_answer,
                     "expected_answer_text" =>
-                        $expectedAnswer?->expected_answer_text, // Mostrar la respuesta esperada (texto)
+                        $expectedAnswer?->expected_answer_text,
                     "expected_answer_enum" =>
-                        $expectedAnswer?->expected_answer_enum, // Mostrar la respuesta esperada (enum)
-                    "score" => $this->evaluateAnswer($answer, $expectedAnswer), // Incluir la puntuación de la respuesta
+                        $expectedAnswer?->expected_answer_enum,
+                    "score" => $this->evaluateAnswer($answer, $expectedAnswer),
                     "answer_text" => $answer->answer_text,
                     "answer_enum" => $answer->answer_enum,
                     "weight" => $question->pivot->question_weight,
@@ -550,6 +559,7 @@ class ReportController extends Controller
     {
         $metrics = collect($report->metrics_scores)
             ->map(function ($metric) use ($report) {
+                // Obtenemos el modelo de la métrica
                 $metricModel = Metric::where("name", $metric["name"])
                     ->where(
                         "element_id",
@@ -557,27 +567,57 @@ class ReportController extends Controller
                     )
                     ->first();
 
+                // Calcular la suma de las ponderaciones originales
+                $sumaOriginal = array_sum(
+                    array_column($metric["questions"], "weight")
+                );
+
+                // Inicializar el factor de escala
+                $factorEscala = 0;
+                if ($sumaOriginal > 0) {
+                    // Calcular el factor de escala si la suma de ponderaciones no es 0
+                    $factorEscala = $metric["weight"] / $sumaOriginal;
+                }
+
+                // Ajustar las ponderaciones de las preguntas
+                $adjustedQuestions = $metricModel
+                    ? $this->getMetricQuestionsAndAnswers(
+                        $metricModel,
+                        $report->assessment
+                    )
+                    : [];
+
+                // Ajustar las ponderaciones de las preguntas dentro de la métrica
+                if ($adjustedQuestions) {
+                    foreach ($adjustedQuestions as &$question) {
+                        // Calcular la ponderación ajustada y agregarla al array
+                        $question["adjusted_weight"] = round(
+                            $question["weight"] * $factorEscala,
+                            2
+                        );
+                    }
+                }
+
+                // Retornar las métricas con las ponderaciones ajustadas
                 return [
                     ...$metric,
                     "score" => (float) $metric["score"],
-                    "questions" => $metricModel
-                        ? $this->getMetricQuestionsAndAnswers(
-                            $metricModel,
-                            $report->assessment
-                        )
-                        : [],
+                    "questions" => $adjustedQuestions, // Incluir las preguntas con ponderación ajustada
                 ];
             })
             ->toArray();
 
+        // Generar el PDF con las métricas y el reporte
         $pdf = $pdfGenerator->generate($report, $metrics);
 
+        // Nombrar el archivo PDF
         $fileName = sprintf(
             "informe-accesibilidad-%s-%s.pdf",
             $report->assessment->elementInstance->element->name,
             date("Y-m-d")
         );
 
+        // Descargar el PDF generado
         return $pdf->download($fileName);
     }
 }

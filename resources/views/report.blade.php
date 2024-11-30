@@ -144,6 +144,10 @@
                 <td>{{ $report->assessment->elementInstance->element->name }}</td>
             </tr>
             <tr>
+                <th>Descripción de elemento</th>
+                <td>{{ $report->assessment->elementInstance->description}}</td>
+            </tr>
+            <tr>
                 <th>Evaluador</th>
                 <td>{{ $report->assessment->user->name }}</td>
             </tr>
@@ -184,7 +188,7 @@
                         @if($qa['answer_text'] != null)
                             <p><strong>Observación:</strong> {{ $qa['answer_text'] }}</p>
                         @endif
-                        <p><strong>Ponderación de la pregunta:</strong> {{ $qa['weight'] }}%</p>
+                        <p><strong>Ponderación de la pregunta:</strong> {{ $qa['adjusted_weight'] }}%</p>
                         <p><strong>Puntuación:</strong> {{ $qa['score'] }}</p>
 
                     </div>
