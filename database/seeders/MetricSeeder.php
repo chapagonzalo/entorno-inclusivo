@@ -206,7 +206,7 @@ class MetricSeeder extends Seeder
                     ($preguntas_puntuaciones[$pregunta] /
                         array_sum($preguntas_puntuaciones)) *
                     $metrica["weight"];
-                $metrica["question_weights"][] = round($peso, 2); //Pesos individuales (opcional)
+                $metrica["question_weights"][] = round($peso, 2);
                 $suma_pesos += $peso;
                 $suma_ponderada += $peso * $preguntas_puntuaciones[$pregunta]; //Suma ponderada considerando la puntuación
             }
@@ -269,7 +269,7 @@ class MetricSeeder extends Seeder
                     ($preguntas_puntuaciones[$pregunta] /
                         array_sum($preguntas_puntuaciones)) *
                     $metrica["weight"];
-                $metrica["question_weights"][] = round($peso, 2); //Pesos individuales (opcional)
+                $metrica["question_weights"][] = round($peso, 2);
                 $suma_pesos += $peso;
                 $suma_ponderada += $peso * $preguntas_puntuaciones[$pregunta]; //Suma ponderada considerando la puntuación
             }
@@ -327,7 +327,7 @@ class MetricSeeder extends Seeder
                     ($preguntas_puntuaciones[$pregunta] /
                         array_sum($preguntas_puntuaciones)) *
                     $metrica["weight"];
-                $metrica["question_weights"][] = round($peso, 2); //Pesos individuales (opcional)
+                $metrica["question_weights"][] = round($peso, 2);
                 $suma_pesos += $peso;
                 $suma_ponderada += $peso * $preguntas_puntuaciones[$pregunta]; //Suma ponderada considerando la puntuación
             }

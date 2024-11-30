@@ -66,16 +66,12 @@ const MetricCard = ({ name, score, description, questions, weight }) => (
                                             {qa.expected_answer_text}
                                         </p>
                                     )}
-                                    {qa.weight && (
-                                        <p>Ponderación: {qa.weight}%</p>
-                                    )}
+                                    <p>
+                                        Ponderación Ajustada:{" "}
+                                        {qa.adjusted_weight}%
+                                    </p>{" "}
+                                    {/* Mostrar ponderación ajustada */}
                                     <p>Puntuación: {qa.score}</p>
-                                    {qa.answer_text && (
-                                        <p>
-                                            Texto de la respuesta:{" "}
-                                            {qa.answer_text}
-                                        </p>
-                                    )}
                                 </div>
                             ))}
                         {!questions && (
