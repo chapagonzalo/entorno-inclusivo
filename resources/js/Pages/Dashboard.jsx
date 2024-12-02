@@ -1,5 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import Inicio from "../assets/inicio.png";
 
 export default function Dashboard() {
     return (
@@ -8,34 +9,46 @@ export default function Dashboard() {
 
             <div className="py-6 mt-16">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    {/* Sección de tipos de usuarios */}
-                    <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden">
-                        <div className="px-6 py-4 border-b border-gray-300 bg-azul">
-                            <h2 className="text-3xl font-bold text-white">
-                                Tipos de Usuarios
-                            </h2>
-                        </div>
-                        <div className="p-6">
-                            <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
-                                <p className="mt-4 text-lg text-gray-700 leading-relaxed">
-                                    La heterogeneidad de limitaciones entre las
-                                    diversas personas es una de las principales
-                                    dificultades para proponer soluciones
-                                    arquitectónicas accesibles para toda la
-                                    población. Podríamos decir que el entorno
-                                    accesible universal sería la suma de los
-                                    entornos accesibles para cada uno de los
-                                    individuos, y si bien esta universalidad es
-                                    prácticamente imposible de conseguir, sí que
-                                    resulta viable aproximarse al objetivo.
-                                    Existe un mínimo de características comunes
-                                    que permiten llegar a definir tres grandes
-                                    grupos de población con necesidades de
-                                    accesibilidad parecidas:
-                                </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                        {/* Sección de tipos de usuarios */}
+                        <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden">
+                            <div className="px-6 py-4 border-b border-gray-300 bg-azul">
+                                <h2 className="text-3xl font-bold text-white">
+                                    Tipos de Usuarios
+                                </h2>
+                            </div>
+                            <div className="p-6">
+                                <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
+                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed">
+                                        La heterogeneidad de limitaciones entre
+                                        las diversas personas es una de las
+                                        principales dificultades para proponer
+                                        soluciones arquitectónicas accesibles
+                                        para toda la población. Podríamos decir
+                                        que el entorno accesible universal sería
+                                        la suma de los entornos accesibles para
+                                        cada uno de los individuos, y si bien
+                                        esta universalidad es prácticamente
+                                        imposible de conseguir, sí que resulta
+                                        viable aproximarse al objetivo. Existe
+                                        un mínimo de características comunes que
+                                        permiten llegar a definir tres grandes
+                                        grupos de población con necesidades de
+                                        accesibilidad parecidas:
+                                    </p>
+                                </div>
                             </div>
                         </div>
+                        <div className="flex justify-center ">
+                            <div className="inset-0 bg-gradient-to-b from-transparent to-gray-200 opacity-25 rounded-lg"></div>
+                            <img
+                                src={Inicio}
+                                alt="Ilustración de accesibilidad universal que muestra a diversas personas en situaciones cotidianas, incluyendo una mujer embarazada, un adulto mayor con bastón, un hombre con prótesis, una persona con discapacidad visual con bastón blanco, personas en sillas de ruedas y una mujer empujando un cochecito de bebé. La imagen también incluye elementos como rampas, escaleras y obstáculos señalados para enfatizar la importancia de un diseño accesible."
+                                className="rounded-lg shadow-lg border border-gray-300 "
+                            />
+                        </div>
                     </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-6">
                         {/* Sección de ambulantes */}
                         <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden ">

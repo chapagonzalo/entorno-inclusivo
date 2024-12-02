@@ -1,5 +1,8 @@
 # Entorno Inclusivo - Sistema de Evaluación de Accesibilidad Universitaria
 
+* Desarrollado por [Aguilar Luciano Ivan]
+* [2024] - Todos los derechos reservados
+
 ## Descripción
 
 Entorno Inclusivo es una plataforma digital desarrollada con Laravel 11, Inertia y React, diseñada para mejorar la accesibilidad en entornos universitarios. El sistema permite a los evaluadores realizar diagnósticos sobre la accesibilidad de los distintos elementos arquitectónicos y generar informes detallados para planificar mejoras.
@@ -8,16 +11,36 @@ Entorno Inclusivo es una plataforma digital desarrollada con Laravel 11, Inertia
 
 -   Gestión de usuarios y roles
 -   Evaluación de accesibilidad mediante cuestionarios
--   Generación automática de informes
+-   Generación de informes de accesibilidad
 -   Gestión y seguimiento de informes de accesibilidad
 
 ## Requisitos del Sistema
 
--   PHP 8.1+
--   Composer
--   Node.js y npm
--   MySQL
--   Git
+-   Framework principal: Laravel 11
+-   PHP 8.3.13
+-   Frontend: React 18.3
+-   Conexión Backend-Frontend: Inertia
+-   Mysql 8.3
+-   Node 20.17.0
+
+## Requisitos del Servidor
+
+    PHP >= 8.2
+    Ctype PHP Extension
+    cURL PHP Extension
+    DOM PHP Extension
+    Fileinfo PHP Extension
+    Filter PHP Extension
+    Hash PHP Extension
+    Mbstring PHP Extension
+    OpenSSL PHP Extension
+    PCRE PHP Extension
+    PDO PHP Extension
+    Session PHP Extension
+    Tokenizer PHP Extension
+    XML PHP Extension
+
+
 
 ## Instalación
 
@@ -74,19 +97,24 @@ Entorno Inclusivo es una plataforma digital desarrollada con Laravel 11, Inertia
     ```
 
 10. Iniciar el servidor y abrir otra terminal para:
+
     ```
     php artisan serve
-    ```
+    ```    
+
 ### De manera opcional le dejo un export de la base de datos en la raiz del proyecto
-   entorno-inclusivo.sql
-   
+
+   entorno-inclusivo.sql   
+
 ## Uso
 
 Después de la instalación, puedes acceder al sistema a través del link que da artisan serve.
 
--   Puede probar los distintos roles usando las siguientes cuentas:
+  * Puede probar los distintos roles usando las siguientes cuentas:
+  
     -   tech@tech.com || pw: tech123@@@ || rol:evaluador/técnico
     -   admin@admin.com || pw: administrador@@@ || rol: administrador
+    -   supervisor@supervisor || pw: supervisor@@@ || rol: supervisor
 
 ## Licencia
 

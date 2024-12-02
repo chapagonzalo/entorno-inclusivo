@@ -1,6 +1,8 @@
 import { Head, Link } from "@inertiajs/react";
 import Logo from "../assets/Logo.svg";
-import Inicio from "../assets/inicio.png";
+import PatioUniversitario from "../assets/patioUniversitario.jpg";
+import EvaluandoRampa from "../assets/EvaluandoRampa.jpg";
+import HaciendoEvaluacion from "../assets/haciendoEvaluacion.jpg";
 import Modal from "../Components/Modal";
 import { useState } from "react";
 
@@ -45,70 +47,107 @@ export default function Welcome({ auth }) {
                         <main className="mt-6">
                             <div className="py-12 rounded-lg">
                                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-                                        {/* Sección de introducción */}
-                                        <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden">
-                                            <div className="px-6 py-4 border-b border-gray-300 bg-azul">
-                                                <h2 className="text-3xl font-bold text-white">
-                                                    Entorno Inclusivo
-                                                </h2>
-                                            </div>
-                                            <div className="p-6">
-                                                <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
-                                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed">
-                                                        Una persona con
-                                                        discapacidad enfrenta
-                                                        limitaciones físicas,
-                                                        mentales, sensoriales o
-                                                        intelectuales que, al
-                                                        interactuar con barreras
-                                                        sociales, pueden
-                                                        dificultar su plena
-                                                        participación en
-                                                        igualdad de condiciones.
-                                                        Esto incluye desafíos
-                                                        para moverse,
-                                                        comunicarse o
-                                                        desarrollarse en
-                                                        entornos sin los apoyos
-                                                        necesarios.
-                                                    </p>
-                                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed">
-                                                        La inclusión real exige
-                                                        reconocer y eliminar
-                                                        estas barreras, muchas
-                                                        veces basadas en
-                                                        prejuicios o
-                                                        concepciones
-                                                        desactualizadas que
-                                                        perpetúan prácticas
-                                                        discriminatorias.
-                                                    </p>
-                                                    <p className="mt-4 text-lg text-gray-700 leading-relaxed">
-                                                        Estas actitudes limitan
-                                                        la autonomía y el
-                                                        desarrollo de las
-                                                        personas con
-                                                        discapacidad. Es
-                                                        fundamental promover un
-                                                        cambio cultural que
-                                                        valore la diversidad
-                                                        como una riqueza y
-                                                        garantice la igualdad de
-                                                        derechos para todos.
-                                                    </p>
-                                                </div>
-                                            </div>
+                                    {/* Sección de introducción */}
+                                    <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden">
+                                        <div className="px-6 py-4 border-b border-gray-300 bg-azul">
+                                            <h2 className="text-2xl sm:text-3xl font-bold text-white">
+                                                Entorno Inclusivo
+                                            </h2>
                                         </div>
-                                        <div className="flex justify-center relative">
-                                            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-200 opacity-25 rounded-lg"></div>
-                                            <img
-                                                src={Inicio}
-                                                alt="Ilustración de accesibilidad universal que muestra a diversas personas en situaciones cotidianas, incluyendo una mujer embarazada, un adulto mayor con bastón, un hombre con prótesis, una persona con discapacidad visual con bastón blanco, personas en sillas de ruedas y una mujer empujando un cochecito de bebé. La imagen también incluye elementos como rampas, escaleras y obstáculos señalados para enfatizar la importancia de un diseño accesible."
-                                                className="rounded-lg shadow-lg border border-gray-300 relative"
-                                            />
+                                        <div className="p-4 sm:p-6">
+                                            <div className="flex justify-center relative mb-3 group">
+                                                {/* Imagen con efectos de transición y sombras */}
+                                                <img
+                                                    src={PatioUniversitario}
+                                                    alt="Vista del patio de una universidad, con áreas abiertas, árboles y posiblemente mobiliario como bancos o señalización."
+                                                    className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-lg shadow-lg"
+                                                />
+                                            </div>
+                                            <div className="bg-blancoSuave border-l-4 border-azul shadow-md rounded-lg p-4 sm:p-6 hover:shadow-lg transition-shadow">
+                                                <p className="mt-4 text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed">
+                                                    Una persona con discapacidad
+                                                    es aquella que tiene
+                                                    deficiencias físicas,
+                                                    mentales, intelectuales o
+                                                    sensoriales a largo plazo
+                                                    que, al interactuar con
+                                                    diversas barreras, puedan
+                                                    impedir su participación
+                                                    plena y efectiva en la
+                                                    sociedad, en igualdad de
+                                                    condiciones con los demás.
+                                                </p>
+                                                <p className="mt-4 text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed">
+                                                    Algunas personas pueden
+                                                    necesitar apoyo todo el
+                                                    tiempo o mucho tiempo para
+                                                    moverse, para trasladarse,
+                                                    para entender, para
+                                                    relacionarse con otras
+                                                    personas, con la forma en
+                                                    que funciona alguna parte de
+                                                    su cuerpo, con la forma en
+                                                    que funciona alguno de sus
+                                                    sentidos. A veces estas
+                                                    personas están en un lugar
+                                                    que no tiene los apoyos que
+                                                    necesitan para poder
+                                                    desempeñarse con facilidad
+                                                    impidiéndoles desarrollarse
+                                                    como todos los demás.
+                                                    Entonces decimos que esas
+                                                    personas son personas con
+                                                    discapacidad.
+                                                </p>
+                                                <p className="mt-4 text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed">
+                                                    Es necesario comprender a la
+                                                    inclusión en un sentido real
+                                                    y concreto, que implica, por
+                                                    un lado, ser conscientes de
+                                                    la existencia de las
+                                                    barreras que construimos
+                                                    como sociedad y, al mismo
+                                                    tiempo, sostener una actitud
+                                                    activa tendiente a
+                                                    eliminarlas.
+                                                </p>
+                                                <p className="mt-4 text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed">
+                                                    Muchas de estas barreras
+                                                    tienen origen en
+                                                    estereotipos, prejuicios y
+                                                    concepciones erradas y
+                                                    antiguas, que promueven la
+                                                    naturalización de prácticas
+                                                    discriminatorias,
+                                                    excluyentes y segregadoras
+                                                    para este colectivo. De esta
+                                                    manera, suele suceder que
+                                                    aceptamos sin mayores
+                                                    cuestionamientos ciertos
+                                                    criterios que limitan el
+                                                    ejercicio de la autonomía y
+                                                    de la autodeterminación de
+                                                    las personas con
+                                                    discapacidad, obstaculizando
+                                                    su desarrollo en igualdad de
+                                                    condiciones con las demás.
+                                                </p>
+                                                <p className="mt-4 text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed">
+                                                    En este sentido, es
+                                                    importante impulsar un
+                                                    cambio cultural a partir de
+                                                    la toma de conciencia acerca
+                                                    de que todas las personas
+                                                    tenemos igualdad de
+                                                    derechos, y de que la
+                                                    diversidad es una gran
+                                                    riqueza para toda sociedad
+                                                    que la respeta y valora.
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
+
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-6">
                                         {/* Sección de objetivo */}
                                         <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden ">
@@ -147,25 +186,55 @@ export default function Welcome({ auth }) {
                                                     <p className="mt-4 text-lg text-gray-700 leading-relaxed">
                                                         Promover entornos
                                                         accesibles no solo
-                                                        cumple con normativas
-                                                        legales, sino que
-                                                        también fomenta una
-                                                        sociedad más justa e
-                                                        inclusiva, donde todos
-                                                        puedan participar y
-                                                        desarrollar sus
-                                                        actividades en igualdad
-                                                        de condiciones. La
-                                                        diversidad y
-                                                        accesibilidad enriquecen
-                                                        las interacciones y
-                                                        potencian la autonomía
-                                                        de cada persona en el
-                                                        espacio público.
+                                                        responde a las
+                                                        normativas legales, sino
+                                                        que impulsa una sociedad
+                                                        más justa e inclusiva,
+                                                        donde cada persona pueda
+                                                        participar y desarrollar
+                                                        sus actividades en
+                                                        igualdad de condiciones.
+                                                        La accesibilidad y la
+                                                        diversidad no solo
+                                                        enriquecen las
+                                                        interacciones, sino que
+                                                        también fortalecen la
+                                                        autonomía individual,
+                                                        creando espacios
+                                                        públicos más equitativos
+                                                        y respetuosos para
+                                                        todos.
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    {/* Sección de Imágenes */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-6">
+                                        {[
+                                            {
+                                                src: HaciendoEvaluacion,
+                                                alt: "Grupo de personas realizando una evaluación de accesibilidad en una instalación, inspeccionando elementos físicos del entorno.",
+                                            },
+                                            {
+                                                src: EvaluandoRampa,
+                                                alt: "Persona evaluando la pendiente y accesibilidad de una rampa, posiblemente midiendo su inclinación o inspeccionando sus características.",
+                                            },
+                                        ].map((image, index) => (
+                                            <div
+                                                key={index}
+                                                className="relative group"
+                                            >
+                                                <div className="w-full h-96 overflow-hidden rounded-lg shadow-lg border border-gray-300">
+                                                    <img
+                                                        src={image.src}
+                                                        alt={image.alt}
+                                                        className="w-full h-full object-cover transition-transform duration-300 ease-in-out transform group-hover:scale-105"
+                                                    />
+                                                </div>
+                                                <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                                            </div>
+                                        ))}
                                     </div>
                                     {/* Sección de accesibilidad */}
                                     <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden mt-6">

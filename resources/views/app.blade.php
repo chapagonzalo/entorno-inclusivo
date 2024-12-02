@@ -4,6 +4,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <meta name="author" content="Aguilar Luciano Ivan">
+        <meta name="developer" content="@lucianoAguilarWD">
+        <meta name="contact" content="lucianoaguilarwebdev@gmail.com">
+        <meta name="creator" content="Aguilar Luciano Ivan - https://github.com/@lucianoAguilarWD">
         <!-- Logo como Favicon -->
         <link rel="icon" href="{{ asset('Logo.svg') }}" type="image/svg+xml">
 
