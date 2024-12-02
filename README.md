@@ -114,7 +114,7 @@ Después de la instalación, puedes acceder al sistema a través del link que da
   
     -   tech@tech.com || pw: tech123@@@ || rol:evaluador/técnico
     -   admin@admin.com || pw: administrador@@@ || rol: administrador
-    -   supervisor@supervisor || pw: supervisor@@@ || rol: supervisor
+    -   supervisor@supervisor.com || pw: supervisor@@@ || rol: supervisor
 
 ## Licencia
 
