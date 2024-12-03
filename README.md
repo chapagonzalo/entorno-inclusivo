@@ -84,10 +84,10 @@ Entorno Inclusivo es una plataforma digital desarrollada con Laravel 11, Inertia
     php artisan migrate
     ```
 
-8. Ejecutar el seeder de usuario:
+8. Ejecutar los seeders
 
     ```
-    php artisan db:seed UserSeeder
+    php artisan db:seed
     ```
 
 9. Compilar los assets, idealmente tener una terminal para:
