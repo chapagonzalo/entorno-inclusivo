@@ -52,39 +52,46 @@ Entorno Inclusivo es una plataforma digital desarrollada con Laravel 11, Inertia
 
 ### Dentro de la carpeta del proyecto abrir terminal y ejecutar los siguientes comandos
 
-2. Instalar dependencias de PHP:
+2. Instalar dependencias:
 
     ```
-    composer install
+    composer install --optimize-autoloader --no-dev
     ```
-
-3. Instalar dependencias de JavaScript:
-
+    
     ```
     npm install
     ```
+    
+    ```
+    npm run build
+    ```
 
-4. Copiar el archivo de configuración:
+4. configuración:
 
     ```
     cp .env.example .env
     ```
-
-5. Generar la clave de la aplicación:
-
+    
     ```
     php artisan key:generate
     ```
+    
+    ```
+    php artisan storage:link
+    ```
 
-6. Configurar la base de datos en el archivo `.env`
-
+6. Permisos
+    ```
+    chmod -R 775 storage bootstrap/cache
+    chown -R www-data:www-data .
+    ```
 7. Ejecutar las migraciones:
 
     ```
-    php artisan migrate
+    php artisan migrate --force
     ```
 
-8. Ejecutar los seeders
+8. Ejecutar el seeder de usuario:
 
     ```
     php artisan db:seed
@@ -114,7 +121,7 @@ Después de la instalación, puedes acceder al sistema a través del link que da
   
     -   tech@tech.com || pw: tech123@@@ || rol:evaluador/técnico
     -   admin@admin.com || pw: administrador@@@ || rol: administrador
-    -   supervisor@supervisor.com || pw: supervisor@@@ || rol: supervisor
+    -   supervisor@supervisor || pw: supervisor@@@ || rol: supervisor
 
 ## Licencia
 
