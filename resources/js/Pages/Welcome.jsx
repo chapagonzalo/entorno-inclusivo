@@ -33,12 +33,12 @@ export default function Welcome({ auth }) {
                                         >
                                             Ingresar
                                         </Link>
-                                        {/*<Link
+                                        {<Link
                                             href={route("register")}
                                             className="rounded-md bg-azul text-white px-4 py-2 transition duration-200 ease-in-out ring-1 ring-transparent hover:bg-hazul hover:ring-azul focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20]"
                                         >
                                             Registrarse
-                                        </Link>*/}
+                                        </Link>}
                                     </div>
                                 )}
                             </nav>
